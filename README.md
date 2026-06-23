@@ -1,1 +1,1 @@
-# calculator-app
+My first GitHub project - Calculator App
