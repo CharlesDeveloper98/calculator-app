@@ -1,0 +1,28 @@
+name: Generate Android APK
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Build Web To APK
+        uses: darkshredder/website-to-apk-action@v1.1.0
+        with:
+          build-folder-path: './'
+          app-name: 'Glass Calculator'
+          output-folder-path: 'apk/'
+
+      - name: Upload Finished APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: Glass-Calculator-APK
+          path: apk/
