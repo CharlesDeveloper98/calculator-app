@@ -14,15 +14,33 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v4
 
-      - name: Build Web To APK
-        uses: darkshredder/website-to-apk-action@v1.1.0
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
         with:
-          build-folder-path: './'
-          app-name: 'Glass Calculator'
-          output-folder-path: 'apk/'
+          node-with: 18
+
+      - name: Install Cordova
+        run: npm install -g cordova
+
+      - name: Create Cordova Project
+        run: |
+          cordova create myApp com.charles.glasscalc "Glass Calculator"
+          rm -rf myApp/www/*
+          cp -r index.html myApp/www/
+          # Copy over any assets if you add them later
+
+      - name: Setup Android Platform
+        run: |
+          cd myApp
+          cordova platform add android
+
+      - name: Compile APK
+        run: |
+          cd myApp
+          cordova build android --debug
 
       - name: Upload Finished APK
         uses: actions/upload-artifact@v4
         with:
           name: Glass-Calculator-APK
-          path: apk/
+          path: myApp/platforms/android/app/build/outputs/apk/debug/app-debug.apk
