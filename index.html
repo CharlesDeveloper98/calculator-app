@@ -17,6 +17,8 @@
             --settings-bg: rgba(28, 28, 30, 0.95);
             --settings-item-bg: #2c2c2e;
             --settings-text: #ffffff;
+            --dialog-bg: #1c1c1e;
+            --divider-color: #48484a;
         }
 
         [data-theme="light"] {
@@ -31,6 +33,8 @@
             --settings-bg: rgba(242, 242, 247, 0.95);
             --settings-item-bg: #ffffff;
             --settings-text: #000000;
+            --dialog-bg: #ffffff;
+            --divider-color: #c6c6c8;
         }
 
         * {
@@ -54,17 +58,24 @@
             transition: background-color 0.3s;
         }
 
-        /* Settings Button iOS Style */
-        .settings-trigger {
+        /* Nav Interface Actions */
+        .top-nav {
             position: absolute;
             top: 40px;
+            left: 20px;
             right: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 10;
+        }
+
+        .nav-btn {
             background: none;
             border: none;
             color: var(--orange-btn);
             font-size: 24px;
             cursor: pointer;
-            z-index: 10;
         }
 
         /* Display Panel */
@@ -75,7 +86,15 @@
             align-items: flex-end;
             width: 100%;
             padding: 10px;
-            min-height: 120px;
+            min-height: 140px;
+        }
+
+        .expr-trail {
+            font-size: 24px;
+            color: #8e8e93;
+            min-height: 28px;
+            margin-bottom: 5px;
+            text-align: right;
         }
 
         .display {
@@ -87,7 +106,7 @@
             overflow-x: auto;
         }
 
-        /* Calculator Grid */
+        /* Calculator Grid Matrix optimized to standard modern iOS */
         .grid {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
@@ -142,8 +161,8 @@
             padding-left: 32px;
         }
 
-        /* Settings Modal iOS Overlay Style */
-        .settings-modal {
+        /* iOS Overlay Style base sheets */
+        .settings-modal, .history-drawer {
             position: fixed;
             top: 0;
             left: 0;
@@ -159,14 +178,14 @@
             overflow-y: auto;
         }
 
-        .settings-header {
+        .settings-header, .history-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
             margin-bottom: 30px;
         }
 
-        .settings-header h2 {
+        .settings-header h2, .history-header h2 {
             font-size: 28px;
             font-weight: 600;
         }
@@ -200,6 +219,7 @@
             overflow: hidden;
             display: flex;
             flex-direction: column;
+            margin-bottom: 10px;
         }
 
         .option-item {
@@ -208,12 +228,8 @@
             align-items: center;
             padding: 14px 16px;
             font-size: 17px;
-            border-bottom: 0.5px solid #48484a;
+            border-bottom: 0.5px solid var(--divider-color);
             cursor: pointer;
-        }
-
-        [data-theme="light"] .option-item {
-            border-bottom: 0.5px solid #c6c6c8;
         }
 
         .option-item:last-child {
@@ -230,7 +246,7 @@
             display: block;
         }
 
-        /* iOS Style Switch Toggle Styles */
+        /* iOS Toggles */
         .ios-switch {
             position: relative;
             display: inline-block;
@@ -238,61 +254,124 @@
             height: 31px;
         }
 
-        .ios-switch input {
-            opacity: 0;
-            width: 0;
-            height: 0;
-        }
+        .ios-switch input { opacity: 0; width: 0; height: 0; }
 
         .switch-slider {
-            position: absolute;
-            cursor: pointer;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background-color: #e9e9ea;
-            transition: .3s;
-            border-radius: 31px;
+            position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0;
+            background-color: #e9e9ea; transition: .3s; border-radius: 31px;
         }
 
-        [data-theme="dark"] .switch-slider {
-            background-color: #39393d;
-        }
+        [data-theme="dark"] .switch-slider { background-color: #39393d; }
 
         .switch-slider:before {
-            position: absolute;
-            content: "";
-            height: 27px;
-            width: 27px;
-            left: 2px;
-            bottom: 2px;
-            background-color: white;
-            transition: .3s;
-            border-radius: 50%;
+            position: absolute; content: ""; height: 27px; width: 27px; left: 2px; bottom: 2px;
+            background-color: white; transition: .3s; border-radius: 50%;
             box-shadow: 0 3px 8px rgba(0,0,0,0.15);
         }
 
-        input:checked + .switch-slider {
-            background-color: #34c759; /* Classic iOS Green Toggle */
+        input:checked + .switch-slider { background-color: #34c759; }
+        input:checked + .switch-slider:before { transform: translateX(20px); }
+
+        /* History Stream Items Styling */
+        .history-list {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
         }
 
-        input:checked + .switch-slider:before {
-            transform: translateX(20px);
+        .history-item {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            padding: 10px 15px;
+            background-color: var(--settings-item-bg);
+            border-radius: 12px;
+        }
+
+        .history-item .hist-expr {
+            font-size: 16px;
+            color: #8e8e93;
+        }
+
+        .history-item .hist-res {
+            font-size: 24px;
+            font-weight: 600;
+            color: var(--settings-text);
+        }
+
+        .no-history-msg {
+            text-align: center;
+            color: #8e8e93;
+            margin-top: 40px;
+            font-size: 18px;
+        }
+
+        /* iOS Popup Modal Container */
+        .ios-dialog-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-color: rgba(0,0,0,0.4);
+            z-index: 200;
+            display: none;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .ios-dialog {
+            background-color: var(--dialog-bg);
+            width: 270px;
+            border-radius: 14px;
+            text-align: center;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            animation: popIn 0.2s ease-out;
+        }
+
+        .ios-dialog-title {
+            padding: 20px 15px;
+            font-size: 17px;
+            font-weight: 600;
+            color: var(--settings-text);
+        }
+
+        .ios-dialog-buttons {
+            display: flex;
+            border-top: 0.5px solid var(--divider-color);
+        }
+
+        .dialog-btn {
+            flex: 1;
+            background: none;
+            border: none;
+            padding: 12px 0;
+            font-size: 17px;
+            cursor: pointer;
+        }
+
+        .dialog-btn-yes { color: #ff3b30; font-weight: 600; border-right: 0.5px solid var(--divider-color); }
+        .dialog-btn-no { color: #007aff; }
+
+        @keyframes popIn {
+            from { transform: scale(1.15); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
         }
     </style>
 </head>
 <body>
 
-    <button class="settings-trigger" id="openSettings">⚙️</button>
+    <div class="top-nav">
+        <button class="nav-btn" id="openHistory">⋮☰</button>
+        <button class="nav-btn" id="openSettings">⚙️</button>
+    </div>
 
     <div class="display-container">
+        <div class="expr-trail" id="exprTrail"></div>
         <div class="display" id="display">0</div>
     </div>
 
     <div class="grid">
+        <button class="btn btn-gray" onclick="backspace()">⌫</button>
         <button class="btn btn-gray" onclick="clearDisplay()" id="clear-btn">AC</button>
-        <button class="btn btn-gray" onclick="toggleSign()">+/-</button>
         <button class="btn btn-gray" onclick="inputPercent()">%</button>
         <button class="btn btn-orange op-btn" data-op="/">÷</button>
 
@@ -311,9 +390,18 @@
         <button class="btn btn-dark" onclick="inputNum('3')">3</button>
         <button class="btn btn-orange op-btn" data-op="+">+</button>
 
+        <button class="btn btn-dark" onclick="toggleSign()">+/-</button>
         <button class="btn btn-dark zero" onclick="inputNum('0')">0</button>
         <button class="btn btn-dark" onclick="inputDecimal()">.</button>
         <button class="btn btn-orange" onclick="calculate()">=</button>
+    </div>
+
+    <div class="history-drawer" id="historyDrawer">
+        <div class="history-header">
+            <h2 id="title-history">History</h2>
+            <button class="done-btn" id="closeHistory">Done</button>
+        </div>
+        <div id="historyContent"></div>
     </div>
 
     <div class="settings-modal" id="settingsModal">
@@ -325,32 +413,29 @@
         <div class="settings-subheader" id="sub-theme">Theme</div>
         <div class="options-list" id="theme-group">
             <div class="option-item" data-value="system" id="opt-system">
-                <span id="txt-sys-theme">System</span>
-                <span class="checkmark">✓</span>
+                <span id="txt-sys-theme">System</span><span class="checkmark">✓</span>
             </div>
             <div class="option-item" data-value="dark" id="opt-dark">
-                <span id="txt-dark-theme">Dark</span>
-                <span class="checkmark">✓</span>
+                <span id="txt-dark-theme">Dark</span><span class="checkmark">✓</span>
             </div>
             <div class="option-item" data-value="light" id="opt-light">
-                <span id="txt-light-theme">Light</span>
-                <span class="checkmark">✓</span>
+                <span id="txt-light-theme">Light</span><span class="checkmark">✓</span>
             </div>
         </div>
 
         <div class="settings-subheader" id="sub-lang">Languages</div>
         <div class="options-list" id="lang-group">
             <div class="option-item lang-option" data-value="system" id="lang-system">
-                <span id="txt-sys-lang">System</span>
-                <span class="checkmark">✓</span>
+                <span id="txt-sys-lang">System</span><span class="checkmark">✓</span>
             </div>
             <div class="option-item lang-option" data-value="ru" id="lang-ru">
-                <span>Russian</span>
-                <span class="checkmark">✓</span>
+                <span>Russian</span><span class="checkmark">✓</span>
             </div>
             <div class="option-item lang-option" data-value="es" id="lang-es">
-                <span>Spanish</span>
-                <span class="checkmark">✓</span>
+                <span>Spanish</span><span class="checkmark">✓</span>
+            </div>
+            <div class="option-item lang-option" data-value="fr" id="lang-fr">
+                <span>French</span><span class="checkmark">✓</span>
             </div>
         </div>
 
@@ -364,56 +449,71 @@
                 </label>
             </div>
         </div>
+
+        <div class="settings-subheader" id="sub-history">Calculator History</div>
+        <div class="options-list">
+            <div class="option-item" id="clearHistoryTrigger" style="color: #ff3b30; font-weight: 500;">
+                <span id="txt-clear-history">Clear Calculator History</span>
+            </div>
+        </div>
+
+        <div class="settings-subheader" id="sub-hist-limit">History Limit</div>
+        <div class="options-list" id="limit-group">
+            <div class="option-item limit-option" data-value="10" id="limit-10"><span>10</span><span class="checkmark">✓</span></div>
+            <div class="option-item limit-option" data-value="20" id="limit-20"><span>20</span><span class="checkmark">✓</span></div>
+            <div class="option-item limit-option" data-value="30" id="limit-30"><span>30</span><span class="checkmark">✓</span></div>
+            <div class="option-item limit-option" data-value="40" id="limit-40"><span>40</span><span class="checkmark">✓</span></div>
+            <div class="option-item limit-option" data-value="50" id="limit-50"><span>50</span><span class="checkmark">✓</span></div>
+        </div>
+    </div>
+
+    <div class="ios-dialog-overlay" id="dialogOverlay">
+        <div class="ios-dialog">
+            <div class="ios-dialog-title" id="txt-confirm-msg">Are you sure you want to clear history?</div>
+            <div class="ios-dialog-buttons">
+                <button class="dialog-btn dialog-btn-yes" id="btnConfirmYes">Yes</button>
+                <button class="dialog-btn dialog-btn-no" id="btnConfirmNo">No</button>
+            </div>
+        </div>
     </div>
 
     <script>
-        // --- Translations Dictionary ---
+        // --- System Translations ---
         const i18n = {
             en: {
-                settings: "Settings",
-                done: "Done",
-                theme: "Theme",
-                languages: "Languages",
-                display: "Display",
-                fullscreen: "Full-screen",
-                system: "System",
-                dark: "Dark",
-                light: "Light",
-                error: "Error"
+                settings: "Settings", done: "Done", theme: "Theme", languages: "Languages", display: "Display",
+                fullscreen: "Full-screen", system: "System", dark: "Dark", light: "Light", error: "Error",
+                history: "History", noHistory: "No History Yet", clearHist: "Clear Calculator History",
+                histLimit: "History Limit", confirmClear: "Are you sure you want to clear history?", calcHist: "Calculator History"
             },
             ru: {
-                settings: "Настройки",
-                done: "Готово",
-                theme: "Тема",
-                languages: "Языки",
-                display: "Экран",
-                fullscreen: "Полноэкранный режим",
-                system: "Системная",
-                dark: "Темная",
-                light: "Светлая",
-                error: "Ошибка"
+                settings: "Настройки", done: "Готово", theme: "Тема", languages: "Языки", display: "Экран",
+                fullscreen: "Полноэкранный режим", system: "Системная", dark: "Темная", light: "Светлая", error: "Ошибка",
+                history: "История", noHistory: "Истории пока нет", clearHist: "Очистить историю калькулятора",
+                histLimit: "Лимит истории", confirmClear: "Вы уверены, что хотите очистить историю?", calcHist: "История калькулятора"
             },
             es: {
-                settings: "Ajustes",
-                done: "Hecho",
-                theme: "Tema",
-                languages: "Idiomas",
-                display: "Pantalla",
-                fullscreen: "Pantalla completa",
-                system: "Sistema",
-                dark: "Oscuro",
-                light: "Claro",
-                error: "Error"
+                settings: "Ajustes", done: "Hecho", theme: "Tema", languages: "Idiomas", display: "Pantalla",
+                fullscreen: "Pantalla completa", system: "Sistema", dark: "Oscuro", light: "Claro", error: "Error",
+                history: "Historial", noHistory: "Sin historial aún", clearHist: "Borrar historial de calculadora",
+                histLimit: "Límite de historial", confirmClear: "¿Estás seguro de que quieres borrar el historial?", calcHist: "Historial de calculadora"
+            },
+            fr: {
+                settings: "Réglages", done: "Ok", theme: "Thème", languages: "Langues", display: "Écran",
+                fullscreen: "Plein écran", system: "Système", dark: "Sombre", light: "Clair", error: "Erreur",
+                history: "Historique", noHistory: "Aucun historique", clearHist: "Effacer l'historique",
+                histLimit: "Limite d'historique", confirmClear: "Êtes-vous sûr de vouloir effacer l'historique ?", calcHist: "Historique de calcul"
             }
         };
 
-        // --- Calculator Logic Variables ---
         let currentInput = "0";
         let previousInput = null;
         let activeOperator = null;
         let shouldResetDisplay = false;
+        let exprString = "";
 
         const displayEl = document.getElementById("display");
+        const exprTrailEl = document.getElementById("exprTrail");
         const clearBtnEl = document.getElementById("clear-btn");
 
         function getActiveLangKey() {
@@ -445,11 +545,18 @@
                 currentInput = num;
                 shouldResetDisplay = false;
             } else {
-                if (currentInput.replace(/[^0-9]/g, "").length < 9) { // iOS limit 9 digits
+                if (currentInput.replace(/[^0-9]/g, "").length < 9) {
                     currentInput += num;
                 }
             }
             removeActiveOperatorHighlight();
+            updateDisplay();
+        }
+
+        function backspace() {
+            if (shouldResetDisplay || currentInput === "0" || currentInput === "Error") return;
+            currentInput = currentInput.length > 1 ? currentInput.slice(0, -1) : "0";
+            if (currentInput === "-") currentInput = "0";
             updateDisplay();
         }
 
@@ -460,9 +567,7 @@
                 updateDisplay();
                 return;
             }
-            if (!currentInput.includes('.')) {
-                currentInput += '.';
-            }
+            if (!currentInput.includes('.')) currentInput += '.';
             updateDisplay();
         }
 
@@ -471,6 +576,8 @@
             if (clearBtnEl.innerText === "AC") {
                 previousInput = null;
                 activeOperator = null;
+                exprString = "";
+                exprTrailEl.innerText = "";
                 removeActiveOperatorHighlight();
             }
             updateDisplay();
@@ -488,7 +595,6 @@
             updateDisplay();
         }
 
-        // Handle Operation buttons
         document.querySelectorAll('.op-btn').forEach(btn => {
             btn.addEventListener('click', function() {
                 const op = this.getAttribute('data-op');
@@ -502,8 +608,16 @@
                 previousInput = currentInput;
                 activeOperator = op;
                 shouldResetDisplay = true;
+                exprString = previousInput + " " + getOpSymbol(op);
+                exprTrailEl.innerText = exprString;
             });
         });
+
+        function getOpSymbol(op) {
+            if (op === '*') return '×';
+            if (op === '/') return '÷';
+            return op;
+        }
 
         function removeActiveOperatorHighlight() {
             document.querySelectorAll('.op-btn').forEach(btn => btn.classList.remove('active'));
@@ -520,15 +634,17 @@
                 case "+": result = prev + current; break;
                 case "-": result = prev - current; break;
                 case "*": result = prev * current; break;
-                case "/": 
-                    result = current === 0 ? "Error" : prev / current; 
-                    break;
+                case "/": result = current === 0 ? "Error" : prev / current; break;
             }
+
+            const completeExpr = previousInput + getOpSymbol(activeOperator) + currentInput;
 
             if (result !== "Error") {
                 result = parseFloat(result.toPrecision(9)).toString();
+                saveToHistory(completeExpr, result);
             }
 
+            exprTrailEl.innerText = "";
             currentInput = result;
             activeOperator = null;
             previousInput = null;
@@ -537,111 +653,147 @@
             updateDisplay();
         }
 
-        // --- Theme & Language UI Configurations ---
-        const modal = document.getElementById("settingsModal");
-        const openBtn = document.getElementById("openSettings");
-        const closeBtn = document.getElementById("closeSettings");
-        const themeOptions = document.querySelectorAll("#theme-group .option-item");
-        const langOptions = document.querySelectorAll(".lang-option");
-        const fullscreenToggle = document.getElementById("fullscreenToggle");
-        const fullscreenItem = document.getElementById("fullscreen-item");
+        // --- History Core Storage Interface Engine ---
+        function saveToHistory(expr, res) {
+            let history = JSON.parse(localStorage.getItem("calc-history") || "[]");
+            const limit = parseInt(localStorage.getItem("calc-history-limit") || "10");
+            
+            history.unshift({ expr: expr, res: res });
+            if (history.length > limit) history = history.slice(0, limit);
+            
+            localStorage.setItem("calc-history", JSON.stringify(history));
+            renderHistory();
+        }
 
-        // Open & Close Settings Menu
-        openBtn.onclick = () => modal.style.display = "flex";
-        closeBtn.onclick = () => modal.style.display = "none";
+        function renderHistory() {
+            const langKey = getActiveLangKey();
+            const history = JSON.parse(localStorage.getItem("calc-history") || "[]");
+            const container = document.getElementById("historyContent");
+            
+            if (history.length === 0) {
+                container.innerHTML = `<div class="no-history-msg">${i18n[langKey].noHistory}</div>`;
+                return;
+            }
 
-        // Handle Theme System Logic
+            let html = '<div class="history-list">';
+            history.forEach(item => {
+                html += `
+                    <div class="history-item">
+                        <span class="hist-expr">${item.expr}</span>
+                        <span class="hist-res">${Number(item.res).toLocaleString('en-US')}</span>
+                    </div>`;
+            });
+            html += '</div>';
+            container.innerHTML = html;
+        }
+
+        // --- UI View Modals Listeners ---
+        const sModal = document.getElementById("settingsModal");
+        const hDrawer = document.getElementById("historyDrawer");
+        const dialogOverlay = document.getElementById("dialogOverlay");
+
+        document.getElementById("openSettings").onclick = () => sModal.style.display = "flex";
+        document.getElementById("closeSettings").onclick = () => sModal.style.display = "none";
+        document.getElementById("openHistory").onclick = () => { renderHistory(); hDrawer.style.display = "flex"; };
+        document.getElementById("closeHistory").onclick = () => hDrawer.style.display = "none";
+
+        // Confirm System Clear Handlers
+        document.getElementById("clearHistoryTrigger").onclick = () => dialogOverlay.style.display = "flex";
+        document.getElementById("btnConfirmNo").onclick = () => dialogOverlay.style.display = "none";
+        document.getElementById("btnConfirmYes").onclick = () => {
+            localStorage.setItem("calc-history", "[]");
+            renderHistory();
+            dialogOverlay.style.display = "none";
+        };
+
+        // Theme Switch Core Logic
         function applyTheme(themeValue) {
-            themeOptions.forEach(item => item.classList.remove("selected"));
+            document.querySelectorAll("#theme-group .option-item").forEach(item => item.classList.remove("selected"));
             document.getElementById(`opt-${themeValue}`).classList.add("selected");
-
             if (themeValue === "system") {
-                const isDarkMode = window.matchMedia("(prefers-color-scheme: dark)").matches;
-                document.documentElement.setAttribute("data-theme", isDarkMode ? "dark" : "light");
+                const isDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+                document.documentElement.setAttribute("data-theme", isDark ? "dark" : "light");
             } else {
                 document.documentElement.setAttribute("data-theme", themeValue);
             }
             localStorage.setItem("calculator-theme", themeValue);
         }
 
-        themeOptions.forEach(option => {
-            option.addEventListener("click", function() {
-                const targetTheme = this.getAttribute("data-value");
-                applyTheme(targetTheme);
-            });
+        document.querySelectorAll("#theme-group .option-item").forEach(option => {
+            option.addEventListener("click", function() { applyTheme(this.getAttribute("data-value")); });
         });
 
-        window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", () => {
-            if (localStorage.getItem("calculator-theme") === "system") {
-                applyTheme("system");
-            }
-        });
-
-        // --- Handle Localization Logic ---
+        // Localization Updates Loop
         function applyLanguage(langValue) {
-            langOptions.forEach(item => item.classList.remove("selected"));
+            document.querySelectorAll(".lang-option").forEach(item => item.classList.remove("selected"));
             document.getElementById(`lang-${langValue}`).classList.add("selected");
             localStorage.setItem("calculator-lang", langValue);
 
-            const langKey = getActiveLangKey();
-            const data = i18n[langKey];
-
+            const data = i18n[getActiveLangKey()];
             document.getElementById("title-settings").innerText = data.settings;
             document.getElementById("closeSettings").innerText = data.done;
+            document.getElementById("title-history").innerText = data.history;
+            document.getElementById("closeHistory").innerText = data.done;
             document.getElementById("sub-theme").innerText = data.theme;
             document.getElementById("sub-lang").innerText = data.languages;
             document.getElementById("sub-display").innerText = data.display;
             document.getElementById("txt-fullscreen").innerText = data.fullscreen;
+            document.getElementById("sub-history").innerText = data.calcHist;
+            document.getElementById("txt-clear-history").innerText = data.clearHist;
+            document.getElementById("sub-hist-limit").innerText = data.histLimit;
+            document.getElementById("txt-confirm-msg").innerText = data.confirmClear;
             document.getElementById("txt-sys-theme").innerText = data.system;
             document.getElementById("txt-dark-theme").innerText = data.dark;
             document.getElementById("txt-light-theme").innerText = data.light;
             document.getElementById("txt-sys-lang").innerText = data.system;
 
+            renderHistory();
             updateDisplay();
         }
 
-        langOptions.forEach(option => {
-            option.addEventListener("click", function() {
-                const targetLang = this.getAttribute("data-value");
-                applyLanguage(targetLang);
-            });
+        document.querySelectorAll(".lang-option").forEach(option => {
+            option.addEventListener("click", function() { applyLanguage(this.getAttribute("data-value")); });
         });
 
-        // --- Fullscreen API Handler ---
-        function toggleFullscreen() {
-            if (!document.fullscreenElement) {
-                document.documentElement.requestFullscreen().catch(err => {
-                    console.log(`Error attempting to enable fullscreen: ${err.message}`);
-                });
-            } else {
-                if (document.exitFullscreen) {
-                    document.exitFullscreen();
-                }
+        // Limit Threshold Logic
+        function applyLimit(limitValue) {
+            document.querySelectorAll(".limit-option").forEach(item => item.classList.remove("selected"));
+            document.getElementById(`limit-${limitValue}`).classList.add("selected");
+            localStorage.setItem("calc-history-limit", limitValue);
+            
+            let history = JSON.parse(localStorage.getItem("calc-history") || "[]");
+            if (history.length > parseInt(limitValue)) {
+                history = history.slice(0, parseInt(limitValue));
+                localStorage.setItem("calc-history", JSON.stringify(history));
             }
         }
 
-        // Trigger when toggle switch state changes
-        fullscreenToggle.addEventListener("change", toggleFullscreen);
+        document.querySelectorAll(".limit-option").forEach(option => {
+            option.addEventListener("click", function() { applyLimit(this.getAttribute("data-value")); });
+        });
 
-        // Make the whole row item clickable for better accessibility
-        fullscreenItem.addEventListener("click", function(e) {
+        // Fullscreen Interface Toggles
+        const fullscreenToggle = document.getElementById("fullscreenToggle");
+        function toggleFullscreen() {
+            if (!document.fullscreenElement) {
+                document.documentElement.requestFullscreen().catch(() => {});
+            } else if (document.exitFullscreen) {
+                document.exitFullscreen();
+            }
+        }
+        fullscreenToggle.addEventListener("change", toggleFullscreen);
+        document.getElementById("fullscreen-item").addEventListener("click", function(e) {
             if (e.target !== fullscreenToggle) {
                 fullscreenToggle.checked = !fullscreenToggle.checked;
                 toggleFullscreen();
             }
         });
+        document.addEventListener("fullscreenchange", () => { fullscreenToggle.checked = !!document.fullscreenElement; });
 
-        // Sync the state of toggle switch if fullscreen is exited manually (via ESC key or swipe gesture)
-        document.addEventListener("fullscreenchange", () => {
-            fullscreenToggle.checked = !!document.fullscreenElement;
-        });
-
-        // Load saved settings profiles on startup
-        const savedTheme = localStorage.getItem("calculator-theme") || "system";
-        applyTheme(savedTheme);
-
-        const savedLang = localStorage.getItem("calculator-lang") || "system";
-        applyLanguage(savedLang);
+        // Bootstrap Initialization
+        applyTheme(localStorage.getItem("calculator-theme") || "system");
+        applyLanguage(localStorage.getItem("calculator-lang") || "system");
+        applyLimit(localStorage.getItem("calc-history-limit") || "10");
     </script>
 </body>
 </html>
