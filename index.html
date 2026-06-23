@@ -194,6 +194,7 @@
             overflow: hidden;
             display: flex;
             flex-direction: column;
+            margin-bottom: 24px; /* Added spacing between blocks */
         }
 
         .option-item {
@@ -227,10 +228,8 @@
 </head>
 <body>
 
-    <!-- Settings Gear Trigger -->
     <button class="settings-trigger" id="openSettings">⚙️</button>
 
-    <!-- Calculator Interface -->
     <div class="display-container">
         <div class="display" id="display">0</div>
     </div>
@@ -261,25 +260,40 @@
         <button class="btn btn-orange" onclick="calculate()">=</button>
     </div>
 
-    <!-- iOS Settings Modal Menu -->
     <div class="settings-modal" id="settingsModal">
         <div class="settings-header">
-            <h2>Settings</h2>
+            <h2 id="title-settings">Settings</h2>
             <button class="done-btn" id="closeSettings">Done</button>
         </div>
         
-        <div class="settings-subheader">Theme</div>
+        <div class="settings-subheader" id="title-languages">Languages</div>
+        <div class="options-list" id="lang-options-group">
+            <div class="option-item lang-option" data-value="system" id="lang-system">
+                <span id="label-lang-system">System</span>
+                <span class="checkmark">✓</span>
+            </div>
+            <div class="option-item lang-option" data-value="russian" id="lang-russian">
+                <span>Русский (Russian)</span>
+                <span class="checkmark">✓</span>
+            </div>
+            <div class="option-item lang-option" data-value="spanish" id="lang-spanish">
+                <span>Español (Spanish)</span>
+                <span class="checkmark">✓</span>
+            </div>
+        </div>
+        
+        <div class="settings-subheader" id="title-theme">Theme</div>
         <div class="options-list">
-            <div class="option-item" data-value="system" id="opt-system">
-                <span>System</span>
+            <div class="option-item theme-option" data-value="system" id="opt-system">
+                <span id="label-theme-system">System</span>
                 <span class="checkmark">✓</span>
             </div>
-            <div class="option-item" data-value="dark" id="opt-dark">
-                <span>Dark</span>
+            <div class="option-item theme-option" data-value="dark" id="opt-dark">
+                <span id="label-theme-dark">Dark</span>
                 <span class="checkmark">✓</span>
             </div>
-            <div class="option-item" data-value="light" id="opt-light">
-                <span>Light</span>
+            <div class="option-item theme-option" data-value="light" id="opt-light">
+                <span id="label-theme-light">Light</span>
                 <span class="checkmark">✓</span>
             </div>
         </div>
@@ -296,7 +310,6 @@
         const clearBtnEl = document.getElementById("clear-btn");
 
         function updateDisplay() {
-            // Match iOS comma separations for large numbers
             let formattedValue = currentInput;
             if (currentInput !== "Error" && currentInput !== "-Error") {
                 const parts = currentInput.split('.');
@@ -312,7 +325,7 @@
                 currentInput = num;
                 shouldResetDisplay = false;
             } else {
-                if (currentInput.replace(/[^0-9]/g, "").length < 9) { // iOS limit 9 digits
+                if (currentInput.replace(/[^0-9]/g, "").length < 9) { 
                     currentInput += num;
                 }
             }
@@ -355,7 +368,6 @@
             updateDisplay();
         }
 
-        // Handle Operation buttons
         document.querySelectorAll('.op-btn').forEach(btn => {
             btn.addEventListener('click', function() {
                 const op = this.getAttribute('data-op');
@@ -393,7 +405,6 @@
             }
 
             if (result !== "Error") {
-                // Round nicely to prevent overflowing screen
                 result = parseFloat(result.toPrecision(9)).toString();
             }
 
@@ -405,19 +416,80 @@
             updateDisplay();
         }
 
-        // --- Theme Engine Custom Configurations ---
+        // --- Localization Engine Settings ---
+        const translations = {
+            en: {
+                settings: "Settings",
+                done: "Done",
+                languages: "Languages",
+                theme: "Theme",
+                system: "System",
+                dark: "Dark",
+                light: "Light"
+            },
+            ru: {
+                settings: "Настройки",
+                done: "Готово",
+                languages: "Языки",
+                theme: "Тема",
+                system: "Системная",
+                dark: "Темная",
+                light: "Светлая"
+            },
+            es: {
+                settings: "Ajustes",
+                done: "OK",
+                languages: "Idiomas",
+                theme: "Tema",
+                system: "Sistema",
+                dark: "Oscuro",
+                light: "Claro"
+            }
+        };
+
+        function getBrowserLanguage() {
+            const lang = navigator.language || navigator.userLanguage;
+            if (lang.startsWith('ru')) return 'ru';
+            if (lang.startsWith('es')) return 'es';
+            return 'en';
+        }
+
+        function applyLanguage(langValue) {
+            document.querySelectorAll(".lang-option").forEach(item => item.classList.remove("selected"));
+            document.getElementById(`lang-${langValue}`).classList.add("selected");
+            localStorage.setItem("calculator-lang", langValue);
+
+            // Determine active translation key
+            let currentLangKey = langValue;
+            if (langValue === "system") {
+                currentLangKey = getBrowserLanguage();
+            }
+
+            const dict = translations[currentLangKey] || translations.en;
+
+            // Apply modifications to UI Strings
+            document.getElementById("title-settings").innerText = dict.settings;
+            document.getElementById("closeSettings").innerText = dict.done;
+            document.getElementById("title-languages").innerText = dict.languages;
+            document.getElementById("title-theme").innerText = dict.theme;
+            document.getElementById("label-lang-system").innerText = translations[currentLangKey === 'ru' ? 'ru' : currentLangKey === 'es' ? 'es' : 'en'].system + " (" + dict.system + ")";
+            document.getElementById("label-theme-system").innerText = dict.system;
+            document.getElementById("label-theme-dark").innerText = dict.dark;
+            document.getElementById("label-theme-light").innerText = dict.light;
+        }
+
+        // --- Theme Engine Configurations ---
         const modal = document.getElementById("settingsModal");
         const openBtn = document.getElementById("openSettings");
         const closeBtn = document.getElementById("closeSettings");
-        const themeOptions = document.querySelectorAll(".option-item");
+        const themeOptions = document.querySelectorAll(".theme-option");
+        const langOptions = document.querySelectorAll(".lang-option");
 
-        // Open & Close Settings Menu
         openBtn.onclick = () => modal.style.display = "flex";
         closeBtn.onclick = () => modal.style.display = "none";
 
-        // Handle Theme System Logic
         function applyTheme(themeValue) {
-            document.querySelectorAll(".option-item").forEach(item => item.classList.remove("selected"));
+            document.querySelectorAll(".theme-option").forEach(item => item.classList.remove("selected"));
             document.getElementById(`opt-${themeValue}`).classList.add("selected");
 
             if (themeValue === "system") {
@@ -436,16 +508,25 @@
             });
         });
 
-        // Listen for OS system theme changes natively
+        langOptions.forEach(option => {
+            option.addEventListener("click", function() {
+                const targetLang = this.getAttribute("data-value");
+                applyLanguage(targetLang);
+            });
+        });
+
         window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", () => {
             if (localStorage.getItem("calculator-theme") === "system") {
                 applyTheme("system");
             }
         });
 
-        // Load saved theme configuration on startup
+        // Initialize saved configurations on startup
         const savedTheme = localStorage.getItem("calculator-theme") || "system";
         applyTheme(savedTheme);
+
+        const savedLang = localStorage.getItem("calculator-lang") || "system";
+        applyLanguage(savedLang);
     </script>
 </body>
 </html>
