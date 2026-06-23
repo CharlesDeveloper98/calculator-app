@@ -1,248 +1,451 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="liquid">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Premium Full-Screen Calculator</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>iOS Calculator</title>
     <style>
+        :root {
+            --bg-color: #000000;
+            --text-color: #ffffff;
+            --gray-btn: #a5a5a5;
+            --gray-btn-text: #000000;
+            --dark-btn: #333333;
+            --dark-btn-text: #ffffff;
+            --orange-btn: #ff9f0a;
+            --orange-btn-text: #ffffff;
+            --settings-bg: rgba(28, 28, 30, 0.95);
+            --settings-item-bg: #2c2c2e;
+            --settings-text: #ffffff;
+        }
+
+        [data-theme="light"] {
+            --bg-color: #f2f2f7;
+            --text-color: #000000;
+            --gray-btn: #e5e5ea;
+            --gray-btn-text: #000000;
+            --dark-btn: #ffffff;
+            --dark-btn-text: #000000;
+            --orange-btn: #ff9500;
+            --orange-btn-text: #ffffff;
+            --settings-bg: rgba(242, 242, 247, 0.95);
+            --settings-item-bg: #ffffff;
+            --settings-text: #000000;
+        }
+
         * {
             box-sizing: border-box;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
             margin: 0;
             padding: 0;
+            user-select: none;
+            -webkit-user-select: none;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
         }
 
-        /* LIQUID GLASS THEME (Default) */
-        [data-theme="liquid"] body {
-            background: linear-gradient(135deg, #ff007f, #7f00ff, #00f0ff);
-            background-size: 300% 300%;
-            animation: fluidBg 10s ease infinite;
-        }
-        [data-theme="liquid"] .calc-container {
-            background: rgba(255, 255, 255, 0.08); 
-            backdrop-filter: blur(20px); 
-            -webkit-backdrop-filter: blur(20px);
-        }
-        [data-theme="liquid"] .display {
-            color: #ffffff;
-            text-shadow: 0 4px 12px rgba(0,0,0,0.2);
-        }
-        [data-theme="liquid"] button {
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            color: #ffffff;
-        }
-        [data-theme="liquid"] button.btn-operator { background: rgba(255, 159, 10, 0.35); border-color: rgba(255, 159, 10, 0.4); }
-        [data-theme="liquid"] button.btn-utility { background: rgba(255, 255, 255, 0.2); }
-
-        /* CLASSIC DARK THEME */
-        [data-theme="dark"] body {
-            background-color: #000000;
-        }
-        [data-theme="dark"] .calc-container {
-            background: #000000;
-        }
-        [data-theme="dark"] .display {
-            color: #ffffff;
-        }
-        [data-theme="dark"] button.btn-number { background-color: #333333; color: #ffffff; }
-        [data-theme="dark"] button.btn-utility { background-color: #a5a5a5; color: #000000; }
-        [data-theme="dark"] button.btn-operator { background-color: #ff9f0a; color: #ffffff; }
-
-        @keyframes fluidBg {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
-
-        /* Force layout to fully contain and fill the phone space */
         body {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            width: 100vw;
-            overflow: hidden;
-            transition: background 0.4s ease;
-        }
-
-        .calc-container {
-            width: 100%;
-            height: 100%;
+            background-color: var(--bg-color);
+            color: var(--text-color);
             display: flex;
             flex-direction: column;
             justify-content: flex-end;
-            padding: 40px 24px 30px 24px;
-            transition: background 0.4s ease;
+            height: 100vh;
+            padding: 20px;
+            overflow: hidden;
+            transition: background-color 0.3s;
         }
 
-        /* Floating Theme Switcher Button */
-        .theme-toggle {
+        /* Settings Button iOS Style */
+        .settings-trigger {
             position: absolute;
-            top: 20px;
-            left: 20px;
-            padding: 10px 16px;
-            border-radius: 20px;
-            background: rgba(255, 255, 255, 0.15);
-            border: 1px solid rgba(255, 255, 255, 0.25);
-            color: white;
-            font-size: 14px;
-            font-weight: 600;
+            top: 40px;
+            right: 20px;
+            background: none;
+            border: none;
+            color: var(--orange-btn);
+            font-size: 24px;
             cursor: pointer;
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
             z-index: 10;
         }
 
-        [data-theme="dark"] .theme-toggle {
-            background: #222;
-            border-color: #444;
+        /* Display Panel */
+        .display-container {
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            align-items: flex-end;
+            width: 100%;
+            padding: 10px;
+            min-height: 120px;
         }
 
-        /* Screen Display */
         .display {
-            font-size: 75px;
+            font-size: 70px;
             font-weight: 300;
             text-align: right;
-            padding: 10px;
-            margin-bottom: 20px;
-            overflow: hidden;
-            text-overflow: ellipsis;
             white-space: nowrap;
+            max-width: 100%;
+            overflow-x: auto;
         }
 
-        /* Perfectly proportioned Grid Pad */
+        /* Calculator Grid */
         .grid {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
-            gap: 16px;
-            width: 100%;
+            gap: 14px;
+            margin-bottom: 20px;
         }
 
-        button {
+        .btn {
             border: none;
-            outline: none;
-            aspect-ratio: 1;
             border-radius: 50%;
-            font-size: 30px;
+            font-size: 32px;
             font-weight: 400;
-            cursor: pointer;
             display: flex;
             justify-content: center;
             align-items: center;
-            transition: all 0.2s ease;
-            user-select: none;
+            aspect-ratio: 1;
+            cursor: pointer;
+            transition: filter 0.1s;
         }
 
-        button:active {
-            opacity: 0.5;
-            transform: scale(0.95);
+        .btn:active {
+            filter: brightness(1.4);
+        }
+
+        .btn-gray {
+            background-color: var(--gray-btn);
+            color: var(--gray-btn-text);
+            font-size: 28px;
+        }
+
+        .btn-dark {
+            background-color: var(--dark-btn);
+            color: var(--dark-btn-text);
+        }
+
+        .btn-orange {
+            background-color: var(--orange-btn);
+            color: var(--orange-btn-text);
+        }
+        
+        .btn-orange.active {
+            background-color: #ffffff;
+            color: var(--orange-btn);
+        }
+
+        .zero {
+            grid-column: span 2;
+            border-radius: 50px;
+            aspect-ratio: auto;
+            height: 100%;
+            justify-content: flex-start;
+            padding-left: 32px;
+        }
+
+        /* Settings Modal iOS Overlay Style */
+        .settings-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: var(--settings-bg);
+            color: var(--settings-text);
+            z-index: 100;
+            display: none;
+            flex-direction: column;
+            padding: 40px 20px;
+            transition: background-color 0.3s;
+        }
+
+        .settings-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .settings-header h2 {
+            font-size: 28px;
+            font-weight: 600;
+        }
+
+        .done-btn {
+            background: none;
+            border: none;
+            color: var(--orange-btn);
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .settings-subheader {
+            font-size: 13px;
+            text-transform: uppercase;
+            color: #8e8e93;
+            margin-left: 10px;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+
+        .options-list {
+            background-color: var(--settings-item-bg);
+            border-radius: 10px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .option-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 14px 16px;
+            font-size: 17px;
+            border-bottom: 0.5px solid #48484a;
+            cursor: pointer;
+        }
+
+        [data-theme="light"] .option-item {
+            border-bottom: 0.5px solid #c6c6c8;
+        }
+
+        .option-item:last-child {
+            border-bottom: none;
+        }
+
+        .checkmark {
+            color: var(--orange-btn);
+            font-weight: bold;
+            display: none;
+        }
+
+        .option-item.selected .checkmark {
+            display: block;
         }
     </style>
 </head>
 <body>
 
-<button class="theme-toggle" onclick="toggleTheme()">🌓 Switch Theme</button>
+    <!-- Settings Gear Trigger -->
+    <button class="settings-trigger" id="openSettings">⚙️</button>
 
-<div class="calc-container">
-    <div class="display" id="screen">0</div>
+    <!-- Calculator Interface -->
+    <div class="display-container">
+        <div class="display" id="display">0</div>
+    </div>
 
     <div class="grid">
-        <button class="btn-utility" onclick="backspace()">⌫</button>
-        <button class="btn-utility" onclick="clearScreen()">AC</button>
-        <button class="btn-utility" onclick="percentage()">%</button>
-        <button class="btn-operator" onclick="press('/')">÷</button>
+        <button class="btn btn-gray" onclick="clearDisplay()" id="clear-btn">AC</button>
+        <button class="btn btn-gray" onclick="toggleSign()">+/-</button>
+        <button class="btn btn-gray" onclick="inputPercent()">%</button>
+        <button class="btn btn-orange op-btn" data-op="/">÷</button>
 
-        <button class="btn-number" onclick="press('7')">7</button>
-        <button class="btn-number" onclick="press('8')">8</button>
-        <button class="btn-number" onclick="press('9')">9</button>
-        <button class="btn-operator" onclick="press('*')">×</button>
+        <button class="btn btn-dark" onclick="inputNum('7')">7</button>
+        <button class="btn btn-dark" onclick="inputNum('8')">8</button>
+        <button class="btn btn-dark" onclick="inputNum('9')">9</button>
+        <button class="btn btn-orange op-btn" data-op="*">×</button>
 
-        <button class="btn-number" onclick="press('4')">4</button>
-        <button class="btn-number" onclick="press('5')">5</button>
-        <button class="btn-number" onclick="press('6')">6</button>
-        <button class="btn-operator" onclick="press('-')">−</button>
+        <button class="btn btn-dark" onclick="inputNum('4')">4</button>
+        <button class="btn btn-dark" onclick="inputNum('5')">5</button>
+        <button class="btn btn-dark" onclick="inputNum('6')">6</button>
+        <button class="btn btn-orange op-btn" data-op="-">−</button>
 
-        <button class="btn-number" onclick="press('1')">1</button>
-        <button class="btn-number" onclick="press('2')">2</button>
-        <button class="btn-number" onclick="press('3')">3</button>
-        <button class="btn-operator" onclick="press('+')">+</button>
+        <button class="btn btn-dark" onclick="inputNum('1')">1</button>
+        <button class="btn btn-dark" onclick="inputNum('2')">2</button>
+        <button class="btn btn-dark" onclick="inputNum('3')">3</button>
+        <button class="btn btn-orange op-btn" data-op="+">+</button>
 
-        <button class="btn-number" onclick="toggleSign()">+/-</button>
-        <button class="btn-number" onclick="press('0')">0</button>
-        <button class="btn-number" onclick="press('.')">.</button>
-        <button class="btn-operator" onclick="calculate()">=</button>
+        <button class="btn btn-dark zero" onclick="inputNum('0')">0</button>
+        <button class="btn btn-dark" onclick="inputDecimal()">.</button>
+        <button class="btn btn-orange" onclick="calculate()">=</button>
     </div>
-</div>
 
-<script>
-    let currentInput = "0";
-    const screen = document.getElementById('screen');
+    <!-- iOS Settings Modal Menu -->
+    <div class="settings-modal" id="settingsModal">
+        <div class="settings-header">
+            <h2>Settings</h2>
+            <button class="done-btn" id="closeSettings">Done</button>
+        </div>
+        
+        <div class="settings-subheader">Theme</div>
+        <div class="options-list">
+            <div class="option-item" data-value="system" id="opt-system">
+                <span>System</span>
+                <span class="checkmark">✓</span>
+            </div>
+            <div class="option-item" data-value="dark" id="opt-dark">
+                <span>Dark</span>
+                <span class="checkmark">✓</span>
+            </div>
+            <div class="option-item" data-value="light" id="opt-light">
+                <span>Light</span>
+                <span class="checkmark">✓</span>
+            </div>
+        </div>
+    </div>
 
-    function updateDisplay() {
-        screen.textContent = currentInput;
-    }
+    <script>
+        // --- Calculator Logic Variables ---
+        let currentInput = "0";
+        let previousInput = null;
+        let activeOperator = null;
+        let shouldResetDisplay = false;
 
-    function press(value) {
-        const operators = ['+', '-', '*', '/'];
-        if (operators.includes(value) && operators.includes(currentInput.slice(-1))) return;
+        const displayEl = document.getElementById("display");
+        const clearBtnEl = document.getElementById("clear-btn");
 
-        if (currentInput === "0" && !operators.includes(value) && value !== '.') {
-            currentInput = value;
-        } else {
-            currentInput += value;
+        function updateDisplay() {
+            // Match iOS comma separations for large numbers
+            let formattedValue = currentInput;
+            if (currentInput !== "Error" && currentInput !== "-Error") {
+                const parts = currentInput.split('.');
+                parts[0] = Number(parts[0]).toLocaleString('en-US', { maximumFractionDigits: 0 });
+                formattedValue = parts.join('.');
+            }
+            displayEl.innerText = formattedValue;
+            clearBtnEl.innerText = currentInput === "0" && !previousInput ? "AC" : "C";
         }
-        updateDisplay();
-    }
 
-    function clearScreen() {
-        currentInput = "0";
-        updateDisplay();
-    }
+        function inputNum(num) {
+            if (currentInput === "0" || shouldResetDisplay) {
+                currentInput = num;
+                shouldResetDisplay = false;
+            } else {
+                if (currentInput.replace(/[^0-9]/g, "").length < 9) { // iOS limit 9 digits
+                    currentInput += num;
+                }
+            }
+            removeActiveOperatorHighlight();
+            updateDisplay();
+        }
 
-    function backspace() {
-        if (currentInput.length > 1) {
-            currentInput = currentInput.slice(0, -1);
-        } else {
+        function inputDecimal() {
+            if (shouldResetDisplay) {
+                currentInput = "0.";
+                shouldResetDisplay = false;
+                updateDisplay();
+                return;
+            }
+            if (!currentInput.includes('.')) {
+                currentInput += '.';
+            }
+            updateDisplay();
+        }
+
+        function clearDisplay() {
             currentInput = "0";
-        }
-        updateDisplay();
-    }
-
-    function percentage() {
-        try {
-            currentInput = String(eval(currentInput) / 100);
-            updateDisplay();
-        } catch {
-            currentInput = "Error";
+            if (clearBtnEl.innerText === "AC") {
+                previousInput = null;
+                activeOperator = null;
+                removeActiveOperatorHighlight();
+            }
             updateDisplay();
         }
-    }
 
-    function toggleSign() {
-        if (currentInput !== "0" && currentInput !== "Error") {
-            currentInput = currentInput.startsWith('-') ? currentInput.slice(1) : '-' + currentInput;
+        function toggleSign() {
+            if (currentInput !== "0") {
+                currentInput = currentInput.startsWith("-") ? currentInput.slice(1) : "-" + currentInput;
+                updateDisplay();
+            }
+        }
+
+        function inputPercent() {
+            currentInput = (parseFloat(currentInput) / 100).toString();
             updateDisplay();
         }
-    }
 
-    function calculate() {
-        try {
-            currentInput = String(eval(currentInput));
-            updateDisplay();
-        } catch {
-            currentInput = "Error";
+        // Handle Operation buttons
+        document.querySelectorAll('.op-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const op = this.getAttribute('data-op');
+                removeActiveOperatorHighlight();
+                this.classList.add('active');
+                
+                if (activeOperator && !shouldResetDisplay) {
+                    calculate();
+                }
+                
+                previousInput = currentInput;
+                activeOperator = op;
+                shouldResetDisplay = true;
+            });
+        });
+
+        function removeActiveOperatorHighlight() {
+            document.querySelectorAll('.op-btn').forEach(btn => btn.classList.remove('active'));
+        }
+
+        function calculate() {
+            if (!activeOperator || previousInput === null) return;
+
+            const prev = parseFloat(previousInput);
+            const current = parseFloat(currentInput);
+            let result = 0;
+
+            switch (activeOperator) {
+                case "+": result = prev + current; break;
+                case "-": result = prev - current; break;
+                case "*": result = prev * current; break;
+                case "/": 
+                    result = current === 0 ? "Error" : prev / current; 
+                    break;
+            }
+
+            if (result !== "Error") {
+                // Round nicely to prevent overflowing screen
+                result = parseFloat(result.toPrecision(9)).toString();
+            }
+
+            currentInput = result;
+            activeOperator = null;
+            previousInput = null;
+            shouldResetDisplay = true;
+            removeActiveOperatorHighlight();
             updateDisplay();
         }
-    }
 
-    /* Switch interface styling flawlessly */
-    function toggleTheme() {
-        const root = document.documentElement;
-        const current = root.getAttribute('data-theme');
-        root.setAttribute('data-theme', current === 'liquid' ? 'dark' : 'liquid');
-    }
-</script>
+        // --- Theme Engine Custom Configurations ---
+        const modal = document.getElementById("settingsModal");
+        const openBtn = document.getElementById("openSettings");
+        const closeBtn = document.getElementById("closeSettings");
+        const themeOptions = document.querySelectorAll(".option-item");
 
+        // Open & Close Settings Menu
+        openBtn.onclick = () => modal.style.display = "flex";
+        closeBtn.onclick = () => modal.style.display = "none";
+
+        // Handle Theme System Logic
+        function applyTheme(themeValue) {
+            document.querySelectorAll(".option-item").forEach(item => item.classList.remove("selected"));
+            document.getElementById(`opt-${themeValue}`).classList.add("selected");
+
+            if (themeValue === "system") {
+                const isDarkMode = window.matchMedia("(prefers-color-scheme: dark)").matches;
+                document.documentElement.setAttribute("data-theme", isDarkMode ? "dark" : "light");
+            } else {
+                document.documentElement.setAttribute("data-theme", themeValue);
+            }
+            localStorage.setItem("calculator-theme", themeValue);
+        }
+
+        themeOptions.forEach(option => {
+            option.addEventListener("click", function() {
+                const targetTheme = this.getAttribute("data-value");
+                applyTheme(targetTheme);
+            });
+        });
+
+        // Listen for OS system theme changes natively
+        window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", () => {
+            if (localStorage.getItem("calculator-theme") === "system") {
+                applyTheme("system");
+            }
+        });
+
+        // Load saved theme configuration on startup
+        const savedTheme = localStorage.getItem("calculator-theme") || "system";
+        applyTheme(savedTheme);
+    </script>
 </body>
 </html>
