@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Calculator</title>
+    <style>
+        body { font-family: Arial, sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; background-color: #f0f2f5; margin: 0; }
+        .calculator { border: 2px solid #ccc; padding: 20px; border-radius: 10px; background: white; box-shadow: 0px 4px 10px rgba(0,0,0,0.1); }
+        input { width: 100%; height: 40px; text-align: right; margin-bottom: 10px; font-size: 18px; padding: 5px; box-sizing: border-box; }
+        .buttons { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+        button { padding: 15px; font-size: 16px; cursor: pointer; border: none; background-color: #e0e0e0; border-radius: 5px; }
+        button:hover { background-color: #d0d0d0; }
+        button.operator { background-color: #ff9500; color: white; }
+        button.clear { background-color: #ff3b30; color: white; }
+    </style>
+</head>
+<body>
+
+<div class="calculator">
+    <input type="text" id="screen" readonly>
+    <div class="buttons">
+        <button class="clear" onclick="clearScreen()">C</button>
+        <button onclick="press('/')">/</button>
+        <button onclick="press('*')">*</button>
+        <button onclick="press('-')">-</button>
+        
+        <button onclick="press('7')">7</button>
+        <button onclick="press('8')">8</button>
+        <button onclick="press('9')">9</button>
+        <button class="operator" onclick="press('+')">+</button>
+        
+        <button onclick="press('4')">4</button>
+        <button onclick="press('5')">5</button>
+        <button onclick="press('6')">6</button>
+        <button class="operator" onclick="calculate()">=</button>
+        
+        <button onclick="press('1')">1</button>
+        <button onclick="press('2')">2</button>
+        <button onclick="press('3')">3</button>
+        <button onclick="press('0')">0</button>
+    </div>
+</div>
+
+<script>
+    function press(value) {
+        document.getElementById('screen').value += value;
+    }
+    function clearScreen() {
+        document.getElementById('screen').value = '';
+    }
+    function calculate() {
+        try {
+            let result = eval(document.getElementById('screen').value);
+            document.getElementById('screen').value = result;
+        } catch (error) {
+            document.getElementById('screen').value = 'Error';
+        }
+    }
+</script>
+
+</body>
+</html>
