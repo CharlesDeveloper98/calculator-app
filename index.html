@@ -14,7 +14,7 @@
             --dark-btn-text: #ffffff;
             --orange-btn: #ff9f0a;
             --orange-btn-text: #ffffff;
-            --settings-bg: rgba(28, 28, 30, 0.95);
+            --settings-bg: #1c1c1e;
             --settings-item-bg: #2c2c2e;
             --settings-text: #ffffff;
             --dialog-bg: #1c1c1e;
@@ -31,7 +31,7 @@
             --dark-btn-text: #000000;
             --orange-btn: #ff9500;
             --orange-btn-text: #ffffff;
-            --settings-bg: rgba(242, 242, 247, 0.95);
+            --settings-bg: #f2f2f7;
             --settings-item-bg: #ffffff;
             --settings-text: #000000;
             --dialog-bg: #ffffff;
@@ -155,7 +155,7 @@
             color: var(--orange-btn);
         }
 
-        /* Settings Accordion Styles */
+        /* Settings Slide Animation Styles */
         .settings-modal {
             position: fixed;
             top: 0;
@@ -165,11 +165,17 @@
             background-color: var(--settings-bg);
             color: var(--settings-text);
             z-index: 100;
-            display: none;
+            display: flex;
             flex-direction: column;
             padding: 50px 20px 20px 20px;
             overflow-y: auto;
             -webkit-overflow-scrolling: touch;
+            transform: translateX(100%);
+            transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+
+        .settings-modal.active {
+            transform: translateX(0);
         }
 
         .settings-header {
@@ -237,7 +243,7 @@
         }
 
         .accordion-container.expanded .accordion-content {
-            max-height: 300px; /* Adjust dynamically for content size */
+            max-height: 300px;
         }
 
         .option-item {
@@ -690,13 +696,11 @@
 
         function clearDisplay() {
             currentInput = "0";
-            if (clearBtnEl.innerText === "AC") {
-                previousInput = null;
-                activeOperator = null;
-                exprString = "";
-                exprTrailEl.innerText = "";
-                removeActiveOperatorHighlight();
-            }
+            previousInput = null;
+            activeOperator = null;
+            exprString = "";
+            exprTrailEl.innerText = "";
+            removeActiveOperatorHighlight();
             updateDisplay();
         }
 
@@ -770,12 +774,10 @@
             updateDisplay();
         }
 
-        // --- Preferences Panel Accordion Function ---
         function toggleAccordion(containerId) {
             const container = document.getElementById(containerId);
             const isExpanded = container.classList.contains('expanded');
             
-            // Auto collapse alternative opened widgets
             document.querySelectorAll('.accordion-container').forEach(c => {
                 if(c.id !== containerId) c.classList.remove('expanded');
             });
@@ -791,7 +793,6 @@
             document.querySelectorAll('.accordion-container').forEach(c => c.classList.remove('expanded'));
         }
 
-        // --- Core Application Storage Module ---
         function saveToHistory(expr, res) {
             let history = JSON.parse(localStorage.getItem("calc-history") || "[]");
             const limit = parseInt(localStorage.getItem("calc-history-limit") || "10");
@@ -860,7 +861,6 @@
             renderHistory();
         }
 
-        // --- Bottom Sheet Handling Mechanics ---
         const sheet = document.getElementById("historySheet");
         let sheetState = "closed";
         let startY = 0;
@@ -890,7 +890,7 @@
 
         document.getElementById("btnHistAction").onclick = function() {
             const history = JSON.parse(localStorage.getItem("calc-history") || "[]");
-            if (history.length === 0) return; // Guard logic check
+            if (history.length === 0) return;
 
             if (!isEditMode) {
                 document.getElementById("dialogOverlay").style.display = "flex";
@@ -903,7 +903,6 @@
             }
         };
 
-        // Complete Header tracking layout panel logic assignments
         const upperZone = document.getElementById("sheetUpperZone");
         upperZone.addEventListener("touchstart", e => { startY = e.touches[0].clientY; }, {passive: true});
         upperZone.addEventListener("touchend", e => {
@@ -917,12 +916,15 @@
             }
         });
 
-        // --- Preferences Modals Actions ---
         const sModal = document.getElementById("settingsModal");
-        document.getElementById("openSettings").onclick = () => sModal.style.display = "flex";
-        document.getElementById("closeSettings").onclick = () => { sModal.style.display = "none"; closeAllAccordions(); };
+        document.getElementById("openSettings").onclick = () => {
+            sModal.classList.add("active");
+        };
+        document.getElementById("closeSettings").onclick = () => { 
+            sModal.classList.remove("active"); 
+            closeAllAccordions(); 
+        };
 
-        // Instant dismiss operations for dialog window paths
         document.getElementById("btnConfirmNo").onclick = () => {
             document.getElementById("dialogOverlay").style.display = "none";
         };
@@ -990,7 +992,6 @@
             option.addEventListener("click", function() { applyLanguage(this.getAttribute("data-value")); });
         });
 
-        // FIXED: Fullscreen dynamic conditional routing logic inversion
         function applyDisplayMode(isFull) {
             document.querySelectorAll(".disp-opt").forEach(item => item.classList.remove("selected"));
             
@@ -1015,7 +1016,6 @@
             option.addEventListener("click", function() { applyDisplayMode(this.getAttribute("data-value")); });
         });
 
-        // Track external hardware exit interactions safely
         document.addEventListener("fullscreenchange", () => {
             const currentSetting = localStorage.getItem("calculator-fullscreen") === "true";
             if (!document.fullscreenElement && currentSetting) {
@@ -1043,7 +1043,6 @@
             option.addEventListener("click", function() { applyLimit(this.getAttribute("data-value")); });
         });
 
-        // Bootstrap Launch Initialization Runs
         applyTheme(localStorage.getItem("calculator-theme") || "system");
         applyLanguage(localStorage.getItem("calculator-lang") || "system");
         applyDisplayMode(localStorage.getItem("calculator-fullscreen") || "false");
