@@ -229,6 +229,57 @@
         .option-item.selected .checkmark {
             display: block;
         }
+
+        /* iOS Style Switch Toggle Styles */
+        .ios-switch {
+            position: relative;
+            display: inline-block;
+            width: 51px;
+            height: 31px;
+        }
+
+        .ios-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .switch-slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #e9e9ea;
+            transition: .3s;
+            border-radius: 31px;
+        }
+
+        [data-theme="dark"] .switch-slider {
+            background-color: #39393d;
+        }
+
+        .switch-slider:before {
+            position: absolute;
+            content: "";
+            height: 27px;
+            width: 27px;
+            left: 2px;
+            bottom: 2px;
+            background-color: white;
+            transition: .3s;
+            border-radius: 50%;
+            box-shadow: 0 3px 8px rgba(0,0,0,0.15);
+        }
+
+        input:checked + .switch-slider {
+            background-color: #34c759; /* Classic iOS Green Toggle */
+        }
+
+        input:checked + .switch-slider:before {
+            transform: translateX(20px);
+        }
     </style>
 </head>
 <body>
@@ -302,6 +353,17 @@
                 <span class="checkmark">✓</span>
             </div>
         </div>
+
+        <div class="settings-subheader" id="sub-display">Display</div>
+        <div class="options-list">
+            <div class="option-item" id="fullscreen-item">
+                <span id="txt-fullscreen">Full-screen</span>
+                <label class="ios-switch">
+                    <input type="checkbox" id="fullscreenToggle">
+                    <span class="switch-slider"></span>
+                </label>
+            </div>
+        </div>
     </div>
 
     <script>
@@ -312,6 +374,8 @@
                 done: "Done",
                 theme: "Theme",
                 languages: "Languages",
+                display: "Display",
+                fullscreen: "Full-screen",
                 system: "System",
                 dark: "Dark",
                 light: "Light",
@@ -322,6 +386,8 @@
                 done: "Готово",
                 theme: "Тема",
                 languages: "Языки",
+                display: "Экран",
+                fullscreen: "Полноэкранный режим",
                 system: "Системная",
                 dark: "Темная",
                 light: "Светлая",
@@ -332,6 +398,8 @@
                 done: "Hecho",
                 theme: "Tema",
                 languages: "Idiomas",
+                display: "Pantalla",
+                fullscreen: "Pantalla completa",
                 system: "Sistema",
                 dark: "Oscuro",
                 light: "Claro",
@@ -475,6 +543,8 @@
         const closeBtn = document.getElementById("closeSettings");
         const themeOptions = document.querySelectorAll("#theme-group .option-item");
         const langOptions = document.querySelectorAll(".lang-option");
+        const fullscreenToggle = document.getElementById("fullscreenToggle");
+        const fullscreenItem = document.getElementById("fullscreen-item");
 
         // Open & Close Settings Menu
         openBtn.onclick = () => modal.style.display = "flex";
@@ -513,15 +583,15 @@
             document.getElementById(`lang-${langValue}`).classList.add("selected");
             localStorage.setItem("calculator-lang", langValue);
 
-            // Fetch contextual translations strings
             const langKey = getActiveLangKey();
             const data = i18n[langKey];
 
-            // Re-render strings inside elements safely without altering numbers
             document.getElementById("title-settings").innerText = data.settings;
             document.getElementById("closeSettings").innerText = data.done;
             document.getElementById("sub-theme").innerText = data.theme;
             document.getElementById("sub-lang").innerText = data.languages;
+            document.getElementById("sub-display").innerText = data.display;
+            document.getElementById("txt-fullscreen").innerText = data.fullscreen;
             document.getElementById("txt-sys-theme").innerText = data.system;
             document.getElementById("txt-dark-theme").innerText = data.dark;
             document.getElementById("txt-light-theme").innerText = data.light;
@@ -535,6 +605,35 @@
                 const targetLang = this.getAttribute("data-value");
                 applyLanguage(targetLang);
             });
+        });
+
+        // --- Fullscreen API Handler ---
+        function toggleFullscreen() {
+            if (!document.fullscreenElement) {
+                document.documentElement.requestFullscreen().catch(err => {
+                    console.log(`Error attempting to enable fullscreen: ${err.message}`);
+                });
+            } else {
+                if (document.exitFullscreen) {
+                    document.exitFullscreen();
+                }
+            }
+        }
+
+        // Trigger when toggle switch state changes
+        fullscreenToggle.addEventListener("change", toggleFullscreen);
+
+        // Make the whole row item clickable for better accessibility
+        fullscreenItem.addEventListener("click", function(e) {
+            if (e.target !== fullscreenToggle) {
+                fullscreenToggle.checked = !fullscreenToggle.checked;
+                toggleFullscreen();
+            }
+        });
+
+        // Sync the state of toggle switch if fullscreen is exited manually (via ESC key or swipe gesture)
+        document.addEventListener("fullscreenchange", () => {
+            fullscreenToggle.checked = !!document.fullscreenElement;
         });
 
         // Load saved settings profiles on startup
