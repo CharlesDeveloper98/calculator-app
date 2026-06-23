@@ -155,7 +155,7 @@
             color: var(--orange-btn);
         }
 
-        /* Settings Slide Animation Styles */
+        /* Settings View Configuration Panel */
         .settings-modal {
             position: fixed;
             top: 0;
@@ -167,11 +167,17 @@
             z-index: 100;
             display: flex;
             flex-direction: column;
-            padding: 50px 20px 20px 20px;
-            overflow-y: auto;
+            padding: 50px 20px 0px 20px;
+            overflow-y: scroll;
             -webkit-overflow-scrolling: touch;
             transform: translateX(100%);
             transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+
+        .settings-scroll-area {
+            display: flex;
+            flex-direction: column;
+            padding-bottom: 80px; /* Crucial padding to prevent scroll options truncation */
         }
 
         .settings-modal.active {
@@ -243,7 +249,7 @@
         }
 
         .accordion-container.expanded .accordion-content {
-            max-height: 350px;
+            max-height: 500px; /* Increased to fit expanded palette variations completely */
         }
 
         .option-item {
@@ -266,7 +272,6 @@
             display: block;
         }
 
-        /* Color Circle Indicator Icon Left Hand Layout Element Styling */
         .color-circle-preview {
             width: 14px;
             height: 14px;
@@ -275,7 +280,7 @@
             box-shadow: 0 0 0 1px rgba(255,255,255,0.15);
         }
 
-        /* Dynamic History Sheet */
+        /* Fluid History Sheet Settings Panel */
         .bottom-sheet {
             position: fixed;
             bottom: 0;
@@ -335,33 +340,39 @@
             -webkit-overflow-scrolling: touch;
         }
 
-        /* History Stream Items */
         .history-list {
             display: flex;
             flex-direction: column;
             gap: 12px;
         }
 
+        /* Hardware Accelerated Smooth iOS Sliding Animation Layout Elements */
         .history-wrapper {
             display: flex;
             align-items: center;
             width: 100%;
-            transition: transform 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+            overflow: hidden;
         }
 
         .history-select-circle {
             width: 0;
             height: 22px;
             margin-right: 0;
+            opacity: 0;
             border: 2px solid #8e8e93;
             border-radius: 50%;
             display: flex;
             justify-content: center;
             align-items: center;
             overflow: hidden;
-            transition: width 0.3s, margin-right 0.3s, border-color 0.2s;
             flex-shrink: 0;
             cursor: pointer;
+            transform: translateX(-20px);
+            transition: width 0.3s cubic-bezier(0.25, 1, 0.5, 1), 
+                        margin-right 0.3s cubic-bezier(0.25, 1, 0.5, 1), 
+                        opacity 0.2s cubic-bezier(0.25, 1, 0.5, 1),
+                        transform 0.3s cubic-bezier(0.25, 1, 0.5, 1),
+                        border-color 0.2s ease;
         }
 
         .history-select-circle::after {
@@ -381,9 +392,12 @@
             display: block;
         }
 
+        /* Slide Right Target Class Animation Activators */
         .editing .history-select-circle {
             width: 22px;
             margin-right: 14px;
+            opacity: 1;
+            transform: translateX(0);
         }
 
         .history-item {
@@ -395,6 +409,8 @@
             background-color: var(--settings-item-bg);
             border-radius: 12px;
             position: relative;
+            transform: translateX(0);
+            transition: transform 0.3s cubic-bezier(0.25, 1, 0.5, 1);
         }
 
         .hist-meta-time {
@@ -426,7 +442,7 @@
             font-size: 17px;
         }
 
-        /* iOS Popup Windows */
+        /* Dialog Overlays */
         .ios-dialog-overlay {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
@@ -530,121 +546,123 @@
     </div>
 
     <div class="settings-modal" id="settingsModal">
-        <div class="settings-header">
-            <h2 id="title-settings">Settings</h2>
-            <button class="done-btn" id="closeSettings">Done</button>
-        </div>
-        
-        <div class="settings-subheader" id="sub-theme">Theme</div>
-        <div class="accordion-container" id="container-theme">
-            <div class="accordion-header" onclick="toggleAccordion('container-theme')">
-                <span id="lbl-theme-val">System</span><span class="arrow-icon">➔</span>
+        <div class="settings-scroll-area">
+            <div class="settings-header">
+                <h2 id="title-settings">Settings</h2>
+                <button class="done-btn" id="closeSettings">Done</button>
             </div>
-            <div class="accordion-content">
-                <div class="option-item theme-opt" data-value="system" id="opt-system">
-                    <span id="txt-sys-theme">System</span><span class="checkmark">✓</span>
+            
+            <div class="settings-subheader" id="sub-theme">Theme</div>
+            <div class="accordion-container" id="container-theme">
+                <div class="accordion-header" onclick="toggleAccordion('container-theme')">
+                    <span id="lbl-theme-val">System</span><span class="arrow-icon">➔</span>
                 </div>
-                <div class="option-item theme-opt" data-value="dark" id="opt-dark">
-                    <span id="txt-dark-theme">Dark</span><span class="checkmark">✓</span>
-                </div>
-                <div class="option-item theme-opt" data-value="light" id="opt-light">
-                    <span id="txt-light-theme">Light</span><span class="checkmark">✓</span>
+                <div class="accordion-content">
+                    <div class="option-item theme-opt" data-value="system" id="opt-system">
+                        <span id="txt-sys-theme">System</span><span class="checkmark">✓</span>
+                    </div>
+                    <div class="option-item theme-opt" data-value="dark" id="opt-dark">
+                        <span id="txt-dark-theme">Dark</span><span class="checkmark">✓</span>
+                    </div>
+                    <div class="option-item theme-opt" data-value="light" id="opt-light">
+                        <span id="txt-light-theme">Light</span><span class="checkmark">✓</span>
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <div class="settings-subheader" id="sub-lang">Languages</div>
-        <div class="accordion-container" id="container-lang">
-            <div class="accordion-header" onclick="toggleAccordion('container-lang')">
-                <span id="lbl-lang-val">System</span><span class="arrow-icon">➔</span>
-            </div>
-            <div class="accordion-content">
-                <div class="option-item lang-option" data-value="system" id="lang-system">
-                    <span id="txt-sys-lang">System</span><span class="checkmark">✓</span>
+            <div class="settings-subheader" id="sub-lang">Languages</div>
+            <div class="accordion-container" id="container-lang">
+                <div class="accordion-header" onclick="toggleAccordion('container-lang')">
+                    <span id="lbl-lang-val">System</span><span class="arrow-icon">➔</span>
                 </div>
-                <div class="option-item lang-option" data-value="ru" id="lang-ru"><span>Russian</span><span class="checkmark">✓</span></div>
-                <div class="option-item lang-option" data-value="es" id="lang-es"><span>Spanish</span><span class="checkmark">✓</span></div>
-                <div class="option-item lang-option" data-value="fr" id="lang-fr"><span>French</span><span class="checkmark">✓</span></div>
+                <div class="accordion-content">
+                    <div class="option-item lang-option" data-value="system" id="lang-system">
+                        <span id="txt-sys-lang">System</span><span class="checkmark">✓</span>
+                    </div>
+                    <div class="option-item lang-option" data-value="ru" id="lang-ru"><span>Russian</span><span class="checkmark">✓</span></div>
+                    <div class="option-item lang-option" data-value="es" id="lang-es"><span>Spanish</span><span class="checkmark">✓</span></div>
+                    <div class="option-item lang-option" data-value="fr" id="lang-fr"><span>French</span><span class="checkmark">✓</span></div>
+                </div>
             </div>
-        </div>
 
-        <div class="settings-subheader" id="sub-display">Display</div>
-        <div class="accordion-container" id="container-display">
-            <div class="accordion-header" onclick="toggleAccordion('container-display')">
-                <span id="lbl-display-val">Normal Window</span><span class="arrow-icon">➔</span>
-            </div>
-            <div class="accordion-content">
-                <div class="option-item disp-opt" data-value="false" id="disp-normal">
-                    <span>Normal Window</span><span class="checkmark">✓</span>
+            <div class="settings-subheader" id="sub-display">Display</div>
+            <div class="accordion-container" id="container-display">
+                <div class="accordion-header" onclick="toggleAccordion('container-display')">
+                    <span id="lbl-display-val">Normal Window</span><span class="arrow-icon">➔</span>
                 </div>
-                <div class="option-item disp-opt" data-value="true" id="disp-full">
-                    <span id="txt-fullscreen">Full-screen Mode</span><span class="checkmark">✓</span>
+                <div class="accordion-content">
+                    <div class="option-item disp-opt" data-value="false" id="disp-normal">
+                        <span>Normal Window</span><span class="checkmark">✓</span>
+                    </div>
+                    <div class="option-item disp-opt" data-value="true" id="disp-full">
+                        <span id="txt-fullscreen">Full-screen Mode</span><span class="checkmark">✓</span>
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <div class="settings-subheader" id="sub-palette">Color Palette</div>
-        <div class="accordion-container" id="container-palette">
-            <div class="accordion-header" onclick="toggleAccordion('container-palette')">
-                <span id="lbl-palette-val">Classic Orange</span><span class="arrow-icon">➔</span>
+            <div class="settings-subheader" id="sub-palette">Color Palette</div>
+            <div class="accordion-container" id="container-palette">
+                <div class="accordion-header" onclick="toggleAccordion('container-palette')">
+                    <span id="lbl-palette-val">Classic Orange</span><span class="arrow-icon">➔</span>
+                </div>
+                <div class="accordion-content">
+                    <div class="option-item palette-opt" data-value="#ff9f0a" id="pal-orange">
+                        <span>Classic Orange (Default)</span>
+                        <div>
+                            <span class="color-circle-preview" style="background-color: #ff9f0a; margin-right: 8px;"></span>
+                            <span class="checkmark">✓</span>
+                        </div>
+                    </div>
+                    <div class="option-item palette-opt" data-value="#0a84ff" id="pal-blue">
+                        <span>Ocean Blue</span>
+                        <div>
+                            <span class="color-circle-preview" style="background-color: #0a84ff; margin-right: 8px;"></span>
+                            <span class="checkmark">✓</span>
+                        </div>
+                    </div>
+                    <div class="option-item palette-opt" data-value="#30d158" id="pal-green">
+                        <span>Emerald Green</span>
+                        <div>
+                            <span class="color-circle-preview" style="background-color: #30d158; margin-right: 8px;"></span>
+                            <span class="checkmark">✓</span>
+                        </div>
+                    </div>
+                    <div class="option-item palette-opt" data-value="#bf5af2" id="pal-purple">
+                        <span>Royale Purple</span>
+                        <div>
+                            <span class="color-circle-preview" style="background-color: #bf5af2; margin-right: 8px;"></span>
+                            <span class="checkmark">✓</span>
+                        </div>
+                    </div>
+                    <div class="option-item palette-opt" data-value="#ff375f" id="pal-pink">
+                        <span>Rose Pink</span>
+                        <div>
+                            <span class="color-circle-preview" style="background-color: #ff375f; margin-right: 8px;"></span>
+                            <span class="checkmark">✓</span>
+                        </div>
+                    </div>
+                    <div class="option-item palette-opt" data-value="#ff453a" id="pal-red">
+                        <span>Crimson Red</span>
+                        <div>
+                            <span class="color-circle-preview" style="background-color: #ff453a; margin-right: 8px;"></span>
+                            <span class="checkmark">✓</span>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="accordion-content">
-                <div class="option-item palette-opt" data-value="#ff9f0a" id="pal-orange">
-                    <span>Classic Orange (Default)</span>
-                    <div>
-                        <span class="color-circle-preview" style="background-color: #ff9f0a; margin-right: 8px;"></span>
-                        <span class="checkmark">✓</span>
-                    </div>
-                </div>
-                <div class="option-item palette-opt" data-value="#0a84ff" id="pal-blue">
-                    <span>Ocean Blue</span>
-                    <div>
-                        <span class="color-circle-preview" style="background-color: #0a84ff; margin-right: 8px;"></span>
-                        <span class="checkmark">✓</span>
-                    </div>
-                </div>
-                <div class="option-item palette-opt" data-value="#30d158" id="pal-green">
-                    <span>Emerald Green</span>
-                    <div>
-                        <span class="color-circle-preview" style="background-color: #30d158; margin-right: 8px;"></span>
-                        <span class="checkmark">✓</span>
-                    </div>
-                </div>
-                <div class="option-item palette-opt" data-value="#bf5af2" id="pal-purple">
-                    <span>Royale Purple</span>
-                    <div>
-                        <span class="color-circle-preview" style="background-color: #bf5af2; margin-right: 8px;"></span>
-                        <span class="checkmark">✓</span>
-                    </div>
-                </div>
-                <div class="option-item palette-opt" data-value="#ff375f" id="pal-pink">
-                    <span>Rose Pink</span>
-                    <div>
-                        <span class="color-circle-preview" style="background-color: #ff375f; margin-right: 8px;"></span>
-                        <span class="checkmark">✓</span>
-                    </div>
-                </div>
-                <div class="option-item palette-opt" data-value="#ff453a" id="pal-red">
-                    <span>Crimson Red</span>
-                    <div>
-                        <span class="color-circle-preview" style="background-color: #ff453a; margin-right: 8px;"></span>
-                        <span class="checkmark">✓</span>
-                    </div>
-                </div>
-            </div>
-        </div>
 
-        <div class="settings-subheader" id="sub-hist-limit">History Limit</div>
-        <div class="accordion-container" id="container-limit">
-            <div class="accordion-header" onclick="toggleAccordion('container-limit')">
-                <span id="lbl-limit-val">10</span><span class="arrow-icon">➔</span>
-            </div>
-            <div class="accordion-content">
-                <div class="option-item limit-option" data-value="10" id="limit-10"><span>10</span><span class="checkmark">✓</span></div>
-                <div class="option-item limit-option" data-value="20" id="limit-20"><span>20</span><span class="checkmark">✓</span></div>
-                <div class="option-item limit-option" data-value="30" id="limit-30"><span>30</span><span class="checkmark">✓</span></div>
-                <div class="option-item limit-option" data-value="40" id="limit-40"><span>40</span><span class="checkmark">✓</span></div>
-                <div class="option-item limit-option" data-value="50" id="limit-50"><span>50</span><span class="checkmark">✓</span></div>
+            <div class="settings-subheader" id="sub-hist-limit">History Limit</div>
+            <div class="accordion-container" id="container-limit">
+                <div class="accordion-header" onclick="toggleAccordion('container-limit')">
+                    <span id="lbl-limit-val">10</span><span class="arrow-icon">➔</span>
+                </div>
+                <div class="accordion-content">
+                    <div class="option-item limit-option" data-value="10" id="limit-10"><span>10</span><span class="checkmark">✓</span></div>
+                    <div class="option-item limit-option" data-value="20" id="limit-20"><span>20</span><span class="checkmark">✓</span></div>
+                    <div class="option-item limit-option" data-value="30" id="limit-30"><span>30</span><span class="checkmark">✓</span></div>
+                    <div class="option-item limit-option" data-value="40" id="limit-40"><span>40</span><span class="checkmark">✓</span></div>
+                    <div class="option-item limit-option" data-value="50" id="limit-50"><span>50</span><span class="checkmark">✓</span></div>
+                </div>
             </div>
         </div>
     </div>
@@ -1052,22 +1070,27 @@
             option.addEventListener("click", function() { applyLanguage(this.getAttribute("data-value")); });
         });
 
-        // FORCE FULL-SCREEN persistence state flow routing handler
+        // FORCE FULL-SCREEN configuration state preservation loop handlers
+        function enforceSavedDisplayMode() {
+            const targetState = localStorage.getItem("calculator-fullscreen");
+            if (targetState === "true" && !document.fullscreenElement) {
+                document.documentElement.requestFullscreen().catch(() => {});
+            }
+        }
+
         function applyDisplayMode(isFull, isInitRun = false) {
             document.querySelectorAll(".disp-opt").forEach(item => item.classList.remove("selected"));
             
             if (isFull === "true") {
                 document.getElementById("disp-full").classList.add("selected");
                 document.getElementById("lbl-display-val").innerText = "Full-screen Mode";
-                
-                // Block running native triggers on loading setups if already active or handling frame unmount contexts
-                if (!document.fullscreenElement && !isInitRun) {
+                if (!document.fullscreenElement) {
                     document.documentElement.requestFullscreen().catch(() => {});
                 }
             } else {
                 document.getElementById("disp-normal").classList.add("selected");
                 document.getElementById("lbl-display-val").innerText = "Normal Window";
-                if (document.fullscreenElement && !isInitRun) {
+                if (document.fullscreenElement) {
                     document.exitFullscreen().catch(() => {});
                 }
             }
@@ -1079,16 +1102,18 @@
             option.addEventListener("click", function() { applyDisplayMode(this.getAttribute("data-value")); });
         });
 
+        // Enforce state match dynamically on interaction handlers if container unmount dropped state
+        window.addEventListener("click", enforceSavedDisplayMode, { passive: true });
+        window.addEventListener("touchstart", enforceSavedDisplayMode, { passive: true });
+
         document.addEventListener("fullscreenchange", () => {
             const currentSetting = localStorage.getItem("calculator-fullscreen") === "true";
             if (!document.fullscreenElement && currentSetting) {
-                // If exiting native view externally, keep configuration model selection saved
                 document.querySelectorAll(".disp-opt").forEach(item => item.classList.remove("selected"));
                 document.getElementById("disp-full").classList.add("selected");
             }
         });
 
-        // NEW COLOR PALETTE DYNAMIC VALUE SYSTEM ROUTINES
         function applyColorPalette(hexColor, isInitRun = false) {
             document.querySelectorAll(".palette-opt").forEach(item => item.classList.remove("selected"));
             
@@ -1098,7 +1123,6 @@
                 document.getElementById("lbl-palette-val").innerText = targetOpt.querySelector("span").innerText.split(" (")[0];
             }
             
-            // Set dynamic hex configurations over styling variables globally
             document.documentElement.style.setProperty('--orange-btn', hexColor);
             localStorage.setItem("calculator-palette", hexColor);
             if(!isInitRun) closeAllAccordions();
@@ -1130,7 +1154,6 @@
             option.addEventListener("click", function() { applyLimit(this.getAttribute("data-value")); });
         });
 
-        // Bootstrapped configuration models initialization rules
         applyTheme(localStorage.getItem("calculator-theme") || "system");
         applyLanguage(localStorage.getItem("calculator-lang") || "system");
         applyDisplayMode(localStorage.getItem("calculator-fullscreen") || "false", true);
