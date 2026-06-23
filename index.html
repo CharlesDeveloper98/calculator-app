@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>iOS Calculator</title>
+    <title>iOS Calculator Pro</title>
     <style>
         :root {
             --bg-color: #000000;
@@ -19,6 +19,7 @@
             --settings-text: #ffffff;
             --dialog-bg: #1c1c1e;
             --divider-color: #48484a;
+            --sheet-bg: #1c1c1e;
         }
 
         [data-theme="light"] {
@@ -35,6 +36,7 @@
             --settings-text: #000000;
             --dialog-bg: #ffffff;
             --divider-color: #c6c6c8;
+            --sheet-bg: #f2f2f7;
         }
 
         * {
@@ -43,7 +45,7 @@
             padding: 0;
             user-select: none;
             -webkit-user-select: none;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
         }
 
         body {
@@ -55,13 +57,13 @@
             height: 100vh;
             padding: 20px;
             overflow: hidden;
+            position: relative;
             transition: background-color 0.3s;
         }
 
-        /* Nav Interface Actions */
         .top-nav {
             position: absolute;
-            top: 40px;
+            top: 50px;
             left: 20px;
             right: 20px;
             display: flex;
@@ -76,9 +78,9 @@
             color: var(--orange-btn);
             font-size: 24px;
             cursor: pointer;
+            padding: 5px;
         }
 
-        /* Display Panel */
         .display-container {
             display: flex;
             flex-direction: column;
@@ -86,19 +88,21 @@
             align-items: flex-end;
             width: 100%;
             padding: 10px;
-            min-height: 140px;
+            min-height: 160px;
+            margin-bottom: 10px;
         }
 
         .expr-trail {
-            font-size: 24px;
+            font-size: 26px;
             color: #8e8e93;
-            min-height: 28px;
+            min-height: 32px;
             margin-bottom: 5px;
             text-align: right;
+            font-weight: 300;
         }
 
         .display {
-            font-size: 70px;
+            font-size: 75px;
             font-weight: 300;
             text-align: right;
             white-space: nowrap;
@@ -106,7 +110,6 @@
             overflow-x: auto;
         }
 
-        /* Calculator Grid Matrix optimized to standard modern iOS */
         .grid {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
@@ -124,17 +127,17 @@
             align-items: center;
             aspect-ratio: 1;
             cursor: pointer;
-            transition: filter 0.1s;
+            transition: filter 0.1s, background-color 0.1s;
         }
 
         .btn:active {
-            filter: brightness(1.4);
+            filter: brightness(1.3);
         }
 
         .btn-gray {
             background-color: var(--gray-btn);
             color: var(--gray-btn-text);
-            font-size: 28px;
+            font-size: 26px;
         }
 
         .btn-dark {
@@ -152,17 +155,8 @@
             color: var(--orange-btn);
         }
 
-        .zero {
-            grid-column: span 2;
-            border-radius: 50px;
-            aspect-ratio: auto;
-            height: 100%;
-            justify-content: flex-start;
-            padding-left: 32px;
-        }
-
-        /* iOS Overlay Style base sheets */
-        .settings-modal, .history-drawer {
+        /* Settings View Side Sheets */
+        .settings-modal {
             position: fixed;
             top: 0;
             left: 0;
@@ -173,28 +167,29 @@
             z-index: 100;
             display: none;
             flex-direction: column;
-            padding: 40px 20px;
-            transition: background-color 0.3s;
+            padding: 50px 20px 20px 20px;
             overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
         }
 
-        .settings-header, .history-header {
+        .settings-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 30px;
+            margin-bottom: 24px;
+            flex-shrink: 0;
         }
 
-        .settings-header h2, .history-header h2 {
+        .settings-header h2 {
             font-size: 28px;
-            font-weight: 600;
+            font-weight: 700;
         }
 
         .done-btn {
             background: none;
             border: none;
             color: var(--orange-btn);
-            font-size: 18px;
+            font-size: 17px;
             font-weight: 600;
             cursor: pointer;
         }
@@ -203,23 +198,17 @@
             font-size: 13px;
             text-transform: uppercase;
             color: #8e8e93;
-            margin-left: 10px;
-            margin-bottom: 8px;
+            margin: 18px 0 8px 10px;
             font-weight: 500;
-            margin-top: 20px;
-        }
-
-        .settings-subheader:first-of-type {
-            margin-top: 0;
         }
 
         .options-list {
             background-color: var(--settings-item-bg);
-            border-radius: 10px;
+            border-radius: 12px;
             overflow: hidden;
             display: flex;
             flex-direction: column;
-            margin-bottom: 10px;
+            margin-bottom: 12px;
         }
 
         .option-item {
@@ -246,7 +235,6 @@
             display: block;
         }
 
-        /* iOS Toggles */
         .ios-switch {
             position: relative;
             display: inline-block;
@@ -272,29 +260,149 @@
         input:checked + .switch-slider { background-color: #34c759; }
         input:checked + .switch-slider:before { transform: translateX(20px); }
 
-        /* History Stream Items Styling */
+        /* Dynamic Expandable Bottom Sheet Layout */
+        .bottom-sheet {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: var(--sheet-bg);
+            border-top-left-radius: 16px;
+            border-top-right-radius: 16px;
+            z-index: 150;
+            display: flex;
+            flex-direction: column;
+            transform: translateY(100%);
+            transition: transform 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+            box-shadow: 0 -5px 20px rgba(0,0,0,0.3);
+        }
+
+        .bottom-sheet.half {
+            transform: translateY(50%);
+        }
+
+        .bottom-sheet.full {
+            transform: translateY(0);
+        }
+
+        .sheet-handle-zone {
+            width: 100%;
+            height: 32px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: grab;
+            flex-shrink: 0;
+        }
+
+        .sheet-handle {
+            width: 36px;
+            height: 5px;
+            background-color: var(--divider-color);
+            border-radius: 2.5px;
+        }
+
+        .sheet-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px 15px 20px;
+            flex-shrink: 0;
+        }
+
+        .sheet-header h2 {
+            font-size: 22px;
+            font-weight: 700;
+        }
+
+        .sheet-content {
+            flex: 1;
+            overflow-y: auto;
+            padding: 0 20px 30px 20px;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        /* History Stream Row Render Styles */
         .history-list {
             display: flex;
             flex-direction: column;
-            gap: 15px;
+            gap: 12px;
+        }
+
+        .history-wrapper {
+            display: flex;
+            align-items: center;
+            width: 100%;
+            transition: transform 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+
+        .history-select-circle {
+            width: 0;
+            height: 22px;
+            margin-right: 0;
+            border: 2px solid #8e8e93;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            transition: width 0.3s, margin-right 0.3s, border-color 0.2s;
+            flex-shrink: 0;
+            cursor: pointer;
+        }
+
+        .history-select-circle::after {
+            content: "";
+            width: 12px;
+            height: 12px;
+            background-color: var(--orange-btn);
+            border-radius: 50%;
+            display: none;
+        }
+
+        .history-wrapper.selected .history-select-circle {
+            border-color: var(--orange-btn);
+        }
+
+        .history-wrapper.selected .history-select-circle::after {
+            display: block;
+        }
+
+        .editing .history-select-circle {
+            width: 22px;
+            margin-right: 14px;
         }
 
         .history-item {
+            flex: 1;
             display: flex;
             flex-direction: column;
             align-items: flex-end;
-            padding: 10px 15px;
+            padding: 14px 18px;
             background-color: var(--settings-item-bg);
             border-radius: 12px;
+            position: relative;
+        }
+
+        .hist-meta-time {
+            position: absolute;
+            left: 18px;
+            top: 14px;
+            font-size: 11px;
+            color: #8e8e93;
+            font-weight: 400;
         }
 
         .history-item .hist-expr {
-            font-size: 16px;
+            font-size: 15px;
             color: #8e8e93;
+            margin-bottom: 2px;
+            font-weight: 400;
         }
 
         .history-item .hist-res {
-            font-size: 24px;
+            font-size: 26px;
             font-weight: 600;
             color: var(--settings-text);
         }
@@ -302,16 +410,16 @@
         .no-history-msg {
             text-align: center;
             color: #8e8e93;
-            margin-top: 40px;
-            font-size: 18px;
+            margin-top: 60px;
+            font-size: 17px;
         }
 
-        /* iOS Popup Modal Container */
+        /* Standardized iOS Overlay Dialog Window */
         .ios-dialog-overlay {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
-            background-color: rgba(0,0,0,0.4);
-            z-index: 200;
+            background-color: rgba(0,0,0,0.5);
+            z-index: 300;
             display: none;
             justify-content: center;
             align-items: center;
@@ -323,15 +431,16 @@
             border-radius: 14px;
             text-align: center;
             overflow: hidden;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.4);
             animation: popIn 0.2s ease-out;
         }
 
         .ios-dialog-title {
-            padding: 20px 15px;
+            padding: 22px 16px;
             font-size: 17px;
             font-weight: 600;
             color: var(--settings-text);
+            line-height: 1.3;
         }
 
         .ios-dialog-buttons {
@@ -349,10 +458,10 @@
         }
 
         .dialog-btn-yes { color: #ff3b30; font-weight: 600; border-right: 0.5px solid var(--divider-color); }
-        .dialog-btn-no { color: #007aff; }
+        .dialog-btn-no { color: #007aff; font-weight: 400; }
 
         @keyframes popIn {
-            from { transform: scale(1.15); opacity: 0; }
+            from { transform: scale(1.1); opacity: 0; }
             to { transform: scale(1); opacity: 1; }
         }
     </style>
@@ -391,17 +500,21 @@
         <button class="btn btn-orange op-btn" data-op="+">+</button>
 
         <button class="btn btn-dark" onclick="toggleSign()">+/-</button>
-        <button class="btn btn-dark zero" onclick="inputNum('0')">0</button>
+        <button class="btn btn-dark" onclick="inputNum('0')">0</button>
         <button class="btn btn-dark" onclick="inputDecimal()">.</button>
         <button class="btn btn-orange" onclick="calculate()">=</button>
     </div>
 
-    <div class="history-drawer" id="historyDrawer">
-        <div class="history-header">
-            <h2 id="title-history">History</h2>
-            <button class="done-btn" id="closeHistory">Done</button>
+    <div class="bottom-sheet" id="historySheet">
+        <div class="sheet-handle-zone" id="sheetHandleZone">
+            <div class="sheet-handle"></div>
         </div>
-        <div id="historyContent"></div>
+        <div class="sheet-header">
+            <button class="done-btn" id="btnHistEdit">Edit</button>
+            <h2 id="title-history">History</h2>
+            <button class="done-btn" id="btnHistAction" style="font-size: 20px; font-weight: 400;">✕</button>
+        </div>
+        <div class="sheet-content" id="historyContent"></div>
     </div>
 
     <div class="settings-modal" id="settingsModal">
@@ -428,15 +541,9 @@
             <div class="option-item lang-option" data-value="system" id="lang-system">
                 <span id="txt-sys-lang">System</span><span class="checkmark">✓</span>
             </div>
-            <div class="option-item lang-option" data-value="ru" id="lang-ru">
-                <span>Russian</span><span class="checkmark">✓</span>
-            </div>
-            <div class="option-item lang-option" data-value="es" id="lang-es">
-                <span>Spanish</span><span class="checkmark">✓</span>
-            </div>
-            <div class="option-item lang-option" data-value="fr" id="lang-fr">
-                <span>French</span><span class="checkmark">✓</span>
-            </div>
+            <div class="option-item lang-option" data-value="ru" id="lang-ru"><span>Russian</span><span class="checkmark">✓</span></div>
+            <div class="option-item lang-option" data-value="es" id="lang-es"><span>Spanish</span><span class="checkmark">✓</span></div>
+            <div class="option-item lang-option" data-value="fr" id="lang-fr"><span>French</span><span class="checkmark">✓</span></div>
         </div>
 
         <div class="settings-subheader" id="sub-display">Display</div>
@@ -447,13 +554,6 @@
                     <input type="checkbox" id="fullscreenToggle">
                     <span class="switch-slider"></span>
                 </label>
-            </div>
-        </div>
-
-        <div class="settings-subheader" id="sub-history">Calculator History</div>
-        <div class="options-list">
-            <div class="option-item" id="clearHistoryTrigger" style="color: #ff3b30; font-weight: 500;">
-                <span id="txt-clear-history">Clear Calculator History</span>
             </div>
         </div>
 
@@ -478,31 +578,31 @@
     </div>
 
     <script>
-        // --- System Translations ---
+        // --- Full Content Dictionaries for French/Spanish/Russian ---
         const i18n = {
             en: {
                 settings: "Settings", done: "Done", theme: "Theme", languages: "Languages", display: "Display",
                 fullscreen: "Full-screen", system: "System", dark: "Dark", light: "Light", error: "Error",
-                history: "History", noHistory: "No History Yet", clearHist: "Clear Calculator History",
-                histLimit: "History Limit", confirmClear: "Are you sure you want to clear history?", calcHist: "Calculator History"
+                history: "History", noHistory: "No History Yet", histLimit: "History Limit",
+                confirmClear: "Are you sure you want to clear history?", edit: "Edit", delete: "Delete"
             },
             ru: {
                 settings: "Настройки", done: "Готово", theme: "Тема", languages: "Языки", display: "Экран",
                 fullscreen: "Полноэкранный режим", system: "Системная", dark: "Темная", light: "Светлая", error: "Ошибка",
-                history: "История", noHistory: "Истории пока нет", clearHist: "Очистить историю калькулятора",
-                histLimit: "Лимит истории", confirmClear: "Вы уверены, что хотите очистить историю?", calcHist: "История калькулятора"
+                history: "История", noHistory: "Истории пока нет", histLimit: "Лимит истории",
+                confirmClear: "Вы уверены, что хотите очистить историю?", edit: "Править", delete: "Удалить"
             },
             es: {
                 settings: "Ajustes", done: "Hecho", theme: "Tema", languages: "Idiomas", display: "Pantalla",
                 fullscreen: "Pantalla completa", system: "Sistema", dark: "Oscuro", light: "Claro", error: "Error",
-                history: "Historial", noHistory: "Sin historial aún", clearHist: "Borrar historial de calculadora",
-                histLimit: "Límite de historial", confirmClear: "¿Estás seguro de que quieres borrar el historial?", calcHist: "Historial de calculadora"
+                history: "Historial", noHistory: "Sin historial aún", histLimit: "Límite de historial",
+                confirmClear: "¿Estás seguro de que quieres borrar el historial?", edit: "Editar", delete: "Eliminar"
             },
             fr: {
                 settings: "Réglages", done: "Ok", theme: "Thème", languages: "Langues", display: "Écran",
                 fullscreen: "Plein écran", system: "Système", dark: "Sombre", light: "Clair", error: "Erreur",
-                history: "Historique", noHistory: "Aucun historique", clearHist: "Effacer l'historique",
-                histLimit: "Limite d'historique", confirmClear: "Êtes-vous sûr de vouloir effacer l'historique ?", calcHist: "Historique de calcul"
+                history: "Historique", noHistory: "No History Yet", histLimit: "Limite d'historique",
+                confirmClear: "Are you sure you want to clear history?", edit: "Modifier", delete: "Supprimer"
             }
         };
 
@@ -511,6 +611,8 @@
         let activeOperator = null;
         let shouldResetDisplay = false;
         let exprString = "";
+        let isEditMode = false;
+        let selectedItems = new Set();
 
         const displayEl = document.getElementById("display");
         const exprTrailEl = document.getElementById("exprTrail");
@@ -537,7 +639,7 @@
                 formattedValue = parts.join('.');
             }
             displayEl.innerText = formattedValue;
-            clearBtnEl.innerText = currentInput === "0" && !previousInput ? "AC" : "C";
+            clearBtnEl.innerText = (currentInput === "0" && !previousInput) ? "AC" : "C";
         }
 
         function inputNum(num) {
@@ -572,6 +674,7 @@
         }
 
         function clearDisplay() {
+            // FIX: Explicit math register isolation and state wipe to avoid multiplication collision
             currentInput = "0";
             if (clearBtnEl.innerText === "AC") {
                 previousInput = null;
@@ -653,12 +756,16 @@
             updateDisplay();
         }
 
-        // --- History Core Storage Interface Engine ---
+        // --- Core Application Storage Module ---
         function saveToHistory(expr, res) {
             let history = JSON.parse(localStorage.getItem("calc-history") || "[]");
             const limit = parseInt(localStorage.getItem("calc-history-limit") || "10");
             
-            history.unshift({ expr: expr, res: res });
+            const now = new Date();
+            const timeStr = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+            const dateStr = now.toLocaleDateString([], { month: 'short', day: 'numeric' });
+            
+            history.unshift({ id: Date.now() + Math.random().toString(), expr: expr, res: res, stamp: `${dateStr}, ${timeStr}` });
             if (history.length > limit) history = history.slice(0, limit);
             
             localStorage.setItem("calc-history", JSON.stringify(history));
@@ -672,41 +779,115 @@
             
             if (history.length === 0) {
                 container.innerHTML = `<div class="no-history-msg">${i18n[langKey].noHistory}</div>`;
+                document.getElementById("btnHistEdit").style.visibility = "hidden";
+                exitEditMode();
                 return;
             }
 
-            let html = '<div class="history-list">';
+            document.getElementById("btnHistEdit").style.visibility = "visible";
+            let html = `<div class="history-list ${isEditMode ? 'editing' : ''}">`;
             history.forEach(item => {
+                const isSelected = selectedItems.has(item.id);
                 html += `
-                    <div class="history-item">
-                        <span class="hist-expr">${item.expr}</span>
-                        <span class="hist-res">${Number(item.res).toLocaleString('en-US')}</span>
+                    <div class="history-wrapper ${isSelected ? 'selected' : ''}" data-id="${item.id}">
+                        <div class="history-select-circle" onclick="toggleSelectItem('${item.id}')"></div>
+                        <div class="history-item">
+                            <span class="hist-meta-time">${item.stamp}</span>
+                            <span class="hist-expr">${item.expr}</span>
+                            <span class="hist-res">${Number(item.res).toLocaleString('en-US')}</span>
+                        </div>
                     </div>`;
             });
             html += '</div>';
             container.innerHTML = html;
         }
 
-        // --- UI View Modals Listeners ---
-        const sModal = document.getElementById("settingsModal");
-        const hDrawer = document.getElementById("historyDrawer");
-        const dialogOverlay = document.getElementById("dialogOverlay");
+        function toggleSelectItem(id) {
+            if (selectedItems.has(id)) selectedItems.delete(id);
+            else selectedItems.add(id);
+            renderHistory();
+        }
 
+        function exitEditMode() {
+            isEditMode = false;
+            selectedItems.clear();
+            const data = i18n[getActiveLangKey()];
+            document.getElementById("btnHistEdit").innerText = data.edit;
+            document.getElementById("btnHistAction").innerText = "✕";
+            document.getElementById("btnHistAction").style.color = "";
+            renderHistory();
+        }
+
+        // --- Bottom Sheet Swipe Animation & Action Elements ---
+        const sheet = document.getElementById("historySheet");
+        let sheetState = "closed"; // "closed", "half", "full"
+        let startY = 0;
+        let currentY = 0;
+
+        function setSheetState(state) {
+            sheetState = state;
+            sheet.className = "bottom-sheet " + state;
+        }
+
+        document.getElementById("openHistory").onclick = () => {
+            renderHistory();
+            setSheetState("half");
+        };
+
+        document.getElementById("btnHistEdit").onclick = function() {
+            const data = i18n[getActiveLangKey()];
+            if (!isEditMode) {
+                isEditMode = true;
+                this.innerText = data.done;
+                document.getElementById("btnHistAction").innerText = data.delete;
+                document.getElementById("btnHistAction").style.color = "#ff3b30";
+            } else {
+                exitEditMode();
+            }
+            renderHistory();
+        };
+
+        document.getElementById("btnHistAction").onclick = function() {
+            if (!isEditMode) {
+                document.getElementById("dialogOverlay").style.display = "flex";
+            } else {
+                let history = JSON.parse(localStorage.getItem("calc-history") || "[]");
+                history = history.filter(item => !selectedItems.has(item.id));
+                localStorage.setItem("calc-history", JSON.stringify(history));
+                selectedItems.clear();
+                renderHistory();
+            }
+        };
+
+        // Handlebars Pan Drag Mechanics
+        const handleZone = document.getElementById("sheetHandleZone");
+        handleZone.addEventListener("touchstart", e => { startY = e.touches[0].clientY; }, {passive: true});
+        handleZone.addEventListener("touchmove", e => { currentY = e.touches[0].clientY; }, {passive: true});
+        handleZone.addEventListener("touchend", () => {
+            const diff = startY - currentY;
+            if (Math.abs(diff) < 30) return;
+            if (diff > 50) {
+                if (sheetState === "half") setSheetState("full");
+            } else {
+                if (sheetState === "full") setSheetState("half");
+                else if (sheetState === "half") { setSheetState("closed"); exitEditMode(); }
+            }
+        });
+
+        // --- Preferences Modals Actions ---
+        const sModal = document.getElementById("settingsModal");
         document.getElementById("openSettings").onclick = () => sModal.style.display = "flex";
         document.getElementById("closeSettings").onclick = () => sModal.style.display = "none";
-        document.getElementById("openHistory").onclick = () => { renderHistory(); hDrawer.style.display = "flex"; };
-        document.getElementById("closeHistory").onclick = () => hDrawer.style.display = "none";
 
-        // Confirm System Clear Handlers
-        document.getElementById("clearHistoryTrigger").onclick = () => dialogOverlay.style.display = "flex";
-        document.getElementById("btnConfirmNo").onclick = () => dialogOverlay.style.display = "none";
+        document.getElementById("btnConfirmNo").onclick = () => document.getElementById("dialogOverlay").style.display = "none";
         document.getElementById("btnConfirmYes").onclick = () => {
             localStorage.setItem("calc-history", "[]");
             renderHistory();
-            dialogOverlay.style.display = "none";
+            document.getElementById("dialogOverlay").style.display = "none";
+            setSheetState("closed");
+            exitEditMode();
         };
 
-        // Theme Switch Core Logic
         function applyTheme(themeValue) {
             document.querySelectorAll("#theme-group .option-item").forEach(item => item.classList.remove("selected"));
             document.getElementById(`opt-${themeValue}`).classList.add("selected");
@@ -723,7 +904,6 @@
             option.addEventListener("click", function() { applyTheme(this.getAttribute("data-value")); });
         });
 
-        // Localization Updates Loop
         function applyLanguage(langValue) {
             document.querySelectorAll(".lang-option").forEach(item => item.classList.remove("selected"));
             document.getElementById(`lang-${langValue}`).classList.add("selected");
@@ -733,19 +913,17 @@
             document.getElementById("title-settings").innerText = data.settings;
             document.getElementById("closeSettings").innerText = data.done;
             document.getElementById("title-history").innerText = data.history;
-            document.getElementById("closeHistory").innerText = data.done;
             document.getElementById("sub-theme").innerText = data.theme;
             document.getElementById("sub-lang").innerText = data.languages;
             document.getElementById("sub-display").innerText = data.display;
             document.getElementById("txt-fullscreen").innerText = data.fullscreen;
-            document.getElementById("sub-history").innerText = data.calcHist;
-            document.getElementById("txt-clear-history").innerText = data.clearHist;
             document.getElementById("sub-hist-limit").innerText = data.histLimit;
             document.getElementById("txt-confirm-msg").innerText = data.confirmClear;
             document.getElementById("txt-sys-theme").innerText = data.system;
             document.getElementById("txt-dark-theme").innerText = data.dark;
             document.getElementById("txt-light-theme").innerText = data.light;
             document.getElementById("txt-sys-lang").innerText = data.system;
+            document.getElementById("btnHistEdit").innerText = isEditMode ? data.done : data.edit;
 
             renderHistory();
             updateDisplay();
@@ -755,7 +933,6 @@
             option.addEventListener("click", function() { applyLanguage(this.getAttribute("data-value")); });
         });
 
-        // Limit Threshold Logic
         function applyLimit(limitValue) {
             document.querySelectorAll(".limit-option").forEach(item => item.classList.remove("selected"));
             document.getElementById(`limit-${limitValue}`).classList.add("selected");
@@ -772,7 +949,6 @@
             option.addEventListener("click", function() { applyLimit(this.getAttribute("data-value")); });
         });
 
-        // Fullscreen Interface Toggles
         const fullscreenToggle = document.getElementById("fullscreenToggle");
         function toggleFullscreen() {
             if (!document.fullscreenElement) {
@@ -782,15 +958,8 @@
             }
         }
         fullscreenToggle.addEventListener("change", toggleFullscreen);
-        document.getElementById("fullscreen-item").addEventListener("click", function(e) {
-            if (e.target !== fullscreenToggle) {
-                fullscreenToggle.checked = !fullscreenToggle.checked;
-                toggleFullscreen();
-            }
-        });
-        document.addEventListener("fullscreenchange", () => { fullscreenToggle.checked = !!document.fullscreenElement; });
 
-        // Bootstrap Initialization
+        // Bootstrap Lifecycle Runtime Init
         applyTheme(localStorage.getItem("calculator-theme") || "system");
         applyLanguage(localStorage.getItem("calculator-lang") || "system");
         applyLimit(localStorage.getItem("calc-history-limit") || "10");
