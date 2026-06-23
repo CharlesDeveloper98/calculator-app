@@ -155,7 +155,7 @@
             color: var(--orange-btn);
         }
 
-        /* Settings View Side Sheets */
+        /* Settings Accordion Styles */
         .settings-modal {
             position: fixed;
             top: 0;
@@ -202,13 +202,42 @@
             font-weight: 500;
         }
 
-        .options-list {
+        .accordion-container {
             background-color: var(--settings-item-bg);
             border-radius: 12px;
             overflow: hidden;
-            display: flex;
-            flex-direction: column;
             margin-bottom: 12px;
+            transition: max-height 0.3s ease-in-out;
+        }
+
+        .accordion-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 14px 16px;
+            font-size: 17px;
+            cursor: pointer;
+        }
+
+        .accordion-header .arrow-icon {
+            color: var(--orange-btn);
+            transition: transform 0.3s ease;
+            font-weight: bold;
+        }
+
+        .accordion-container.expanded .arrow-icon {
+            transform: rotate(90deg);
+        }
+
+        .accordion-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-in-out;
+            background-color: rgba(0, 0, 0, 0.1);
+        }
+
+        .accordion-container.expanded .accordion-content {
+            max-height: 300px; /* Adjust dynamically for content size */
         }
 
         .option-item {
@@ -217,12 +246,8 @@
             align-items: center;
             padding: 14px 16px;
             font-size: 17px;
-            border-bottom: 0.5px solid var(--divider-color);
+            border-top: 0.5px solid var(--divider-color);
             cursor: pointer;
-        }
-
-        .option-item:last-child {
-            border-bottom: none;
         }
 
         .checkmark {
@@ -235,32 +260,7 @@
             display: block;
         }
 
-        .ios-switch {
-            position: relative;
-            display: inline-block;
-            width: 51px;
-            height: 31px;
-        }
-
-        .ios-switch input { opacity: 0; width: 0; height: 0; }
-
-        .switch-slider {
-            position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0;
-            background-color: #e9e9ea; transition: .3s; border-radius: 31px;
-        }
-
-        [data-theme="dark"] .switch-slider { background-color: #39393d; }
-
-        .switch-slider:before {
-            position: absolute; content: ""; height: 27px; width: 27px; left: 2px; bottom: 2px;
-            background-color: white; transition: .3s; border-radius: 50%;
-            box-shadow: 0 3px 8px rgba(0,0,0,0.15);
-        }
-
-        input:checked + .switch-slider { background-color: #34c759; }
-        input:checked + .switch-slider:before { transform: translateX(20px); }
-
-        /* Dynamic Expandable Bottom Sheet Layout */
+        /* Dynamic History Sheet */
         .bottom-sheet {
             position: fixed;
             bottom: 0;
@@ -278,22 +278,18 @@
             box-shadow: 0 -5px 20px rgba(0,0,0,0.3);
         }
 
-        .bottom-sheet.half {
-            transform: translateY(50%);
-        }
+        .bottom-sheet.half { transform: translateY(50%); }
+        .bottom-sheet.full { transform: translateY(0); }
 
-        .bottom-sheet.full {
-            transform: translateY(0);
-        }
-
-        .sheet-handle-zone {
+        .sheet-upper-zone {
             width: 100%;
-            height: 32px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
+            background-color: var(--sheet-bg);
             cursor: grab;
             flex-shrink: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding-top: 10px;
         }
 
         .sheet-handle {
@@ -301,14 +297,15 @@
             height: 5px;
             background-color: var(--divider-color);
             border-radius: 2.5px;
+            margin-bottom: 12px;
         }
 
         .sheet-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
+            width: 100%;
             padding: 0 20px 15px 20px;
-            flex-shrink: 0;
         }
 
         .sheet-header h2 {
@@ -323,7 +320,7 @@
             -webkit-overflow-scrolling: touch;
         }
 
-        /* History Stream Row Render Styles */
+        /* History Stream Items */
         .history-list {
             display: flex;
             flex-direction: column;
@@ -414,7 +411,7 @@
             font-size: 17px;
         }
 
-        /* Standardized iOS Overlay Dialog Window */
+        /* iOS Popup Windows */
         .ios-dialog-overlay {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
@@ -506,13 +503,13 @@
     </div>
 
     <div class="bottom-sheet" id="historySheet">
-        <div class="sheet-handle-zone" id="sheetHandleZone">
+        <div class="sheet-upper-zone" id="sheetUpperZone">
             <div class="sheet-handle"></div>
-        </div>
-        <div class="sheet-header">
-            <button class="done-btn" id="btnHistEdit">Edit</button>
-            <h2 id="title-history">History</h2>
-            <button class="done-btn" id="btnHistAction" style="font-size: 20px; font-weight: 400;">✕</button>
+            <div class="sheet-header">
+                <button class="done-btn" id="btnHistEdit">Edit</button>
+                <h2 id="title-history">History</h2>
+                <button class="done-btn" id="btnHistAction" style="font-size: 20px; font-weight: 400;">✕</button>
+            </div>
         </div>
         <div class="sheet-content" id="historyContent"></div>
     </div>
@@ -524,46 +521,65 @@
         </div>
         
         <div class="settings-subheader" id="sub-theme">Theme</div>
-        <div class="options-list" id="theme-group">
-            <div class="option-item" data-value="system" id="opt-system">
-                <span id="txt-sys-theme">System</span><span class="checkmark">✓</span>
+        <div class="accordion-container" id="container-theme">
+            <div class="accordion-header" onclick="toggleAccordion('container-theme')">
+                <span id="lbl-theme-val">System</span><span class="arrow-icon">➔</span>
             </div>
-            <div class="option-item" data-value="dark" id="opt-dark">
-                <span id="txt-dark-theme">Dark</span><span class="checkmark">✓</span>
-            </div>
-            <div class="option-item" data-value="light" id="opt-light">
-                <span id="txt-light-theme">Light</span><span class="checkmark">✓</span>
+            <div class="accordion-content">
+                <div class="option-item theme-opt" data-value="system" id="opt-system">
+                    <span id="txt-sys-theme">System</span><span class="checkmark">✓</span>
+                </div>
+                <div class="option-item theme-opt" data-value="dark" id="opt-dark">
+                    <span id="txt-dark-theme">Dark</span><span class="checkmark">✓</span>
+                </div>
+                <div class="option-item theme-opt" data-value="light" id="opt-light">
+                    <span id="txt-light-theme">Light</span><span class="checkmark">✓</span>
+                </div>
             </div>
         </div>
 
         <div class="settings-subheader" id="sub-lang">Languages</div>
-        <div class="options-list" id="lang-group">
-            <div class="option-item lang-option" data-value="system" id="lang-system">
-                <span id="txt-sys-lang">System</span><span class="checkmark">✓</span>
+        <div class="accordion-container" id="container-lang">
+            <div class="accordion-header" onclick="toggleAccordion('container-lang')">
+                <span id="lbl-lang-val">System</span><span class="arrow-icon">➔</span>
             </div>
-            <div class="option-item lang-option" data-value="ru" id="lang-ru"><span>Russian</span><span class="checkmark">✓</span></div>
-            <div class="option-item lang-option" data-value="es" id="lang-es"><span>Spanish</span><span class="checkmark">✓</span></div>
-            <div class="option-item lang-option" data-value="fr" id="lang-fr"><span>French</span><span class="checkmark">✓</span></div>
+            <div class="accordion-content">
+                <div class="option-item lang-option" data-value="system" id="lang-system">
+                    <span id="txt-sys-lang">System</span><span class="checkmark">✓</span>
+                </div>
+                <div class="option-item lang-option" data-value="ru" id="lang-ru"><span>Russian</span><span class="checkmark">✓</span></div>
+                <div class="option-item lang-option" data-value="es" id="lang-es"><span>Spanish</span><span class="checkmark">✓</span></div>
+                <div class="option-item lang-option" data-value="fr" id="lang-fr"><span>French</span><span class="checkmark">✓</span></div>
+            </div>
         </div>
 
         <div class="settings-subheader" id="sub-display">Display</div>
-        <div class="options-list">
-            <div class="option-item" id="fullscreen-item">
-                <span id="txt-fullscreen">Full-screen</span>
-                <label class="ios-switch">
-                    <input type="checkbox" id="fullscreenToggle">
-                    <span class="switch-slider"></span>
-                </label>
+        <div class="accordion-container" id="container-display">
+            <div class="accordion-header" onclick="toggleAccordion('container-display')">
+                <span id="lbl-display-val">Normal Window</span><span class="arrow-icon">➔</span>
+            </div>
+            <div class="accordion-content">
+                <div class="option-item disp-opt" data-value="false" id="disp-normal">
+                    <span>Normal Window</span><span class="checkmark">✓</span>
+                </div>
+                <div class="option-item disp-opt" data-value="true" id="disp-full">
+                    <span id="txt-fullscreen">Full-screen Mode</span><span class="checkmark">✓</span>
+                </div>
             </div>
         </div>
 
         <div class="settings-subheader" id="sub-hist-limit">History Limit</div>
-        <div class="options-list" id="limit-group">
-            <div class="option-item limit-option" data-value="10" id="limit-10"><span>10</span><span class="checkmark">✓</span></div>
-            <div class="option-item limit-option" data-value="20" id="limit-20"><span>20</span><span class="checkmark">✓</span></div>
-            <div class="option-item limit-option" data-value="30" id="limit-30"><span>30</span><span class="checkmark">✓</span></div>
-            <div class="option-item limit-option" data-value="40" id="limit-40"><span>40</span><span class="checkmark">✓</span></div>
-            <div class="option-item limit-option" data-value="50" id="limit-50"><span>50</span><span class="checkmark">✓</span></div>
+        <div class="accordion-container" id="container-limit">
+            <div class="accordion-header" onclick="toggleAccordion('container-limit')">
+                <span id="lbl-limit-val">10</span><span class="arrow-icon">➔</span>
+            </div>
+            <div class="accordion-content">
+                <div class="option-item limit-option" data-value="10" id="limit-10"><span>10</span><span class="checkmark">✓</span></div>
+                <div class="option-item limit-option" data-value="20" id="limit-20"><span>20</span><span class="checkmark">✓</span></div>
+                <div class="option-item limit-option" data-value="30" id="limit-30"><span>30</span><span class="checkmark">✓</span></div>
+                <div class="option-item limit-option" data-value="40" id="limit-40"><span>40</span><span class="checkmark">✓</span></div>
+                <div class="option-item limit-option" data-value="50" id="limit-50"><span>50</span><span class="checkmark">✓</span></div>
+            </div>
         </div>
     </div>
 
@@ -578,11 +594,10 @@
     </div>
 
     <script>
-        // --- Full Content Dictionaries for French/Spanish/Russian ---
         const i18n = {
             en: {
                 settings: "Settings", done: "Done", theme: "Theme", languages: "Languages", display: "Display",
-                fullscreen: "Full-screen", system: "System", dark: "Dark", light: "Light", error: "Error",
+                fullscreen: "Full-screen Mode", system: "System", dark: "Dark", light: "Light", error: "Error",
                 history: "History", noHistory: "No History Yet", histLimit: "History Limit",
                 confirmClear: "Are you sure you want to clear history?", edit: "Edit", delete: "Delete"
             },
@@ -674,7 +689,6 @@
         }
 
         function clearDisplay() {
-            // FIX: Explicit math register isolation and state wipe to avoid multiplication collision
             currentInput = "0";
             if (clearBtnEl.innerText === "AC") {
                 previousInput = null;
@@ -756,6 +770,27 @@
             updateDisplay();
         }
 
+        // --- Preferences Panel Accordion Function ---
+        function toggleAccordion(containerId) {
+            const container = document.getElementById(containerId);
+            const isExpanded = container.classList.contains('expanded');
+            
+            // Auto collapse alternative opened widgets
+            document.querySelectorAll('.accordion-container').forEach(c => {
+                if(c.id !== containerId) c.classList.remove('expanded');
+            });
+            
+            if (isExpanded) {
+                container.classList.remove('expanded');
+            } else {
+                container.classList.add('expanded');
+            }
+        }
+
+        function closeAllAccordions() {
+            document.querySelectorAll('.accordion-container').forEach(c => c.classList.remove('expanded'));
+        }
+
         // --- Core Application Storage Module ---
         function saveToHistory(expr, res) {
             let history = JSON.parse(localStorage.getItem("calc-history") || "[]");
@@ -776,15 +811,22 @@
             const langKey = getActiveLangKey();
             const history = JSON.parse(localStorage.getItem("calc-history") || "[]");
             const container = document.getElementById("historyContent");
+            const actionBtn = document.getElementById("btnHistAction");
+            const editBtn = document.getElementById("btnHistEdit");
             
             if (history.length === 0) {
                 container.innerHTML = `<div class="no-history-msg">${i18n[langKey].noHistory}</div>`;
-                document.getElementById("btnHistEdit").style.visibility = "hidden";
+                editBtn.style.visibility = "hidden";
+                actionBtn.style.opacity = "0.3";
+                actionBtn.style.pointerEvents = "none";
                 exitEditMode();
                 return;
             }
 
-            document.getElementById("btnHistEdit").style.visibility = "visible";
+            editBtn.style.visibility = "visible";
+            actionBtn.style.opacity = "1";
+            actionBtn.style.pointerEvents = "auto";
+            
             let html = `<div class="history-list ${isEditMode ? 'editing' : ''}">`;
             history.forEach(item => {
                 const isSelected = selectedItems.has(item.id);
@@ -818,11 +860,10 @@
             renderHistory();
         }
 
-        // --- Bottom Sheet Swipe Animation & Action Elements ---
+        // --- Bottom Sheet Handling Mechanics ---
         const sheet = document.getElementById("historySheet");
-        let sheetState = "closed"; // "closed", "half", "full"
+        let sheetState = "closed";
         let startY = 0;
-        let currentY = 0;
 
         function setSheetState(state) {
             sheetState = state;
@@ -848,23 +889,25 @@
         };
 
         document.getElementById("btnHistAction").onclick = function() {
+            const history = JSON.parse(localStorage.getItem("calc-history") || "[]");
+            if (history.length === 0) return; // Guard logic check
+
             if (!isEditMode) {
                 document.getElementById("dialogOverlay").style.display = "flex";
             } else {
-                let history = JSON.parse(localStorage.getItem("calc-history") || "[]");
-                history = history.filter(item => !selectedItems.has(item.id));
-                localStorage.setItem("calc-history", JSON.stringify(history));
+                let currentLogs = JSON.parse(localStorage.getItem("calc-history") || "[]");
+                currentLogs = currentLogs.filter(item => !selectedItems.has(item.id));
+                localStorage.setItem("calc-history", JSON.stringify(currentLogs));
                 selectedItems.clear();
                 renderHistory();
             }
         };
 
-        // Handlebars Pan Drag Mechanics
-        const handleZone = document.getElementById("sheetHandleZone");
-        handleZone.addEventListener("touchstart", e => { startY = e.touches[0].clientY; }, {passive: true});
-        handleZone.addEventListener("touchmove", e => { currentY = e.touches[0].clientY; }, {passive: true});
-        handleZone.addEventListener("touchend", () => {
-            const diff = startY - currentY;
+        // Complete Header tracking layout panel logic assignments
+        const upperZone = document.getElementById("sheetUpperZone");
+        upperZone.addEventListener("touchstart", e => { startY = e.touches[0].clientY; }, {passive: true});
+        upperZone.addEventListener("touchend", e => {
+            const diff = startY - e.changedTouches[0].clientY;
             if (Math.abs(diff) < 30) return;
             if (diff > 50) {
                 if (sheetState === "half") setSheetState("full");
@@ -877,20 +920,26 @@
         // --- Preferences Modals Actions ---
         const sModal = document.getElementById("settingsModal");
         document.getElementById("openSettings").onclick = () => sModal.style.display = "flex";
-        document.getElementById("closeSettings").onclick = () => sModal.style.display = "none";
+        document.getElementById("closeSettings").onclick = () => { sModal.style.display = "none"; closeAllAccordions(); };
 
-        document.getElementById("btnConfirmNo").onclick = () => document.getElementById("dialogOverlay").style.display = "none";
+        // Instant dismiss operations for dialog window paths
+        document.getElementById("btnConfirmNo").onclick = () => {
+            document.getElementById("dialogOverlay").style.display = "none";
+        };
         document.getElementById("btnConfirmYes").onclick = () => {
             localStorage.setItem("calc-history", "[]");
-            renderHistory();
             document.getElementById("dialogOverlay").style.display = "none";
             setSheetState("closed");
             exitEditMode();
         };
 
         function applyTheme(themeValue) {
-            document.querySelectorAll("#theme-group .option-item").forEach(item => item.classList.remove("selected"));
-            document.getElementById(`opt-${themeValue}`).classList.add("selected");
+            document.querySelectorAll(".theme-opt").forEach(item => item.classList.remove("selected"));
+            const targetNode = document.getElementById(`opt-${themeValue}`);
+            if(targetNode) targetNode.classList.add("selected");
+            
+            document.getElementById("lbl-theme-val").innerText = themeValue.charAt(0).toUpperCase() + themeValue.slice(1);
+
             if (themeValue === "system") {
                 const isDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
                 document.documentElement.setAttribute("data-theme", isDark ? "dark" : "light");
@@ -898,18 +947,25 @@
                 document.documentElement.setAttribute("data-theme", themeValue);
             }
             localStorage.setItem("calculator-theme", themeValue);
+            closeAllAccordions();
         }
 
-        document.querySelectorAll("#theme-group .option-item").forEach(option => {
+        document.querySelectorAll(".theme-opt").forEach(option => {
             option.addEventListener("click", function() { applyTheme(this.getAttribute("data-value")); });
         });
 
         function applyLanguage(langValue) {
             document.querySelectorAll(".lang-option").forEach(item => item.classList.remove("selected"));
-            document.getElementById(`lang-${langValue}`).classList.add("selected");
+            const targetNode = document.getElementById(`lang-${langValue}`);
+            if(targetNode) targetNode.classList.add("selected");
             localStorage.setItem("calculator-lang", langValue);
 
-            const data = i18n[getActiveLangKey()];
+            const activeKey = getActiveLangKey();
+            const data = i18n[activeKey];
+            
+            const nativeLabels = { system: data.system, ru: "Russian", es: "Spanish", fr: "French" };
+            document.getElementById("lbl-lang-val").innerText = nativeLabels[langValue] || data.system;
+
             document.getElementById("title-settings").innerText = data.settings;
             document.getElementById("closeSettings").innerText = data.done;
             document.getElementById("title-history").innerText = data.history;
@@ -927,15 +983,52 @@
 
             renderHistory();
             updateDisplay();
+            closeAllAccordions();
         }
 
         document.querySelectorAll(".lang-option").forEach(option => {
             option.addEventListener("click", function() { applyLanguage(this.getAttribute("data-value")); });
         });
 
+        // FIXED: Fullscreen dynamic conditional routing logic inversion
+        function applyDisplayMode(isFull) {
+            document.querySelectorAll(".disp-opt").forEach(item => item.classList.remove("selected"));
+            
+            if (isFull === "true") {
+                document.getElementById("disp-full").classList.add("selected");
+                document.getElementById("lbl-display-val").innerText = "Full-screen Mode";
+                if (!document.fullscreenElement) {
+                    document.documentElement.requestFullscreen().catch(() => {});
+                }
+            } else {
+                document.getElementById("disp-normal").classList.add("selected");
+                document.getElementById("lbl-display-val").innerText = "Normal Window";
+                if (document.fullscreenElement) {
+                    document.exitFullscreen().catch(() => {});
+                }
+            }
+            localStorage.setItem("calculator-fullscreen", isFull);
+            closeAllAccordions();
+        }
+
+        document.querySelectorAll(".disp-opt").forEach(option => {
+            option.addEventListener("click", function() { applyDisplayMode(this.getAttribute("data-value")); });
+        });
+
+        // Track external hardware exit interactions safely
+        document.addEventListener("fullscreenchange", () => {
+            const currentSetting = localStorage.getItem("calculator-fullscreen") === "true";
+            if (!document.fullscreenElement && currentSetting) {
+                applyDisplayMode("false");
+            }
+        });
+
         function applyLimit(limitValue) {
             document.querySelectorAll(".limit-option").forEach(item => item.classList.remove("selected"));
-            document.getElementById(`limit-${limitValue}`).classList.add("selected");
+            const targetNode = document.getElementById(`limit-${limitValue}`);
+            if(targetNode) targetNode.classList.add("selected");
+            
+            document.getElementById("lbl-limit-val").innerText = limitValue;
             localStorage.setItem("calc-history-limit", limitValue);
             
             let history = JSON.parse(localStorage.getItem("calc-history") || "[]");
@@ -943,25 +1036,17 @@
                 history = history.slice(0, parseInt(limitValue));
                 localStorage.setItem("calc-history", JSON.stringify(history));
             }
+            closeAllAccordions();
         }
 
         document.querySelectorAll(".limit-option").forEach(option => {
             option.addEventListener("click", function() { applyLimit(this.getAttribute("data-value")); });
         });
 
-        const fullscreenToggle = document.getElementById("fullscreenToggle");
-        function toggleFullscreen() {
-            if (!document.fullscreenElement) {
-                document.documentElement.requestFullscreen().catch(() => {});
-            } else if (document.exitFullscreen) {
-                document.exitFullscreen();
-            }
-        }
-        fullscreenToggle.addEventListener("change", toggleFullscreen);
-
-        // Bootstrap Lifecycle Runtime Init
+        // Bootstrap Launch Initialization Runs
         applyTheme(localStorage.getItem("calculator-theme") || "system");
         applyLanguage(localStorage.getItem("calculator-lang") || "system");
+        applyDisplayMode(localStorage.getItem("calculator-fullscreen") || "false");
         applyLimit(localStorage.getItem("calc-history-limit") || "10");
     </script>
 </body>
