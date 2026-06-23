@@ -156,6 +156,7 @@
             flex-direction: column;
             padding: 40px 20px;
             transition: background-color 0.3s;
+            overflow-y: auto;
         }
 
         .settings-header {
@@ -186,6 +187,11 @@
             margin-left: 10px;
             margin-bottom: 8px;
             font-weight: 500;
+            margin-top: 20px;
+        }
+
+        .settings-subheader:first-of-type {
+            margin-top: 0;
         }
 
         .options-list {
@@ -194,7 +200,6 @@
             overflow: hidden;
             display: flex;
             flex-direction: column;
-            margin-bottom: 24px;
         }
 
         .option-item {
@@ -266,41 +271,75 @@
             <button class="done-btn" id="closeSettings">Done</button>
         </div>
         
-        <div class="settings-subheader" id="title-languages">Languages</div>
-        <div class="options-list">
-            <div class="option-item lang-option" data-value="system" id="lang-system">
-                <span id="label-lang-system">System (English)</span>
+        <div class="settings-subheader" id="sub-theme">Theme</div>
+        <div class="options-list" id="theme-group">
+            <div class="option-item" data-value="system" id="opt-system">
+                <span id="txt-sys-theme">System</span>
                 <span class="checkmark">✓</span>
             </div>
-            <div class="option-item lang-option" data-value="russian" id="lang-russian">
-                <span>Русский (Russian)</span>
+            <div class="option-item" data-value="dark" id="opt-dark">
+                <span id="txt-dark-theme">Dark</span>
                 <span class="checkmark">✓</span>
             </div>
-            <div class="option-item lang-option" data-value="spanish" id="lang-spanish">
-                <span>Español (Spanish)</span>
+            <div class="option-item" data-value="light" id="opt-light">
+                <span id="txt-light-theme">Light</span>
                 <span class="checkmark">✓</span>
             </div>
         </div>
-        
-        <div class="settings-subheader" id="title-theme">Theme</div>
-        <div class="options-list">
-            <div class="option-item theme-option" data-value="system" id="opt-system">
-                <span id="label-theme-system">System</span>
+
+        <div class="settings-subheader" id="sub-lang">Languages</div>
+        <div class="options-list" id="lang-group">
+            <div class="option-item lang-option" data-value="system" id="lang-system">
+                <span id="txt-sys-lang">System</span>
                 <span class="checkmark">✓</span>
             </div>
-            <div class="option-item theme-option" data-value="dark" id="opt-dark">
-                <span id="label-theme-dark">Dark</span>
+            <div class="option-item lang-option" data-value="ru" id="lang-ru">
+                <span>Russian</span>
                 <span class="checkmark">✓</span>
             </div>
-            <div class="option-item theme-option" data-value="light" id="opt-light">
-                <span id="label-theme-light">Light</span>
+            <div class="option-item lang-option" data-value="es" id="lang-es">
+                <span>Spanish</span>
                 <span class="checkmark">✓</span>
             </div>
         </div>
     </div>
 
     <script>
-        // --- Calculator Control Logic ---
+        // --- Translations Dictionary ---
+        const i18n = {
+            en: {
+                settings: "Settings",
+                done: "Done",
+                theme: "Theme",
+                languages: "Languages",
+                system: "System",
+                dark: "Dark",
+                light: "Light",
+                error: "Error"
+            },
+            ru: {
+                settings: "Настройки",
+                done: "Готово",
+                theme: "Тема",
+                languages: "Языки",
+                system: "Системная",
+                dark: "Темная",
+                light: "Светлая",
+                error: "Ошибка"
+            },
+            es: {
+                settings: "Ajustes",
+                done: "Hecho",
+                theme: "Tema",
+                languages: "Idiomas",
+                system: "Sistema",
+                dark: "Oscuro",
+                light: "Claro",
+                error: "Error"
+            }
+        };
+
+        // --- Calculator Logic Variables ---
         let currentInput = "0";
         let previousInput = null;
         let activeOperator = null;
@@ -309,24 +348,28 @@
         const displayEl = document.getElementById("display");
         const clearBtnEl = document.getElementById("clear-btn");
 
-        // Simple explicit tracking for current clear button state string
-        let clearStateDefault = true; 
+        function getActiveLangKey() {
+            const savedLang = localStorage.getItem("calculator-lang") || "system";
+            if (savedLang === "system") {
+                const browserLang = navigator.language.slice(0, 2);
+                return i18n[browserLang] ? browserLang : "en";
+            }
+            return savedLang;
+        }
 
         function updateDisplay() {
+            const langKey = getActiveLangKey();
             let formattedValue = currentInput;
-            if (currentInput !== "Error" && currentInput !== "-Error") {
+            
+            if (currentInput === "Error" || currentInput === "-Error") {
+                formattedValue = currentInput.startsWith("-") ? "-" + i18n[langKey].error : i18n[langKey].error;
+            } else {
                 const parts = currentInput.split('.');
                 parts[0] = Number(parts[0]).toLocaleString('en-US', { maximumFractionDigits: 0 });
                 formattedValue = parts.join('.');
             }
             displayEl.innerText = formattedValue;
-            
-            if (currentInput === "0" && !previousInput) {
-                clearStateDefault = true;
-            } else {
-                clearStateDefault = false;
-            }
-            refreshClearButtonLabel();
+            clearBtnEl.innerText = currentInput === "0" && !previousInput ? "AC" : "C";
         }
 
         function inputNum(num) {
@@ -334,7 +377,7 @@
                 currentInput = num;
                 shouldResetDisplay = false;
             } else {
-                if (currentInput.replace(/[^0-9]/g, "").length < 9) { 
+                if (currentInput.replace(/[^0-9]/g, "").length < 9) { // iOS limit 9 digits
                     currentInput += num;
                 }
             }
@@ -357,7 +400,7 @@
 
         function clearDisplay() {
             currentInput = "0";
-            if (clearStateDefault) {
+            if (clearBtnEl.innerText === "AC") {
                 previousInput = null;
                 activeOperator = null;
                 removeActiveOperatorHighlight();
@@ -377,6 +420,7 @@
             updateDisplay();
         }
 
+        // Handle Operation buttons
         document.querySelectorAll('.op-btn').forEach(btn => {
             btn.addEventListener('click', function() {
                 const op = this.getAttribute('data-op');
@@ -425,71 +469,21 @@
             updateDisplay();
         }
 
-        // --- Clean Non-Fingerprinting Localizer Engine ---
-        let globalLang = "en";
-
-        function refreshClearButtonLabel() {
-            if (clearStateDefault) {
-                clearBtnEl.innerText = "AC";
-            } else {
-                clearBtnEl.innerText = (globalLang === "ru") ? "С" : (globalLang === "es") ? "C" : "C";
-            }
-        }
-
-        function applyLanguage(langValue) {
-            document.querySelectorAll(".lang-option").forEach(item => item.classList.remove("selected"));
-            document.getElementById("lang-" + langValue).classList.add("selected");
-            localStorage.setItem("calculator-lang", langValue);
-
-            // Fallback system default simply resolves safely to English to pass safety metrics
-            if (langValue === "system") {
-                globalLang = "en";
-            } else {
-                globalLang = langValue;
-            }
-
-            if (globalLang === "ru") {
-                document.getElementById("title-settings").innerText = "Настройки";
-                document.getElementById("closeSettings").innerText = "Готово";
-                document.getElementById("title-languages").innerText = "Языки";
-                document.getElementById("title-theme").innerText = "Тема";
-                document.getElementById("label-theme-system").innerText = "Системная";
-                document.getElementById("label-theme-dark").innerText = "Темная";
-                document.getElementById("label-theme-light").innerText = "Светлая";
-            } else if (globalLang === "es") {
-                document.getElementById("title-settings").innerText = "Ajustes";
-                document.getElementById("closeSettings").innerText = "OK";
-                document.getElementById("title-languages").innerText = "Idiomas";
-                document.getElementById("title-theme").innerText = "Tema";
-                document.getElementById("label-theme-system").innerText = "Sistema";
-                document.getElementById("label-theme-dark").innerText = "Oscuro";
-                document.getElementById("label-theme-light").innerText = "Claro";
-            } else {
-                document.getElementById("title-settings").innerText = "Settings";
-                document.getElementById("closeSettings").innerText = "Done";
-                document.getElementById("title-languages").innerText = "Languages";
-                document.getElementById("title-theme").innerText = "Theme";
-                document.getElementById("label-theme-system").innerText = "System";
-                document.getElementById("label-theme-dark").innerText = "Dark";
-                document.getElementById("label-theme-light").innerText = "Light";
-            }
-
-            refreshClearButtonLabel();
-        }
-
-        // --- Theme Engine Setup ---
+        // --- Theme & Language UI Configurations ---
         const modal = document.getElementById("settingsModal");
         const openBtn = document.getElementById("openSettings");
         const closeBtn = document.getElementById("closeSettings");
-        const themeOptions = document.querySelectorAll(".theme-option");
+        const themeOptions = document.querySelectorAll("#theme-group .option-item");
         const langOptions = document.querySelectorAll(".lang-option");
 
+        // Open & Close Settings Menu
         openBtn.onclick = () => modal.style.display = "flex";
         closeBtn.onclick = () => modal.style.display = "none";
 
+        // Handle Theme System Logic
         function applyTheme(themeValue) {
-            document.querySelectorAll(".theme-option").forEach(item => item.classList.remove("selected"));
-            document.getElementById("opt-" + themeValue).classList.add("selected");
+            themeOptions.forEach(item => item.classList.remove("selected"));
+            document.getElementById(`opt-${themeValue}`).classList.add("selected");
 
             if (themeValue === "system") {
                 const isDarkMode = window.matchMedia("(prefers-color-scheme: dark)").matches;
@@ -502,13 +496,8 @@
 
         themeOptions.forEach(option => {
             option.addEventListener("click", function() {
-                applyTheme(this.getAttribute("data-value"));
-            });
-        });
-
-        langOptions.forEach(option => {
-            option.addEventListener("click", function() {
-                applyLanguage(this.getAttribute("data-value"));
+                const targetTheme = this.getAttribute("data-value");
+                applyTheme(targetTheme);
             });
         });
 
@@ -518,7 +507,37 @@
             }
         });
 
-        // Initialize saved state assets cleanly
+        // --- Handle Localization Logic ---
+        function applyLanguage(langValue) {
+            langOptions.forEach(item => item.classList.remove("selected"));
+            document.getElementById(`lang-${langValue}`).classList.add("selected");
+            localStorage.setItem("calculator-lang", langValue);
+
+            // Fetch contextual translations strings
+            const langKey = getActiveLangKey();
+            const data = i18n[langKey];
+
+            // Re-render strings inside elements safely without altering numbers
+            document.getElementById("title-settings").innerText = data.settings;
+            document.getElementById("closeSettings").innerText = data.done;
+            document.getElementById("sub-theme").innerText = data.theme;
+            document.getElementById("sub-lang").innerText = data.languages;
+            document.getElementById("txt-sys-theme").innerText = data.system;
+            document.getElementById("txt-dark-theme").innerText = data.dark;
+            document.getElementById("txt-light-theme").innerText = data.light;
+            document.getElementById("txt-sys-lang").innerText = data.system;
+
+            updateDisplay();
+        }
+
+        langOptions.forEach(option => {
+            option.addEventListener("click", function() {
+                const targetLang = this.getAttribute("data-value");
+                applyLanguage(targetLang);
+            });
+        });
+
+        // Load saved settings profiles on startup
         const savedTheme = localStorage.getItem("calculator-theme") || "system";
         applyTheme(savedTheme);
 
