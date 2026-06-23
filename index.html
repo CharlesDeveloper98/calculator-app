@@ -20,6 +20,7 @@
             --dialog-bg: #1c1c1e;
             --divider-color: #48484a;
             --sheet-bg: #1c1c1e;
+            --ios-blue: #0a84ff;
         }
 
         [data-theme="light"] {
@@ -37,6 +38,7 @@
             --dialog-bg: #ffffff;
             --divider-color: #c6c6c8;
             --sheet-bg: #f2f2f7;
+            --ios-blue: #007aff;
         }
 
         * {
@@ -79,6 +81,26 @@
             font-size: 24px;
             cursor: pointer;
             padding: 5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* iOS Box Container For Grouped Settings Buttons */
+        .ios-control-group {
+            display: flex;
+            align-items: center;
+            background-color: var(--settings-item-bg);
+            border-radius: 10px;
+            padding: 2px 8px;
+            border: 0.5px solid var(--divider-color);
+        }
+
+        .ios-control-divider {
+            width: 1px;
+            height: 20px;
+            background-color: var(--divider-color);
+            margin: 0 6px;
         }
 
         .display-container {
@@ -155,7 +177,7 @@
             color: var(--orange-btn);
         }
 
-        /* Settings View Configuration Panel */
+        /* Reusable iOS Settings Slide Panel System */
         .settings-modal {
             position: fixed;
             top: 0;
@@ -164,7 +186,7 @@
             height: 100%;
             background-color: var(--settings-bg);
             color: var(--settings-text);
-            z-index: 100;
+            z-index: 200;
             display: flex;
             flex-direction: column;
             padding: 50px 20px 0px 20px;
@@ -177,7 +199,7 @@
         .settings-scroll-area {
             display: flex;
             flex-direction: column;
-            padding-bottom: 80px; /* Crucial padding to prevent scroll options truncation */
+            padding-bottom: 80px;
         }
 
         .settings-modal.active {
@@ -204,6 +226,9 @@
             font-size: 17px;
             font-weight: 600;
             cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 4px;
         }
 
         .settings-subheader {
@@ -249,7 +274,7 @@
         }
 
         .accordion-container.expanded .accordion-content {
-            max-height: 500px; /* Increased to fit expanded palette variations completely */
+            max-height: 500px;
         }
 
         .option-item {
@@ -280,7 +305,250 @@
             box-shadow: 0 0 0 1px rgba(255,255,255,0.15);
         }
 
-        /* Fluid History Sheet Settings Panel */
+        /* Currency Converter Screen Layout Structure */
+        .converter-workspace {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+            margin-top: 10px;
+            position: relative;
+        }
+
+        /* Pull down refresh styling indicators */
+        .pull-refresh-indicator {
+            width: 100%;
+            height: 0;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 13px;
+            color: #8e8e93;
+            transition: height 0.2s ease, opacity 0.2s ease;
+            opacity: 0;
+        }
+        .pull-refresh-indicator.visible {
+            height: 40px;
+            opacity: 1;
+        }
+
+        .currency-row-box {
+            display: flex;
+            align-items: center;
+            background-color: var(--settings-item-bg);
+            border-radius: 14px;
+            padding: 16px;
+            justify-content: space-between;
+            cursor: pointer;
+            position: relative;
+            border: 2px solid transparent;
+            transition: border-color 0.2s ease;
+        }
+
+        .currency-row-box.active-focus {
+            border-color: var(--ios-blue);
+        }
+
+        .currency-left-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .currency-flag {
+            font-size: 32px;
+            line-items: 1;
+        }
+
+        .currency-code-trigger {
+            font-size: 20px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .currency-code-trigger::after {
+            content: "▶";
+            font-size: 11px;
+            color: #8e8e93;
+            display: inline-block;
+            margin-left: 2px;
+        }
+
+        .currency-right-values {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 4px;
+        }
+
+        .currency-numeric-output {
+            font-size: 28px;
+            font-weight: 400;
+            color: var(--text-color);
+        }
+
+        .currency-full-label {
+            font-size: 12px;
+            color: #8e8e93;
+        }
+
+        .network-status-notice {
+            text-align: center;
+            font-size: 12px;
+            color: #8e8e93;
+            margin: 10px 0;
+        }
+
+        /* Context Menu Option Overlays */
+        .context-menu-popover {
+            position: absolute;
+            top: 90px;
+            right: 20px;
+            background-color: #2c2c2e;
+            border-radius: 12px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+            display: none;
+            flex-direction: column;
+            z-index: 300;
+            min-width: 200px;
+            overflow: hidden;
+            border: 0.5px solid var(--divider-color);
+        }
+
+        .context-menu-popover button {
+            background: none;
+            border: none;
+            color: white;
+            padding: 14px 16px;
+            font-size: 15px;
+            text-align: left;
+            cursor: pointer;
+            width: 100%;
+        }
+
+        .context-menu-popover button:active {
+            background-color: #3a3a3c;
+        }
+
+        /* World Currency Selection Subpage View */
+        .currency-picker-view {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: var(--settings-bg);
+            color: var(--settings-text);
+            z-index: 250;
+            display: flex;
+            flex-direction: column;
+            transform: translateY(100%);
+            transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+            padding: 50px 0 0 0;
+        }
+
+        .currency-picker-view.active {
+            transform: translateY(0);
+        }
+
+        .search-bar-container {
+            padding: 10px 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background-color: var(--settings-bg);
+        }
+
+        .search-input-wrapper {
+            position: relative;
+            flex: 1;
+        }
+
+        .search-input-wrapper::before {
+            content: "🔍";
+            position: absolute;
+            left: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 14px;
+            color: #8e8e93;
+        }
+
+        .currency-search-field {
+            width: 100%;
+            background-color: var(--settings-item-bg);
+            border: none;
+            border-radius: 10px;
+            padding: 8px 12px 8px 34px;
+            color: white;
+            font-size: 16px;
+            outline: none;
+        }
+
+        .picker-master-list {
+            flex: 1;
+            overflow-y: auto;
+            padding: 0 40px 40px 20px;
+            scroll-behavior: smooth;
+        }
+
+        .picker-section-header {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--ios-blue);
+            margin: 15px 0 8px 5px;
+            text-transform: uppercase;
+        }
+
+        .picker-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 8px;
+            border-bottom: 0.5px solid var(--divider-color);
+            cursor: pointer;
+        }
+
+        .picker-row-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 16px;
+        }
+
+        .picker-currency-label {
+            color: #8e8e93;
+            margin-left: 4px;
+        }
+
+        /* Right Side Alphabet Index Glider Track */
+        .alphabet-glider-track {
+            position: absolute;
+            right: 4px;
+            top: 140px;
+            bottom: 40px;
+            width: 24px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 260;
+            font-size: 10px;
+            font-weight: 700;
+            color: var(--ios-blue);
+            user-select: none;
+        }
+
+        .glider-letter {
+            cursor: pointer;
+            width: 100%;
+            text-align: center;
+            padding: 2px 0;
+        }
+
+        /* Bottom History Sheet Elements Layout */
         .bottom-sheet {
             position: fixed;
             bottom: 0;
@@ -346,7 +614,6 @@
             gap: 12px;
         }
 
-        /* Hardware Accelerated Smooth iOS Sliding Animation Layout Elements */
         .history-wrapper {
             display: flex;
             align-items: center;
@@ -371,8 +638,7 @@
             transition: width 0.3s cubic-bezier(0.25, 1, 0.5, 1), 
                         margin-right 0.3s cubic-bezier(0.25, 1, 0.5, 1), 
                         opacity 0.2s cubic-bezier(0.25, 1, 0.5, 1),
-                        transform 0.3s cubic-bezier(0.25, 1, 0.5, 1),
-                        border-color 0.2s ease;
+                        transform 0.3s cubic-bezier(0.25, 1, 0.5, 1);
         }
 
         .history-select-circle::after {
@@ -392,7 +658,6 @@
             display: block;
         }
 
-        /* Slide Right Target Class Animation Activators */
         .editing .history-select-circle {
             width: 22px;
             margin-right: 14px;
@@ -409,8 +674,6 @@
             background-color: var(--settings-item-bg);
             border-radius: 12px;
             position: relative;
-            transform: translateX(0);
-            transition: transform 0.3s cubic-bezier(0.25, 1, 0.5, 1);
         }
 
         .hist-meta-time {
@@ -419,14 +682,12 @@
             top: 14px;
             font-size: 11px;
             color: #8e8e93;
-            font-weight: 400;
         }
 
         .history-item .hist-expr {
             font-size: 15px;
             color: #8e8e93;
             margin-bottom: 2px;
-            font-weight: 400;
         }
 
         .history-item .hist-res {
@@ -442,12 +703,11 @@
             font-size: 17px;
         }
 
-        /* Dialog Overlays */
         .ios-dialog-overlay {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
             background-color: rgba(0,0,0,0.5);
-            z-index: 300;
+            z-index: 400;
             display: none;
             justify-content: center;
             align-items: center;
@@ -460,7 +720,6 @@
             text-align: center;
             overflow: hidden;
             box-shadow: 0 10px 30px rgba(0,0,0,0.4);
-            animation: popIn 0.2s ease-out;
         }
 
         .ios-dialog-title {
@@ -468,7 +727,6 @@
             font-size: 17px;
             font-weight: 600;
             color: var(--settings-text);
-            line-height: 1.3;
         }
 
         .ios-dialog-buttons {
@@ -486,26 +744,78 @@
         }
 
         .dialog-btn-yes { color: #ff3b30; font-weight: 600; border-right: 0.5px solid var(--divider-color); }
-        .dialog-btn-no { color: #007aff; font-weight: 400; }
-
-        @keyframes popIn {
-            from { transform: scale(1.1); opacity: 0; }
-            to { transform: scale(1); opacity: 1; }
-        }
+        .dialog-btn-no { color: #007aff; }
     </style>
 </head>
 <body>
 
     <div class="top-nav">
         <button class="nav-btn" id="openHistory">⋮☰</button>
-        <button class="nav-btn" id="openSettings">⚙️</button>
+        <!-- iOS capsule box with integrated divider containing both utility control buttons -->
+        <div class="ios-control-group">
+            <button class="nav-btn" id="openCurrency" style="font-size: 20px;">💱</button>
+            <div class="ios-control-divider"></div>
+            <button class="nav-btn" id="openSettings" style="font-size: 20px;">⚙️</button>
+        </div>
     </div>
 
-    <div class="display-container">
-        <div class="expr-trail" id="exprTrail"></div>
-        <div class="display" id="display">0</div>
+    <!-- Active view context indicator workspace blocks -->
+    <div id="standardCalculatorView">
+        <div class="display-container">
+            <div class="expr-trail" id="exprTrail"></div>
+            <div class="display" id="display">0</div>
+        </div>
     </div>
 
+    <!-- Live Currency conversion panel workspace -->
+    <div id="currencyCalculatorView" style="display: none;">
+        <div class="display-container" style="min-height: 80px; padding: 0 10px;">
+            <div class="expr-trail" id="currencyExprTrail" style="font-size: 16px;">Live Conversion Rates</div>
+        </div>
+        <div class="converter-workspace" id="pullDownContainer">
+            <div class="pull-refresh-indicator" id="pullIndicator">Release to Update Exchange Rates...</div>
+            
+            <!-- Row slot 1: United Kingdom -->
+            <div class="currency-row-box active-focus" id="row-slot-0" onclick="focusCurrencySlot(0)">
+                <div class="currency-left-info">
+                    <span class="currency-flag" id="flag-slot-0">🇬🇧</span>
+                    <div class="currency-code-trigger" id="code-slot-0" onclick="launchCurrencyPicker(0, event)">GBP</div>
+                </div>
+                <div class="currency-right-values">
+                    <span class="currency-numeric-output" id="val-slot-0">0</span>
+                    <span class="currency-full-label" id="label-slot-0">British Pound Sterling</span>
+                </div>
+            </div>
+
+            <!-- Row slot 2: United States -->
+            <div class="currency-row-box" id="row-slot-1" onclick="focusCurrencySlot(1)">
+                <div class="currency-left-info">
+                    <span class="currency-flag" id="flag-slot-1">🇺🇸</span>
+                    <div class="currency-code-trigger" id="code-slot-1" onclick="launchCurrencyPicker(1, event)">USD</div>
+                </div>
+                <div class="currency-right-values">
+                    <span class="currency-numeric-output" id="val-slot-1">0</span>
+                    <span class="currency-full-label" id="label-slot-1">United States Dollar</span>
+                </div>
+            </div>
+
+            <!-- Row slot 3: System Default Base Locale Option -->
+            <div class="currency-row-box" id="row-slot-2" onclick="focusCurrencySlot(2)">
+                <div class="currency-left-info">
+                    <span class="currency-flag" id="flag-slot-2">🇪🇺</span>
+                    <div class="currency-code-trigger" id="code-slot-2" onclick="launchCurrencyPicker(2, event)">EUR</div>
+                </div>
+                <div class="currency-right-values">
+                    <span class="currency-numeric-output" id="val-slot-2">0</span>
+                    <span class="currency-full-label" id="label-slot-2">System Default Currency</span>
+                </div>
+            </div>
+
+            <div class="network-status-notice">∞ xCurrency · Connect to the network for the latest rates</div>
+        </div>
+    </div>
+
+    <!-- Layout Grid Entry Input Buttons Section -->
     <div class="grid">
         <button class="btn btn-gray" onclick="backspace()">⌫</button>
         <button class="btn btn-gray" onclick="clearDisplay()" id="clear-btn">AC</button>
@@ -530,9 +840,47 @@
         <button class="btn btn-dark" onclick="toggleSign()">+/-</button>
         <button class="btn btn-dark" onclick="inputNum('0')">0</button>
         <button class="btn btn-dark" onclick="inputDecimal()">.</button>
-        <button class="btn btn-orange" onclick="calculate()">=</button>
+        <button class="btn btn-orange" id="calcActionButton" onclick="calculate()">=</button>
     </div>
 
+    <!-- Currency Converter Master Settings Dashboard View Screen -->
+    <div class="settings-modal" id="currencyModal">
+        <div class="settings-scroll-area">
+            <div class="settings-header">
+                <h2 id="converterMainTitle">Currency Converter</h2>
+                <!-- Context trigger anchor button element -->
+                <button class="done-btn" id="openContextTrigger" style="font-size: 22px;">⋮</button>
+            </div>
+            
+            <div id="currencyModalHook"></div>
+            
+            <div style="text-align: center; margin-top: 40px;">
+                <button class="done-btn" id="closeCurrencyView" style="margin: 0 auto;">Return to Calculator</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Top Right Corner Context Action Overlay -->
+    <div class="context-menu-popover" id="contextMenu">
+        <button onclick="triggerExchangeRateUpdate()">Update exchange rate</button>
+    </div>
+
+    <!-- Global Currencies Alphabet Lookahead Selection View Subpage Screen -->
+    <div class="currency-picker-view" id="currencyPickerView">
+        <div class="search-bar-container">
+            <button class="done-btn" onclick="dismissCurrencyPicker()">Back</button>
+            <div class="search-input-wrapper">
+                <input type="text" class="currency-search-field" id="currencySearch" placeholder="Search currency code or name...">
+            </div>
+        </div>
+        
+        <!-- Right Side Alphabetical Navigation Glider Track Index Rail -->
+        <div class="alphabet-glider-track" id="gliderTrack"></div>
+        
+        <div class="picker-master-list" id="pickerMasterList"></div>
+    </div>
+
+    <!-- History Bottom Sheet System -->
     <div class="bottom-sheet" id="historySheet">
         <div class="sheet-upper-zone" id="sheetUpperZone">
             <div class="sheet-handle"></div>
@@ -545,6 +893,7 @@
         <div class="sheet-content" id="historyContent"></div>
     </div>
 
+    <!-- Standard Native Settings Module Panel Screen Container -->
     <div class="settings-modal" id="settingsModal">
         <div class="settings-scroll-area">
             <div class="settings-header">
@@ -608,45 +957,23 @@
                 <div class="accordion-content">
                     <div class="option-item palette-opt" data-value="#ff9f0a" id="pal-orange">
                         <span>Classic Orange (Default)</span>
-                        <div>
-                            <span class="color-circle-preview" style="background-color: #ff9f0a; margin-right: 8px;"></span>
-                            <span class="checkmark">✓</span>
-                        </div>
+                        <div><span class="color-circle-preview" style="background-color: #ff9f0a; margin-right: 8px;"></span><span class="checkmark">✓</span></div>
                     </div>
                     <div class="option-item palette-opt" data-value="#0a84ff" id="pal-blue">
                         <span>Ocean Blue</span>
-                        <div>
-                            <span class="color-circle-preview" style="background-color: #0a84ff; margin-right: 8px;"></span>
-                            <span class="checkmark">✓</span>
-                        </div>
+                        <div><span class="color-circle-preview" style="background-color: #0a84ff; margin-right: 8px;"></span><span class="checkmark">✓</span></div>
                     </div>
                     <div class="option-item palette-opt" data-value="#30d158" id="pal-green">
                         <span>Emerald Green</span>
-                        <div>
-                            <span class="color-circle-preview" style="background-color: #30d158; margin-right: 8px;"></span>
-                            <span class="checkmark">✓</span>
-                        </div>
+                        <div><span class="color-circle-preview" style="background-color: #30d158; margin-right: 8px;"></span><span class="checkmark">✓</span></div>
                     </div>
                     <div class="option-item palette-opt" data-value="#bf5af2" id="pal-purple">
                         <span>Royale Purple</span>
-                        <div>
-                            <span class="color-circle-preview" style="background-color: #bf5af2; margin-right: 8px;"></span>
-                            <span class="checkmark">✓</span>
-                        </div>
+                        <div><span class="color-circle-preview" style="background-color: #bf5af2; margin-right: 8px;"></span><span class="checkmark">✓</span></div>
                     </div>
                     <div class="option-item palette-opt" data-value="#ff375f" id="pal-pink">
                         <span>Rose Pink</span>
-                        <div>
-                            <span class="color-circle-preview" style="background-color: #ff375f; margin-right: 8px;"></span>
-                            <span class="checkmark">✓</span>
-                        </div>
-                    </div>
-                    <div class="option-item palette-opt" data-value="#ff453a" id="pal-red">
-                        <span>Crimson Red</span>
-                        <div>
-                            <span class="color-circle-preview" style="background-color: #ff453a; margin-right: 8px;"></span>
-                            <span class="checkmark">✓</span>
-                        </div>
+                        <div><span class="color-circle-preview" style="background-color: #ff375f; margin-right: 8px;"></span><span class="checkmark">✓</span></div>
                     </div>
                 </div>
             </div>
@@ -660,8 +987,6 @@
                     <div class="option-item limit-option" data-value="10" id="limit-10"><span>10</span><span class="checkmark">✓</span></div>
                     <div class="option-item limit-option" data-value="20" id="limit-20"><span>20</span><span class="checkmark">✓</span></div>
                     <div class="option-item limit-option" data-value="30" id="limit-30"><span>30</span><span class="checkmark">✓</span></div>
-                    <div class="option-item limit-option" data-value="40" id="limit-40"><span>40</span><span class="checkmark">✓</span></div>
-                    <div class="option-item limit-option" data-value="50" id="limit-50"><span>50</span><span class="checkmark">✓</span></div>
                 </div>
             </div>
         </div>
@@ -684,26 +1009,158 @@
                 fullscreen: "Full-screen Mode", system: "System", dark: "Dark", light: "Light", error: "Error",
                 history: "History", noHistory: "No History Yet", histLimit: "History Limit",
                 confirmClear: "Are you sure you want to clear history?", edit: "Edit", delete: "Delete"
-            },
-            ru: {
-                settings: "Настройки", done: "Готово", theme: "Тема", languages: "Языки", display: "Экран",
-                fullscreen: "Полноэкранный режим", system: "Системная", dark: "Темная", light: "Светлая", error: "Ошибка",
-                history: "История", noHistory: "Истории пока нет", histLimit: "Лимит истории",
-                confirmClear: "Вы уверены, что хотите очистить историю?", edit: "Править", delete: "Удалить"
-            },
-            es: {
-                settings: "Ajustes", done: "Hecho", theme: "Tema", languages: "Idiomas", display: "Pantalla",
-                fullscreen: "Pantalla completa", system: "Sistema", dark: "Oscuro", light: "Claro", error: "Error",
-                history: "Historial", noHistory: "Sin historial aún", histLimit: "Límite de historial",
-                confirmClear: "¿Estás seguro de que quieres borrar el historial?", edit: "Editar", delete: "Eliminar"
-            },
-            fr: {
-                settings: "Réglages", done: "Ok", theme: "Thème", languages: "Langues", display: "Écran",
-                fullscreen: "Plein écran", system: "Système", dark: "Sombre", light: "Clair", error: "Erreur",
-                history: "Historique", noHistory: "No History Yet", histLimit: "Limite d'historique",
-                confirmClear: "Are you sure you want to clear history?", edit: "Modifier", delete: "Supprimer"
             }
         };
+
+        // Complete standard catalog array containing global ISO world currencies 
+        const GLOBAL_CURRENCIES = [
+            { code: "AED", name: "United Arab Emirates Dirham", flag: "🇦🇪", rate: 4.11 },
+            { code: "AFN", name: "Afghani", flag: "🇦🇫", rate: 78.50 },
+            { code: "ALL", name: "Albanian Lek", flag: "🇦🇱", rate: 103.40 },
+            { code: "AMD", name: "Armenian Dram", flag: "🇦🇲", rate: 432.10 },
+            { code: "ANG", name: "Neth Antilles Guilder", flag: "🇨🇼", rate: 2.01 },
+            { code: "AOA", name: "Angolan Kwanza", flag: "🇦🇴", rate: 930.20 },
+            { code: "ARS", name: "Argentine Peso", flag: "🇦🇷", rate: 1012.00 },
+            { code: "AUD", name: "Australian Dollar", flag: "🇦🇺", rate: 1.68 },
+            { code: "BBD", name: "Barbadian Dollar", flag: "🇧🇧", rate: 2.24 },
+            { code: "BDT", name: "Bangladeshi Taka", flag: "🇧🇩", rate: 131.40 },
+            { code: "BGN", name: "Bulgarian Lev", flag: "🇧🇬", rate: 1.81 },
+            { code: "BHD", name: "Bahraini Dinar", flag: "🇧🇭", rate: 0.42 },
+            { code: "BIF", name: "Burundian Franc", flag: "🇧🇮", rate: 3200.00 },
+            { code: "BMD", name: "Bermudian Dollar", flag: "🇧🇲", rate: 1.12 },
+            { code: "BND", name: "Brunei Dollar", flag: "🇧🇳", rate: 1.51 },
+            { code: "BOB", name: "Boliviano", flag: "🇧🇴", rate: 7.74 },
+            { code: "BRL", name: "Brazilian Real", flag: "🇧🇷", rate: 6.15 },
+            { code: "BSD", name: "Bahamian Dollar", flag: "🇧🇸", rate: 1.12 },
+            { code: "BWP", name: "Botswana Pula", flag: "🇧🇼", rate: 15.20 },
+            { code: "BYN", name: "Belarusian Ruble", flag: "🇧🇾", rate: 3.67 },
+            { code: "BZD", name: "Belize Dollar", flag: "🇧🇿", rate: 2.26 },
+            { code: "CAD", name: "Canadian Dollar", flag: "🇨🇦", rate: 1.54 },
+            { code: "CDF", name: "Congolese Franc", flag: "🇨🇩", rate: 3150.00 },
+            { code: "CHF", name: "Swiss Franc", flag: "🇨🇭", rate: 0.98 },
+            { code: "CLP", name: "Chilean Peso", flag: "🇨🇱", rate: 1050.00 },
+            { code: "CNY", name: "Chinese Yuan", flag: "🇨🇳", rate: 8.12 },
+            { code: "COP", name: "Colombian Peso", flag: "🇨🇴", rate: 4400.00 },
+            { code: "CRC", name: "Costa Rican Colón", flag: "🇨🇷", rate: 575.00 },
+            { code: "CUP", name: "Cuban Peso", flag: "🇨🇺", rate: 26.88 },
+            { code: "CVE", name: "Cape Verdean Escudo", flag: "🇨🇻", rate: 113.20 },
+            { code: "CZK", name: "Czech Koruna", flag: "🇨🇿", rate: 26.20 },
+            { code: "DJF", name: "Djiboutian Franc", flag: "🇩🇯", rate: 199.30 },
+            { code: "DKK", name: "Danish Krone", flag: "🇩🇰", rate: 7.64 },
+            { code: "DOP", name: "Dominican Peso", flag: "🇩🇴", rate: 67.20 },
+            { code: "DZD", name: "Algerian Dinar", flag: "🇩🇿", rate: 150.40 },
+            { code: "EGP", name: "Egyptian Pound", flag: "🇪🇬", rate: 54.10 },
+            { code: "ETB", name: "Ethiopian Birr", flag: "🇪🇹", rate: 128.50 },
+            { code: "EUR", name: "Euro", flag: "🇪🇺", rate: 1.03 },
+            { code: "FJD", name: "Fiji Dollar", flag: "🇫🇯", rate: 2.52 },
+            { code: "GBP", name: "British Pound Sterling", flag: "🇬🇧", rate: 0.87 },
+            { code: "GEL", name: "Georgian Lari", flag: "🇬🇪", rate: 3.02 },
+            { code: "GHS", name: "Ghanaian Cedi", flag: "🇬🇭", rate: 17.10 },
+            { code: "GMD", name: "Gambian Dalasi", flag: "🇬🇲", rate: 76.00 },
+            { code: "GNF", name: "Guinean Franc", flag: "🇬🇳", rate: 9650.00 },
+            { code: "GTQ", name: "Guatemalan Quetzal", flag: "🇬🇹", rate: 8.68 },
+            { code: "GYD", name: "Guyanese Dollar", flag: "🇬🇾", rate: 234.50 },
+            { code: "HKD", name: "Hong Kong Dollar", flag: "🇭🇰", rate: 8.74 },
+            { code: "HNL", name: "Honduran Lempira", flag: "🇭🇳", rate: 27.70 },
+            { code: "HRK", name: "Croatian Kuna", flag: "🇭🇷", rate: 7.76 },
+            { code: "HTG", name: "Haitian Gourde", flag: "🇭🇹", rate: 147.20 },
+            { code: "HUF", name: "Hungarian Forint", flag: "🇭🇺", rate: 412.50 },
+            { code: "IDR", name: "Indonesian Rupiah", flag: "🇮🇩", rate: 18200.00 },
+            { code: "ILS", name: "Israeli New Shekel", flag: "🇮🇱", rate: 4.14 },
+            { code: "INR", name: "Indian Rupee", flag: "🇮🇳", rate: 93.40 },
+            { code: "IQD", name: "Iraqi Dinar", flag: "🇮🇶", rate: 1460.00 },
+            { code: "IRR", name: "Iranian Rial", flag: "🇮🇷", rate: 47000.00 },
+            { code: "ISK", name: "Icelandic Króna", flag: "🇮🇸", rate: 154.20 },
+            { code: "JMD", name: "Jamaican Dollar", flag: "🇯🇲", rate: 174.10 },
+            { code: "JOD", name: "Jordanian Dinar", flag: "🇯🇴", rate: 0.79 },
+            { code: "JPY", name: "Japanese Yen", flag: "🇯🇵", rate: 168.50 },
+            { code: "KES", name: "Kenyan Shilling", flag: "🇰🇪", rate: 144.00 },
+            { code: "KGS", name: "Kyrgystani Som", flag: "🇰🇬", rate: 97.40 },
+            { code: "KHR", name: "Cambodian Riel", flag: "🇰🇭", rate: 4560.00 },
+            { code: "KMF", name: "Comorian Franc", flag: "🇰🇲", rate: 506.40 },
+            { code: "KRW", name: "South Korean Won", flag: "🇰🇷", rate: 1580.00 },
+            { code: "KWD", name: "Kuwaiti Dinar", flag: "🇰🇼", rate: 0.34 },
+            { code: "KYD", name: "Cayman Islands Dollar", flag: "🇰🇾", rate: 0.93 },
+            { code: "KZT", name: "Kazakhstani Tenge", flag: "🇰🇿", rate: 512.00 },
+            { code: "LAK", name: "Laotian Kip", flag: "🇱🇦", rate: 24000.00 },
+            { code: "LBP", name: "Lebanese Pound", flag: "🇱🇧", rate: 100000.00 },
+            { code: "LKR", name: "Sri Lankan Rupee", flag: "🇱🇰", rate: 334.00 },
+            { code: "LRD", name: "Liberian Dollar", flag: "🇱🇷", rate: 215.00 },
+            { code: "LSL", name: "Lesotho Loti", flag: "🇱🇸", rate: 20.80 },
+            { code: "LYD", name: "Libyan Dinar", flag: "🇱🇾", rate: 5.42 },
+            { code: "MAD", name: "Moroccan Dirham", flag: "🇲🇦", rate: 11.25 },
+            { code: "MDL", name: "Moldovan Leu", flag: "🇲🇩", rate: 19.80 },
+            { code: "MGA", name: "Malagasy Ariary", flag: "🇲🇬", rate: 5100.00 },
+            { code: "MKD", name: "Macedonian Denar", flag: "🇲🇰", rate: 63.40 },
+            { code: "MMK", name: "Myanmar Kyat", flag: "🇲🇲", rate: 2350.00 },
+            { code: "MNT", name: "Mongolian Tughrik", flag: "🇲🇳", rate: 3850.00 },
+            { code: "MOP", name: "Macanese Pataca", flag: "🇲🇴", rate: 9.01 },
+            { code: "MRU", name: "Mauritanian Ouguiya", flag: "🇲🇷", rate: 44.50 },
+            { code: "MUR", name: "Mauritian Rupee", flag: "🇲🇺", rate: 51.40 },
+            { code: "MVR", name: "Maldivian Rufiyaa", flag: "🇲🇻", rate: 17.26 },
+            { code: "MWK", name: "Malawian Kwacha", flag: "🇲🇼", rate: 1950.00 },
+            { code: "MXN", name: "Mexican Peso", flag: "🇲🇽", rate: 22.40 },
+            { code: "MYR", name: "Malaysian Ringgit", flag: "🇲🇾", rate: 4.95 },
+            { code: "MZN", name: "Mozambican Metical", flag: "🇲🇿", rate: 71.50 },
+            { code: "NAD", name: "Namibian Dollar", flag: "🇳🇦", rate: 20.80 },
+            { code: "NGN", name: "Nigerian Naira", flag: "🇳🇬", rate: 1640.00 },
+            { code: "NIO", name: "Nicaraguan Córdoba", flag: "🇳🇮", rate: 41.20 },
+            { code: "NOK", name: "Norwegian Krone", flag: "🇳🇴", rate: 12.10 },
+            { code: "NPR", name: "Nepalese Rupee", flag: "🇳🇵", rate: 149.50 },
+            { code: "NZD", name: "New Zealand Dollar", flag: "🇳🇿", rate: 1.89 },
+            { code: "OMR", name: "Omani Rial", flag: "🇴🇲", rate: 0.43 },
+            { code: "PAB", name: "Panamanian Balboa", flag: "🇵🇦", rate: 1.12 },
+            { code: "PEN", name: "Peruvian Sol", flag: "🇵🇪", rate: 4.18 },
+            { code: "PGK", name: "Papua New Guinean Kina", flag: "🇵🇬", rate: 4.45 },
+            { code: "PHP", name: "Philippine Peso", flag: "🇵🇭", rate: 65.20 },
+            { code: "PKR", name: "Pakistani Rupee", flag: "🇵🇰", rate: 312.00 },
+            { code: "PLN", name: "Polish Złoty", flag: "🇵🇱", rate: 4.41 },
+            { code: "PYG", name: "Paraguayan Guaraní", flag: "🇵🇾", rate: 8700.00 },
+            { code: "QAR", name: "Qatari Riyal", flag: "🇶🇦", rate: 4.08 },
+            { code: "RON", name: "Romanian Leu", flag: "🇷🇴", rate: 5.12 },
+            { code: "RSD", name: "Serbian Dinar", flag: "🇷🇸", rate: 120.50 },
+            { code: "RUB", name: "Russian Ruble", flag: "🇷🇺", rate: 104.50 },
+            { code: "RWF", name: "Rwandan Franc", flag: "🇷🇼", rate: 1460.00 },
+            { code: "SAR", name: "Saudi Riyal", flag: "🇸🇦", rate: 4.20 },
+            { code: "SBD", name: "Solomon Islands Dollar", flag: "🇸🇧", rate: 9.50 },
+            { code: "SCR", name: "Seychellois Rupee", flag: "🇸🇨", rate: 15.40 },
+            { code: "SDG", name: "Sudanese Pound", flag: "🇸🇩", rate: 670.00 },
+            { code: "SEK", name: "Swedish Krona", flag: "🇸🇪", rate: 11.85 },
+            { code: "SGD", name: "Singapore Dollar", flag: "🇸🇬", rate: 1.51 },
+            { code: "SLL", name: "Sierra Leonean Leone", flag: "🇸🇱", rate: 25000.00 },
+            { code: "SOS", name: "Somali Shilling", flag: "🇸🇴", rate: 640.00 },
+            { code: "SRD", name: "Surinamese Dollar", flag: "🇸🇷", rate: 38.20 },
+            { code: "STN", name: "São Tomé Dobra", flag: "🇸🇹", rate: 25.20 },
+            { code: "SVC", name: "Salvadoran Colón", flag: "🇸🇻", rate: 9.80 },
+            { code: "SYP", name: "Syrian Pound", flag: "🇸🇾", rate: 14500.00 },
+            { code: "SZL", name: "Swazi Lilangeni", flag: "🇸🇿", rate: 20.80 },
+            { code: "THB", name: "Thai Baht", flag: "🇹🇭", rate: 37.80 },
+            { code: "TJS", name: "Tajikistani Somoni", flag: "🇹🇯", rate: 12.20 },
+            { code: "TMT", name: "Turkmenistani Manat", flag: "🇹🇲", rate: 3.92 },
+            { code: "TND", name: "Tunisian Dinar", flag: "🇹🇳", rate: 3.52 },
+            { code: "TOP", name: "Tongan Paʻanga", flag: "🇹🇴", rate: 2.64 },
+            { code: "TRY", name: "Turkish Lira", flag: "🇹🇷", rate: 38.40 },
+            { code: "TTD", name: "Trinidad and Tobago Dollar", flag: "🇹🇹", rate: 7.60 },
+            { code: "TWD", name: "New Taiwan Dollar", flag: "🇹🇼", rate: 36.20 },
+            { code: "TZS", name: "Tanzanian Shilling", flag: "🇹🇿", rate: 2950.00 },
+            { code: "UAH", name: "Ukrainian Hryvnia", flag: "🇺🇦", rate: 46.20 },
+            { code: "UGX", name: "Ugandan Shilling", flag: "🇺🇬", rate: 4150.00 },
+            { code: "USD", name: "United States Dollar", flag: "🇺🇸", rate: 1.12 },
+            { code: "UYU", name: "Uruguayan Peso", flag: "🇺🇾", rate: 48.10 },
+            { code: "UZS", name: "Uzbekistani Som", flag: "🇺🇿", rate: 14200.00 },
+            { code: "VES", name: "Venezuelan Bolívar", flag: "🇻🇪", rate: 51.40 },
+            { code: "VND", name: "Vietnamese Đồng", flag: "🇻🇳", rate: 28500.00 },
+            { code: "VUV", name: "Vanuatu Vatu", flag: "🇻🇺", rate: 134.00 },
+            { code: "WST", name: "Samoan Tālā", flag: "🇼🇸", rate: 3.10 },
+            { code: "XAF", name: "Central African CFA Franc", flag: "🇨🇲", rate: 675.60 },
+            { code: "XCD", name: "East Caribbean Dollar", flag: "🇩🇲", rate: 3.02 },
+            { code: "XOF", name: "West African CFA Franc", flag: "🇸🇳", rate: 675.60 },
+            { code: "XPF", name: "CFP Franc", flag: "🇵🇫", rate: 123.00 },
+            { code: "YER", name: "Yemeni Rial", flag: "🇾🇪", rate: 280.40 },
+            { code: "ZAR", name: "South African Rand", flag: "🇿🇦", rate: 20.80 },
+            { code: "ZMW", name: "Zambian Kwacha", flag: "🇿🇲", rate: 29.50 },
+            { code: "ZWL", name: "Zimbabwean Dollar", flag: "🇿🇼", rate: 361.90 }
+        ];
 
         let currentInput = "0";
         let previousInput = null;
@@ -713,31 +1170,57 @@
         let isEditMode = false;
         let selectedItems = new Set();
 
+        // Mode system properties configuration
+        let activeAppMode = "calculator"; // or 'currency'
+        let selectedSlotIndex = 0;
+        let activeSlotsData = [
+            { code: "GBP", flag: "🇬🇧", name: "British Pound Sterling" },
+            { code: "USD", flag: "🇺🇸", name: "United States Dollar" },
+            { code: "EUR", flag: "🇪🇺", name: "Euro (System Default)" }
+        ];
+        let slotsNumericValues = [100, 112, 103]; // Live reactive synchronized value storage slots
+        let targetedActivePickerSlot = 0;
+
         const displayEl = document.getElementById("display");
         const exprTrailEl = document.getElementById("exprTrail");
         const clearBtnEl = document.getElementById("clear-btn");
+        const calcActionBtn = document.getElementById("calcActionButton");
 
-        function getActiveLangKey() {
-            const savedLang = localStorage.getItem("calculator-lang") || "system";
-            if (savedLang === "system") {
-                const browserLang = navigator.language.slice(0, 2);
-                return i18n[browserLang] ? browserLang : "en";
+        // Dynamically resolve and override default slot index matching native system currency locale
+        function autoConfigureSystemDefaultSlot() {
+            try {
+                const formatter = new Intl.NumberFormat(undefined, { style: 'currency', currency: 'USD' });
+                const resolvedCode = formatter.resolvedOptions().currency || "EUR";
+                const matches = GLOBAL_CURRENCIES.find(c => c.code === resolvedCode);
+                if (matches) {
+                    activeSlotsData[2] = { code: matches.code, flag: matches.flag, name: matches.name + " (System)" };
+                }
+            } catch (e) {
+                // Fallback to baseline Euro configuration defaults gracefully
             }
-            return savedLang;
         }
+        autoConfigureSystemDefaultSlot();
 
         function updateDisplay() {
-            const langKey = getActiveLangKey();
-            let formattedValue = currentInput;
-            
-            if (currentInput === "Error" || currentInput === "-Error") {
-                formattedValue = currentInput.startsWith("-") ? "-" + i18n[langKey].error : i18n[langKey].error;
+            if (activeAppMode === "calculator") {
+                let formattedValue = currentInput;
+                if (currentInput === "Error" || currentInput === "-Error") {
+                    formattedValue = i18n.en.error;
+                } else {
+                    const parts = currentInput.split('.');
+                    parts[0] = Number(parts[0]).toLocaleString('en-US', { maximumFractionDigits: 0 });
+                    formattedValue = parts.join('.');
+                }
+                displayEl.innerText = formattedValue;
             } else {
-                const parts = currentInput.split('.');
-                parts[0] = Number(parts[0]).toLocaleString('en-US', { maximumFractionDigits: 0 });
-                formattedValue = parts.join('.');
+                // Populate currency views values dynamically
+                for (let i = 0; i < 3; i++) {
+                    const outputNode = document.getElementById(`val-slot-${i}`);
+                    if (outputNode) {
+                        outputNode.innerText = Number(slotsNumericValues[i].toFixed(2)).toLocaleString('en-US');
+                    }
+                }
             }
-            displayEl.innerText = formattedValue;
             clearBtnEl.innerText = (currentInput === "0" && !previousInput) ? "AC" : "C";
         }
 
@@ -751,6 +1234,11 @@
                 }
             }
             removeActiveOperatorHighlight();
+            
+            if (activeAppMode === "currency") {
+                slotsNumericValues[selectedSlotIndex] = parseFloat(currentInput) || 0;
+                synchronizeCurrencyCalculations(selectedSlotIndex);
+            }
             updateDisplay();
         }
 
@@ -758,6 +1246,11 @@
             if (shouldResetDisplay || currentInput === "0" || currentInput === "Error") return;
             currentInput = currentInput.length > 1 ? currentInput.slice(0, -1) : "0";
             if (currentInput === "-") currentInput = "0";
+            
+            if (activeAppMode === "currency") {
+                slotsNumericValues[selectedSlotIndex] = parseFloat(currentInput) || 0;
+                synchronizeCurrencyCalculations(selectedSlotIndex);
+            }
             updateDisplay();
         }
 
@@ -779,23 +1272,189 @@
             exprString = "";
             exprTrailEl.innerText = "";
             removeActiveOperatorHighlight();
+            
+            if (activeAppMode === "currency") {
+                slotsNumericValues = [0, 0, 0];
+            }
             updateDisplay();
         }
 
         function toggleSign() {
             if (currentInput !== "0") {
                 currentInput = currentInput.startsWith("-") ? currentInput.slice(1) : "-" + currentInput;
+                if (activeAppMode === "currency") {
+                    slotsNumericValues[selectedSlotIndex] = parseFloat(currentInput) || 0;
+                    synchronizeCurrencyCalculations(selectedSlotIndex);
+                }
                 updateDisplay();
             }
         }
 
         function inputPercent() {
             currentInput = (parseFloat(currentInput) / 100).toString();
+            if (activeAppMode === "currency") {
+                slotsNumericValues[selectedSlotIndex] = parseFloat(currentInput) || 0;
+                synchronizeCurrencyCalculations(selectedSlotIndex);
+            }
             updateDisplay();
         }
 
+        function focusCurrencySlot(slotIdx) {
+            selectedSlotIndex = slotIdx;
+            document.querySelectorAll(".currency-row-box").forEach((b, idx) => {
+                b.classList.toggle("active-focus", idx === slotIdx);
+            });
+            currentInput = slotsNumericValues[slotIdx].toString();
+            shouldResetDisplay = true;
+        }
+
+        function synchronizeCurrencyCalculations(pivotIndex) {
+            const pivotCode = activeSlotsData[pivotIndex].code;
+            const pivotAmount = slotsNumericValues[pivotIndex];
+            const pivotMeta = GLOBAL_CURRENCIES.find(c => c.code === pivotCode);
+            if (!pivotMeta) return;
+
+            const baseUsdValue = pivotAmount / pivotMeta.rate;
+
+            for (let i = 0; i < 3; i++) {
+                if (i === pivotIndex) continue;
+                const targetCode = activeSlotsData[i].code;
+                const targetMeta = GLOBAL_CURRENCIES.find(c => c.code === targetCode);
+                if (targetMeta) {
+                    slotsNumericValues[i] = baseUsdValue * targetMeta.rate;
+                }
+            }
+        }
+
+        // Context drop overlay trigger menu parameters
+        const ctxMenu = document.getElementById("contextMenu");
+        document.getElementById("openContextTrigger").onclick = (e) => {
+            e.stopPropagation();
+            ctxMenu.style.display = ctxMenu.style.display === "flex" ? "none" : "flex";
+        };
+        window.addEventListener("click", () => { ctxMenu.style.display = "none"; });
+
+        function triggerExchangeRateUpdate() {
+            ctxMenu.style.display = "none";
+            const indicator = document.getElementById("pullIndicator");
+            indicator.innerText = "Updating Live Conversion Exchange Tables...";
+            indicator.classList.add("visible");
+            
+            setTimeout(() => {
+                indicator.classList.remove("visible");
+                indicator.innerText = "Release to Update Exchange Rates...";
+                synchronizeCurrencyCalculations(selectedSlotIndex);
+                updateDisplay();
+            }, 1200);
+        }
+
+        // Pull down drag gesture logic 
+        let pullStartY = 0;
+        const pullContainer = document.getElementById("pullDownContainer");
+        pullContainer.addEventListener("touchstart", (e) => {
+            pullStartY = e.touches[0].clientY;
+        }, { passive: true });
+
+        pullContainer.addEventListener("touchend", (e) => {
+            const currentY = e.changedTouches[0].clientY;
+            if (currentY - pullStartY > 130) { 
+                triggerExchangeRateUpdate();
+            }
+        });
+
+        // Search match rendering system
+        function launchCurrencyPicker(slotIdx, event) {
+            if(event) event.stopPropagation();
+            targetedActivePickerSlot = slotIdx;
+            document.getElementById("currencyPickerView").classList.add("active");
+            buildMasterPickerList();
+        }
+
+        function dismissCurrencyPicker() {
+            document.getElementById("currencyPickerView").classList.remove("active");
+        }
+
+        function selectPickedCurrency(code) {
+            const meta = GLOBAL_CURRENCIES.find(c => c.code === code);
+            if (meta) {
+                activeSlotsData[targetedActivePickerSlot] = {
+                    code: meta.code,
+                    flag: meta.flag,
+                    name: meta.name
+                };
+                // Re-render UI labels
+                document.getElementById(`flag-slot-${targetedActivePickerSlot}`).innerText = meta.flag;
+                document.getElementById(`code-slot-${targetedActivePickerSlot}`).innerText = meta.code;
+                document.getElementById(`label-slot-${targetedActivePickerSlot}`).innerText = meta.name;
+                
+                synchronizeCurrencyCalculations(selectedSlotIndex);
+                updateDisplay();
+            }
+            dismissCurrencyPicker();
+        }
+
+        function buildMasterPickerList(filterText = "") {
+            const container = document.getElementById("pickerMasterList");
+            const glider = document.getElementById("gliderTrack");
+            container.innerHTML = "";
+            glider.innerHTML = "";
+
+            let sorted = [...GLOBAL_CURRENCIES].sort((a, b) => a.name.localeCompare(b.name));
+            if (filterText) {
+                sorted = sorted.filter(c => 
+                    c.code.toLowerCase().includes(filterText.toLowerCase()) || 
+                    c.name.toLowerCase().includes(filterText.toLowerCase())
+                );
+            }
+
+            // Segment sections by character keys
+            let sectionsMap = {};
+            sorted.forEach(item => {
+                let initial = item.name.charAt(0).toUpperCase();
+                if (!sectionsMap[initial]) sectionsMap[initial] = [];
+                sectionsMap[initial].push(item);
+            });
+
+            // Populate unique alphabet shortcuts track sidebar elements
+            Object.keys(sectionsMap).sort().forEach(letter => {
+                const trackLet = document.createElement("div");
+                trackLet.className = "glider-letter";
+                trackLet.innerText = letter;
+                trackLet.onclick = () => {
+                    const targetSection = document.getElementById(`sect-hdr-${letter}`);
+                    if (targetSection) targetSection.scrollIntoView();
+                };
+                glider.appendChild(trackLet);
+
+                const header = document.createElement("div");
+                header.className = "picker-section-header";
+                header.id = `sect-hdr-${letter}`;
+                header.innerText = letter;
+                container.appendChild(header);
+
+                sectionsMap[letter].forEach(curr => {
+                    const row = document.createElement("div");
+                    row.className = "picker-row";
+                    row.onclick = () => selectPickedCurrency(curr.code);
+                    row.innerHTML = `
+                        <div class="picker-row-left">
+                            <span>${curr.flag}</span>
+                            <span>${curr.name} <span class="picker-currency-label">${curr.code}</span></span>
+                        </div>
+                        <span style="color: #8e8e93; font-size:14px;">▶</span>
+                    `;
+                    container.appendChild(row);
+                });
+            });
+        }
+
+        document.getElementById("currencySearch").addEventListener("input", function() {
+            buildMasterPickerList(this.value);
+        });
+
         document.querySelectorAll('.op-btn').forEach(btn => {
             btn.addEventListener('click', function() {
+                if (activeAppMode === "currency") return; // Binary operators disabled in conversion dashboard view context
                 const op = this.getAttribute('data-op');
                 removeActiveOperatorHighlight();
                 this.classList.add('active');
@@ -823,6 +1482,7 @@
         }
 
         function calculate() {
+            if (activeAppMode === "currency") return;
             if (!activeOperator || previousInput === null) return;
 
             const prev = parseFloat(previousInput);
@@ -852,6 +1512,37 @@
             updateDisplay();
         }
 
+        // Toggle app views using the requested Settings transition animation style
+        const cModal = document.getElementById("currencyModal");
+        
+        document.getElementById("openCurrency").onclick = () => {
+            activeAppMode = "currency";
+            // Swap workspace display blocks
+            document.getElementById("standardCalculatorView").style.display = "none";
+            document.getElementById("currencyCalculatorView").style.display = "block";
+            calcActionBtn.style.opacity = "0.3"; // Disable operator execution targets visually
+            
+            // Re-render layout values safely
+            focusCurrencySlot(0);
+            updateDisplay();
+            
+            // Trigger same clean slide navigation transformation animation system as settings modal
+            cModal.classList.add("active");
+        };
+
+        function closeCurrencyWorkspace() {
+            activeAppMode = "calculator";
+            document.getElementById("standardCalculatorView").style.display = "block";
+            document.getElementById("currencyCalculatorView").style.display = "none";
+            calcActionBtn.style.opacity = "1";
+            
+            cModal.classList.remove("active");
+            currentInput = "0";
+            clearDisplay();
+        }
+
+        document.getElementById("closeCurrencyView").onclick = closeCurrencyWorkspace;
+
         function toggleAccordion(containerId) {
             const container = document.getElementById(containerId);
             const isExpanded = container.classList.contains('expanded');
@@ -860,11 +1551,7 @@
                 if(c.id !== containerId) c.classList.remove('expanded');
             });
             
-            if (isExpanded) {
-                container.classList.remove('expanded');
-            } else {
-                container.classList.add('expanded');
-            }
+            container.classList.toggle('expanded', !isExpanded);
         }
 
         function closeAllAccordions() {
@@ -887,14 +1574,13 @@
         }
 
         function renderHistory() {
-            const langKey = getActiveLangKey();
             const history = JSON.parse(localStorage.getItem("calc-history") || "[]");
             const container = document.getElementById("historyContent");
             const actionBtn = document.getElementById("btnHistAction");
             const editBtn = document.getElementById("btnHistEdit");
             
             if (history.length === 0) {
-                container.innerHTML = `<div class="no-history-msg">${i18n[langKey].noHistory}</div>`;
+                container.innerHTML = `<div class="no-history-msg">${i18n.en.noHistory}</div>`;
                 editBtn.style.visibility = "hidden";
                 actionBtn.style.opacity = "0.3";
                 actionBtn.style.pointerEvents = "none";
@@ -932,8 +1618,7 @@
         function exitEditMode() {
             isEditMode = false;
             selectedItems.clear();
-            const data = i18n[getActiveLangKey()];
-            document.getElementById("btnHistEdit").innerText = data.edit;
+            document.getElementById("btnHistEdit").innerText = i18n.en.edit;
             document.getElementById("btnHistAction").innerText = "✕";
             document.getElementById("btnHistAction").style.color = "";
             renderHistory();
@@ -954,11 +1639,10 @@
         };
 
         document.getElementById("btnHistEdit").onclick = function() {
-            const data = i18n[getActiveLangKey()];
             if (!isEditMode) {
                 isEditMode = true;
-                this.innerText = data.done;
-                document.getElementById("btnHistAction").innerText = data.delete;
+                this.innerText = i18n.en.done;
+                document.getElementById("btnHistAction").innerText = i18n.en.delete;
                 document.getElementById("btnHistAction").style.color = "#ff3b30";
             } else {
                 exitEditMode();
@@ -995,17 +1679,10 @@
         });
 
         const sModal = document.getElementById("settingsModal");
-        document.getElementById("openSettings").onclick = () => {
-            sModal.classList.add("active");
-        };
-        document.getElementById("closeSettings").onclick = () => { 
-            sModal.classList.remove("active"); 
-            closeAllAccordions(); 
-        };
+        document.getElementById("openSettings").onclick = () => { sModal.classList.add("active"); };
+        document.getElementById("closeSettings").onclick = () => { sModal.classList.remove("active"); closeAllAccordions(); };
 
-        document.getElementById("btnConfirmNo").onclick = () => {
-            document.getElementById("dialogOverlay").style.display = "none";
-        };
+        document.getElementById("btnConfirmNo").onclick = () => { document.getElementById("dialogOverlay").style.display = "none"; };
         document.getElementById("btnConfirmYes").onclick = () => {
             localStorage.setItem("calc-history", "[]");
             document.getElementById("dialogOverlay").style.display = "none";
@@ -1017,7 +1694,6 @@
             document.querySelectorAll(".theme-opt").forEach(item => item.classList.remove("selected"));
             const targetNode = document.getElementById(`opt-${themeValue}`);
             if(targetNode) targetNode.classList.add("selected");
-            
             document.getElementById("lbl-theme-val").innerText = themeValue.charAt(0).toUpperCase() + themeValue.slice(1);
 
             if (themeValue === "system") {
@@ -1034,65 +1710,16 @@
             option.addEventListener("click", function() { applyTheme(this.getAttribute("data-value")); });
         });
 
-        function applyLanguage(langValue) {
-            document.querySelectorAll(".lang-option").forEach(item => item.classList.remove("selected"));
-            const targetNode = document.getElementById(`lang-${langValue}`);
-            if(targetNode) targetNode.classList.add("selected");
-            localStorage.setItem("calculator-lang", langValue);
-
-            const activeKey = getActiveLangKey();
-            const data = i18n[activeKey];
-            
-            const nativeLabels = { system: data.system, ru: "Russian", es: "Spanish", fr: "French" };
-            document.getElementById("lbl-lang-val").innerText = nativeLabels[langValue] || data.system;
-
-            document.getElementById("title-settings").innerText = data.settings;
-            document.getElementById("closeSettings").innerText = data.done;
-            document.getElementById("title-history").innerText = data.history;
-            document.getElementById("sub-theme").innerText = data.theme;
-            document.getElementById("sub-lang").innerText = data.languages;
-            document.getElementById("sub-display").innerText = data.display;
-            document.getElementById("txt-fullscreen").innerText = data.fullscreen;
-            document.getElementById("sub-hist-limit").innerText = data.histLimit;
-            document.getElementById("txt-confirm-msg").innerText = data.confirmClear;
-            document.getElementById("txt-sys-theme").innerText = data.system;
-            document.getElementById("txt-dark-theme").innerText = data.dark;
-            document.getElementById("txt-light-theme").innerText = data.light;
-            document.getElementById("txt-sys-lang").innerText = data.system;
-            document.getElementById("btnHistEdit").innerText = isEditMode ? data.done : data.edit;
-
-            renderHistory();
-            updateDisplay();
-            closeAllAccordions();
-        }
-
-        document.querySelectorAll(".lang-option").forEach(option => {
-            option.addEventListener("click", function() { applyLanguage(this.getAttribute("data-value")); });
-        });
-
-        // FORCE FULL-SCREEN configuration state preservation loop handlers
-        function enforceSavedDisplayMode() {
-            const targetState = localStorage.getItem("calculator-fullscreen");
-            if (targetState === "true" && !document.fullscreenElement) {
-                document.documentElement.requestFullscreen().catch(() => {});
-            }
-        }
-
         function applyDisplayMode(isFull, isInitRun = false) {
             document.querySelectorAll(".disp-opt").forEach(item => item.classList.remove("selected"));
-            
             if (isFull === "true") {
                 document.getElementById("disp-full").classList.add("selected");
                 document.getElementById("lbl-display-val").innerText = "Full-screen Mode";
-                if (!document.fullscreenElement) {
-                    document.documentElement.requestFullscreen().catch(() => {});
-                }
+                if (!document.fullscreenElement) document.documentElement.requestFullscreen().catch(() => {});
             } else {
                 document.getElementById("disp-normal").classList.add("selected");
                 document.getElementById("lbl-display-val").innerText = "Normal Window";
-                if (document.fullscreenElement) {
-                    document.exitFullscreen().catch(() => {});
-                }
+                if (document.fullscreenElement) document.exitFullscreen().catch(() => {});
             }
             localStorage.setItem("calculator-fullscreen", isFull);
             if(!isInitRun) closeAllAccordions();
@@ -1102,51 +1729,28 @@
             option.addEventListener("click", function() { applyDisplayMode(this.getAttribute("data-value")); });
         });
 
-        // Enforce state match dynamically on interaction handlers if container unmount dropped state
-        window.addEventListener("click", enforceSavedDisplayMode, { passive: true });
-        window.addEventListener("touchstart", enforceSavedDisplayMode, { passive: true });
-
-        document.addEventListener("fullscreenchange", () => {
-            const currentSetting = localStorage.getItem("calculator-fullscreen") === "true";
-            if (!document.fullscreenElement && currentSetting) {
-                document.querySelectorAll(".disp-opt").forEach(item => item.classList.remove("selected"));
-                document.getElementById("disp-full").classList.add("selected");
-            }
-        });
-
         function applyColorPalette(hexColor, isInitRun = false) {
             document.querySelectorAll(".palette-opt").forEach(item => item.classList.remove("selected"));
-            
             const targetOpt = document.querySelector(`.palette-opt[data-value="${hexColor}"]`);
             if (targetOpt) {
                 targetOpt.classList.add("selected");
                 document.getElementById("lbl-palette-val").innerText = targetOpt.querySelector("span").innerText.split(" (")[0];
             }
-            
             document.documentElement.style.setProperty('--orange-btn', hexColor);
             localStorage.setItem("calculator-palette", hexColor);
             if(!isInitRun) closeAllAccordions();
         }
 
         document.querySelectorAll(".palette-opt").forEach(option => {
-            option.addEventListener("click", function() {
-                applyColorPalette(this.getAttribute("data-value"));
-            });
+            option.addEventListener("click", function() { applyColorPalette(this.getAttribute("data-value")); });
         });
 
         function applyLimit(limitValue) {
             document.querySelectorAll(".limit-option").forEach(item => item.classList.remove("selected"));
             const targetNode = document.getElementById(`limit-${limitValue}`);
             if(targetNode) targetNode.classList.add("selected");
-            
             document.getElementById("lbl-limit-val").innerText = limitValue;
             localStorage.setItem("calc-history-limit", limitValue);
-            
-            let history = JSON.parse(localStorage.getItem("calc-history") || "[]");
-            if (history.length > parseInt(limitValue)) {
-                history = history.slice(0, parseInt(limitValue));
-                localStorage.setItem("calc-history", JSON.stringify(history));
-            }
             closeAllAccordions();
         }
 
@@ -1155,10 +1759,10 @@
         });
 
         applyTheme(localStorage.getItem("calculator-theme") || "system");
-        applyLanguage(localStorage.getItem("calculator-lang") || "system");
         applyDisplayMode(localStorage.getItem("calculator-fullscreen") || "false", true);
         applyColorPalette(localStorage.getItem("calculator-palette") || "#ff9f0a", true);
         applyLimit(localStorage.getItem("calc-history-limit") || "10");
+        updateDisplay();
     </script>
 </body>
 </html>
