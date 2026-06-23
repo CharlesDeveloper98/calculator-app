@@ -1,127 +1,173 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="liquid">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>iOS Calculator</title>
+    <title>Premium Full-Screen Calculator</title>
     <style>
         * {
             box-sizing: border-box;
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            margin: 0;
+            padding: 0;
         }
 
-        body {
-            margin: 0;
+        /* LIQUID GLASS THEME (Default) */
+        [data-theme="liquid"] body {
+            background: linear-gradient(135deg, #ff007f, #7f00ff, #00f0ff);
+            background-size: 300% 300%;
+            animation: fluidBg 10s ease infinite;
+        }
+        [data-theme="liquid"] .calc-container {
+            background: rgba(255, 255, 255, 0.08); 
+            backdrop-filter: blur(20px); 
+            -webkit-backdrop-filter: blur(20px);
+        }
+        [data-theme="liquid"] .display {
+            color: #ffffff;
+            text-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        }
+        [data-theme="liquid"] button {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            color: #ffffff;
+        }
+        [data-theme="liquid"] button.btn-operator { background: rgba(255, 159, 10, 0.35); border-color: rgba(255, 159, 10, 0.4); }
+        [data-theme="liquid"] button.btn-utility { background: rgba(255, 255, 255, 0.2); }
+
+        /* CLASSIC DARK THEME */
+        [data-theme="dark"] body {
             background-color: #000000;
+        }
+        [data-theme="dark"] .calc-container {
+            background: #000000;
+        }
+        [data-theme="dark"] .display {
+            color: #ffffff;
+        }
+        [data-theme="dark"] button.btn-number { background-color: #333333; color: #ffffff; }
+        [data-theme="dark"] button.btn-utility { background-color: #a5a5a5; color: #000000; }
+        [data-theme="dark"] button.btn-operator { background-color: #ff9f0a; color: #ffffff; }
+
+        @keyframes fluidBg {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* Force layout to fully contain and fill the phone space */
+        body {
             display: flex;
             justify-content: center;
-            align-items: flex-end;
+            align-items: center;
             height: 100vh;
-            padding-bottom: 30px;
+            width: 100vw;
             overflow: hidden;
+            transition: background 0.4s ease;
         }
 
         .calc-container {
             width: 100%;
-            max-width: 400px;
-            padding: 0 20px;
+            height: 100%;
             display: flex;
             flex-direction: column;
+            justify-content: flex-end;
+            padding: 40px 24px 30px 24px;
+            transition: background 0.4s ease;
         }
 
-        /* Screen Display Layout */
+        /* Floating Theme Switcher Button */
+        .theme-toggle {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            padding: 10px 16px;
+            border-radius: 20px;
+            background: rgba(255, 255, 255, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            color: white;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            z-index: 10;
+        }
+
+        [data-theme="dark"] .theme-toggle {
+            background: #222;
+            border-color: #444;
+        }
+
+        /* Screen Display */
         .display {
-            color: #ffffff;
-            font-size: 80px;
+            font-size: 75px;
             font-weight: 300;
             text-align: right;
-            padding: 10px 15px;
-            margin-bottom: 15px;
+            padding: 10px;
+            margin-bottom: 20px;
             overflow: hidden;
             text-overflow: ellipsis;
             white-space: nowrap;
         }
 
-        /* 4x5 Button Pad Grid */
+        /* Perfectly proportioned Grid Pad */
         .grid {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
-            gap: 12px;
+            gap: 16px;
+            width: 100%;
         }
 
-        /* Standard round button rules */
         button {
             border: none;
             outline: none;
-            aspect-ratio: 1; /* Makes width and height exactly equal */
+            aspect-ratio: 1;
             border-radius: 50%;
-            font-size: 32px;
+            font-size: 30px;
             font-weight: 400;
             cursor: pointer;
             display: flex;
             justify-content: center;
             align-items: center;
-            transition: opacity 0.1s ease;
+            transition: all 0.2s ease;
             user-select: none;
         }
 
         button:active {
-            opacity: 0.6;
-        }
-
-        /* Light Gray Utility Accent Buttons (Top Row) */
-        .btn-utility {
-            background-color: #a5a5a5;
-            color: #000000;
-            font-size: 28px;
-        }
-
-        /* Dark Charcoal Number Buttons */
-        .btn-number {
-            background-color: #333333;
-            color: #ffffff;
-        }
-
-        /* Vibrant Orange Math Operator Buttons */
-        .btn-operator {
-            background-color: #ff9f0a;
-            color: #ffffff;
-            font-size: 36px;
+            opacity: 0.5;
+            transform: scale(0.95);
         }
     </style>
 </head>
 <body>
 
+<button class="theme-toggle" onclick="toggleTheme()">🌓 Switch Theme</button>
+
 <div class="calc-container">
-    <!-- Huge white readout text -->
     <div class="display" id="screen">0</div>
 
     <div class="grid">
-        <!-- Row 1 -->
         <button class="btn-utility" onclick="backspace()">⌫</button>
         <button class="btn-utility" onclick="clearScreen()">AC</button>
         <button class="btn-utility" onclick="percentage()">%</button>
         <button class="btn-operator" onclick="press('/')">÷</button>
 
-        <!-- Row 2 -->
         <button class="btn-number" onclick="press('7')">7</button>
         <button class="btn-number" onclick="press('8')">8</button>
         <button class="btn-number" onclick="press('9')">9</button>
         <button class="btn-operator" onclick="press('*')">×</button>
 
-        <!-- Row 3 -->
         <button class="btn-number" onclick="press('4')">4</button>
         <button class="btn-number" onclick="press('5')">5</button>
         <button class="btn-number" onclick="press('6')">6</button>
         <button class="btn-operator" onclick="press('-')">−</button>
 
-        <!-- Row 4 -->
         <button class="btn-number" onclick="press('1')">1</button>
         <button class="btn-number" onclick="press('2')">2</button>
         <button class="btn-number" onclick="press('3')">3</button>
         <button class="btn-operator" onclick="press('+')">+</button>
 
-        <!-- Row 5 -->
         <button class="btn-number" onclick="toggleSign()">+/-</button>
         <button class="btn-number" onclick="press('0')">0</button>
         <button class="btn-number" onclick="press('.')">.</button>
@@ -138,11 +184,8 @@
     }
 
     function press(value) {
-        // Prevent stacking calculation symbols into broken syntax expressions
         const operators = ['+', '-', '*', '/'];
-        if (operators.includes(value) && operators.includes(currentInput.slice(-1))) {
-            return; 
-        }
+        if (operators.includes(value) && operators.includes(currentInput.slice(-1))) return;
 
         if (currentInput === "0" && !operators.includes(value) && value !== '.') {
             currentInput = value;
@@ -168,8 +211,7 @@
 
     function percentage() {
         try {
-            let result = eval(currentInput) / 100;
-            currentInput = String(result);
+            currentInput = String(eval(currentInput) / 100);
             updateDisplay();
         } catch {
             currentInput = "Error";
@@ -179,25 +221,26 @@
 
     function toggleSign() {
         if (currentInput !== "0" && currentInput !== "Error") {
-            if (currentInput.startsWith('-')) {
-                currentInput = currentInput.slice(1);
-            } else {
-                currentInput = '-' + currentInput;
-            }
+            currentInput = currentInput.startsWith('-') ? currentInput.slice(1) : '-' + currentInput;
             updateDisplay();
         }
     }
 
     function calculate() {
         try {
-            // Evaluates and resolves math operations safely
-            let result = eval(currentInput);
-            currentInput = String(result);
+            currentInput = String(eval(currentInput));
             updateDisplay();
-        } catch (error) {
+        } catch {
             currentInput = "Error";
             updateDisplay();
         }
+    }
+
+    /* Switch interface styling flawlessly */
+    function toggleTheme() {
+        const root = document.documentElement;
+        const current = root.getAttribute('data-theme');
+        root.setAttribute('data-theme', current === 'liquid' ? 'dark' : 'liquid');
     }
 </script>
 
