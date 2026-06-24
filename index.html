@@ -185,7 +185,7 @@
         }
 
         /* Reusable iOS Modal Panel Styles */
-        .settings-modal, .currency-modal {
+        .settings-modal, .currency-modal, .selection-modal {
             position: fixed;
             top: 0;
             left: 0;
@@ -197,23 +197,28 @@
             display: flex;
             flex-direction: column;
             padding: 50px 20px 0px 20px;
-            overflow-y: scroll;
-            -webkit-overflow-scrolling: touch;
             transform: translateX(100%);
             transition: transform 0.4s cubic-bezier(0.25, 1, 0.45, 1);
         }
 
-        .settings-scroll-area, .currency-scroll-area {
+        .settings-scroll-area {
             display: flex;
             flex-direction: column;
             padding-bottom: 80px;
+            overflow-y: scroll;
+            -webkit-overflow-scrolling: touch;
         }
 
-        .settings-modal.active, .currency-modal.active {
+        .settings-modal.active, .currency-modal.active, .selection-modal.active {
             transform: translateX(0);
         }
 
-        .settings-header, .currency-header {
+        .selection-modal {
+            z-index: 200; /* Appears above currency converter layer */
+            padding-right: 35px; /* Leave clean breathing space for the Alphabet Glider track */
+        }
+
+        .settings-header, .currency-header, .selection-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -221,12 +226,12 @@
             flex-shrink: 0;
         }
 
-        .settings-header h2, .currency-header h2 {
+        .settings-header h2, .currency-header h2, .selection-header h2 {
             font-size: 28px;
             font-weight: 700;
         }
 
-        .done-btn {
+        .done-btn, .back-btn {
             background: none;
             border: none;
             color: var(--orange-btn);
@@ -243,7 +248,20 @@
             font-weight: 500;
         }
 
-        /* Currency App Styles */
+        /* Currency Converter Screen Design (Matching 1001004758.heic) */
+        .currency-interface-container {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            justify-content: space-between;
+        }
+
+        .currency-input-rows {
+            flex: 1;
+            overflow-y: auto;
+            padding-top: 10px;
+        }
+
         .currency-box {
             background-color: var(--settings-item-bg);
             border-radius: 14px;
@@ -252,21 +270,194 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
+            cursor: pointer;
+            border: 2px solid transparent;
+            transition: border-color 0.2s, background-color 0.2s;
         }
 
-        .currency-info select {
-            background: none;
+        .currency-box.focused-row {
+            border-color: var(--orange-btn);
+            background-color: rgba(255, 159, 10, 0.05);
+        }
+
+        .currency-row-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .currency-flag {
+            font-size: 32px;
+            line-height: 1;
+        }
+
+        .currency-code-container {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .currency-code-text {
+            font-size: 18px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .currency-code-text::after {
+            content: "➔";
+            font-size: 12px;
+            color: #8e8e93;
+        }
+
+        .currency-name-subtext {
+            font-size: 12px;
+            color: #8e8e93;
+            margin-top: 2px;
+        }
+
+        .currency-value-display {
+            font-size: 26px;
+            font-weight: 300;
+            text-align: right;
+            max-width: 60%;
+            overflow-x: auto;
+            white-space: nowrap;
+        }
+
+        /* Converter Keypad Grid System */
+        .currency-keypad {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+            padding-bottom: 30px;
+            padding-top: 15px;
+            border-top: 0.5px solid var(--divider-color);
+            background-color: var(--settings-bg);
+        }
+
+        .c-btn {
             border: none;
-            color: var(--settings-text);
-            font-size: 20px;
+            border-radius: 50%;
+            font-size: 24px;
+            font-weight: 400;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            aspect-ratio: 1;
+            cursor: pointer;
+            background-color: var(--dark-btn);
+            color: var(--dark-btn-text);
+            transition: filter 0.1s;
+        }
+
+        .c-btn:active {
+            filter: brightness(1.4);
+        }
+
+        .c-btn-action {
+            background-color: var(--gray-btn);
+            color: var(--gray-btn-text);
             font-weight: 600;
-            outline: none;
+        }
+
+        .c-btn-backspace {
+            background-color: #2c2c2e;
+            color: #ff9f0a;
+        }
+
+        /* Full Currency Selector Window Layout (Matching 1001004759.heic) */
+        .selection-list-container {
+            flex: 1;
+            overflow-y: scroll;
+            position: relative;
+            scroll-behavior: smooth;
+            padding-bottom: 40px;
+        }
+
+        .selection-list-container::-webkit-scrollbar {
+            display: none;
+        }
+
+        .alphabet-section-header {
+            font-size: 14px;
+            font-weight: 600;
+            color: #8e8e93;
+            padding: 10px 0 6px 10px;
+            text-transform: uppercase;
+        }
+
+        .selection-group-box {
+            background-color: var(--settings-item-bg);
+            border-radius: 14px;
+            overflow: hidden;
+            margin-bottom: 16px;
+        }
+
+        .selection-row-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 14px 16px;
+            font-size: 16px;
+            border-bottom: 0.5px solid var(--divider-color);
             cursor: pointer;
         }
 
-        .currency-value {
-            font-size: 24px;
-            font-weight: 300;
+        .selection-row-item:last-child {
+            border-bottom: none;
+        }
+
+        .select-row-left {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .select-row-label {
+            font-weight: 500;
+        }
+
+        .select-row-label span {
+            color: #8e8e93;
+            font-weight: 400;
+            margin-left: 6px;
+            font-size: 14px;
+        }
+
+        .select-checkmark {
+            color: var(--orange-btn);
+            font-weight: bold;
+            font-size: 18px;
+            visibility: hidden;
+        }
+
+        .selection-row-item.active-selected .select-checkmark {
+            visibility: visible;
+        }
+
+        /* Absolute Alphabet Glider Track Sidebar */
+        .alphabet-glider-track {
+            position: absolute;
+            right: 4px;
+            top: 110px;
+            bottom: 40px;
+            width: 24px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 210;
+        }
+
+        .glider-letter {
+            font-size: 10px;
+            font-weight: 700;
+            color: var(--orange-btn);
+            cursor: pointer;
+            width: 100%;
+            text-align: center;
+            padding: 2px 0;
         }
 
         .accordion-container {
@@ -590,6 +781,7 @@
         <button class="btn btn-orange" onclick="calculate()">=</button>
     </div>
 
+    <!-- Fluid History Sheet -->
     <div class="bottom-sheet" id="historySheet">
         <div class="sheet-upper-zone" id="sheetUpperZone">
             <div class="sheet-handle"></div>
@@ -602,39 +794,86 @@
         <div class="sheet-content" id="historyContent"></div>
     </div>
 
+    <!-- Currency Converter Modal Panel -->
     <div class="currency-modal" id="currencyModal">
-        <div class="currency-scroll-area">
-            <div class="currency-header">
+        <div class="currency-interface-container">
+            <div class="currency-header" style="margin-bottom: 10px;">
                 <h2 id="title-currency">Converter</h2>
                 <button class="done-btn" id="closeCurrency">Done</button>
             </div>
             
-            <div class="currency-subheader">From</div>
-            <div class="currency-box">
-                <div class="currency-info">
-                    <select id="currency-from">
-                        <option value="USD">🇺🇸 USD - US Dollar</option>
-                        <option value="EUR">🇪🇺 EUR - Euro</option>
-                        <option value="GBP">🇬🇧 GBP - British Pound</option>
-                    </select>
+            <!-- Dynamic Converter Form Rows (Ref: 1001004758.heic) -->
+            <div class="currency-input-rows">
+                <div class="currency-subheader">From</div>
+                <div class="currency-box focused-row" id="row-from" onclick="focusCurrencyRow('from')">
+                    <div class="currency-row-left">
+                        <span class="currency-flag" id="flag-from">🇺🇸</span>
+                        <div class="currency-code-container">
+                            <span class="currency-code-text" id="code-from">USD</span>
+                            <span class="currency-name-subtext" id="name-from">US Dollar</span>
+                        </div>
+                    </div>
+                    <div class="currency-value-display" id="val-from">1</div>
                 </div>
-                <div class="currency-value" id="val-from">1.00</div>
+
+                <div class="currency-subheader">To</div>
+                <div class="currency-box" id="row-to" onclick="focusCurrencyRow('to')">
+                    <div class="currency-row-left">
+                        <span class="currency-flag" id="flag-to">🇪🇺</span>
+                        <div class="currency-code-container">
+                            <span class="currency-code-text" id="code-to">EUR</span>
+                            <span class="currency-name-subtext" id="name-to">Euro</span>
+                        </div>
+                    </div>
+                    <div class="currency-value-display" id="val-to">0.92</div>
+                </div>
             </div>
 
-            <div class="currency-subheader">To</div>
-            <div class="currency-box">
-                <div class="currency-info">
-                    <select id="currency-to">
-                        <option value="EUR">🇪🇺 EUR - Euro</option>
-                        <option value="USD">🇺🇸 USD - US Dollar</option>
-                        <option value="GBP">🇬🇧 GBP - British Pound</option>
-                    </select>
-                </div>
-                <div class="currency-value" id="val-to">0.92</div>
+            <!-- Integrated Compact Core Keypad Panel -->
+            <div class="currency-keypad">
+                <button class="c-btn" onclick="pressCurrencyKey('7')">7</button>
+                <button class="c-btn" onclick="pressCurrencyKey('8')">8</button>
+                <button class="c-btn" onclick="pressCurrencyKey('9')">9</button>
+                <button class="c-btn c-btn-action" onclick="pressCurrencyKey('AC')">AC</button>
+
+                <button class="c-btn" onclick="pressCurrencyKey('4')">4</button>
+                <button class="c-btn" onclick="pressCurrencyKey('5')">5</button>
+                <button class="c-btn" onclick="pressCurrencyKey('6')">6</button>
+                <button class="c-btn c-btn-backspace" onclick="pressCurrencyKey('⌫')">⌫</button>
+
+                <button class="c-btn" onclick="pressCurrencyKey('1')">1</button>
+                <button class="c-btn" onclick="pressCurrencyKey('2')">2</button>
+                <button class="c-btn" onclick="pressCurrencyKey('3')">3</button>
+                <button class="c-btn" style="visibility: hidden;"></button> <!-- Balanced Layout Space -->
+
+                <button class="c-btn" style="visibility: hidden;"></button>
+                <button class="c-btn" onclick="pressCurrencyKey('0')">0</button>
+                <button class="c-btn" onclick="pressCurrencyKey('.')">.</button>
+                <button class="c-btn" style="visibility: hidden;"></button>
             </div>
         </div>
     </div>
 
+    <!-- Global Change Currency Navigation View Panel (Ref: 1001004759.heic) -->
+    <div class="selection-modal" id="selectionModal">
+        <div class="selection-header">
+            <button class="back-btn" id="closeSelection">Back</button>
+            <h2>Change Currency</h2>
+            <div style="width: 40px;"></div> <!-- visual centering balance -->
+        </div>
+
+        <!-- Scroll Content Anchor List Mapping -->
+        <div class="selection-list-container" id="selectionListContainer">
+            <!-- Programmatically injected via alphabet system index maps -->
+        </div>
+
+        <!-- Absolute Vertical Glider Track Navigation System -->
+        <div class="alphabet-glider-track" id="alphabetGliderTrack">
+            <!-- A-Z target index elements injected via arrays -->
+        </div>
+    </div>
+
+    <!-- Settings View Configuration Panel -->
     <div class="settings-modal" id="settingsModal">
         <div class="settings-scroll-area">
             <div class="settings-header">
@@ -795,6 +1034,32 @@
             }
         };
 
+        // Real-world extensive currency metadata dictionary with flag pairs 
+        const currencyDataset = [
+            { code: "AED", name: "United Arab Emirates Dirham", flag: "🇦🇪" },
+            { code: "AFN", name: "Afghani", flag: "🇦🇫" },
+            { code: "ALL", name: "Albanian Lek", flag: "🇦🇱" },
+            { code: "AMD", name: "Armenian Dram", flag: "🇦🇲" },
+            { code: "ANG", name: "Neth Antilles Guilder", flag: "🇨🇼" },
+            { code: "AOA", name: "Angolan Kwanza", flag: "🇦🇴" },
+            { code: "ARS", name: "Argentine Peso", flag: "🇦🇷" },
+            { code: "AUD", name: "Australian Dollar", flag: "🇦🇺" },
+            { code: "CAD", name: "Canadian Dollar", flag: "🇨🇦" },
+            { code: "CNY", name: "Chinese Yuan", flag: "🇨🇳" },
+            { code: "EUR", name: "Euro", flag: "🇪🇺" },
+            { code: "GBP", name: "British Pound", flag: "🇬🇧" },
+            { code: "JPY", name: "Japanese Yen", flag: "🇯🇵" },
+            { code: "NGN", name: "Nigerian Naira", flag: "🇳🇬" },
+            { code: "USD", name: "US Dollar", flag: "🇺🇸" },
+            { code: "ZAR", name: "South African Rand", flag: "🇿🇦" }
+        ];
+
+        // Mock structural conversion baseline references relative to 1 USD base
+        const conversionRates = {
+            USD: 1.0, EUR: 0.92, GBP: 0.79, CAD: 1.36, JPY: 156.4, NGN: 1480.0,
+            AED: 3.67, AFN: 70.5, ALL: 92.3, AMD: 388.2, ANG: 1.80, AOA: 843.5, ARS: 890.0, AUD: 1.51, CNY: 7.24, ZAR: 18.2
+        };
+
         let currentInput = "0";
         let previousInput = null;
         let activeOperator = null;
@@ -802,6 +1067,13 @@
         let exprString = "";
         let isEditMode = false;
         let selectedItems = new Set();
+
+        // Currency feature states
+        let selectedFromCurrency = "USD";
+        let selectedToCurrency = "EUR";
+        let activeTargetRow = "from"; // Track which row receives keypad entry
+        let valueFromStr = "1";
+        let valueToStr = "0.92";
 
         const displayEl = document.getElementById("display");
         const exprTrailEl = document.getElementById("exprTrail");
@@ -1084,16 +1356,24 @@
             }
         });
 
-        // Modal Panel Controller Links (Settings & Currency)
+        // Navigation Controllers
         const sModal = document.getElementById("settingsModal");
         const cModal = document.getElementById("currencyModal");
+        const selModal = document.getElementById("selectionModal");
 
         document.getElementById("openSettings").onclick = () => { sModal.classList.add("active"); };
         document.getElementById("closeSettings").onclick = () => { sModal.classList.remove("active"); closeAllAccordions(); };
 
         document.getElementById("openCurrency").onclick = () => { 
-            // Set conversion target base defaults dynamically from standard display window
-            document.getElementById("val-from").innerText = currentInput !== "0" ? displayEl.innerText : "1.00";
+            // Feed calculator value cleanly into converter row initial state setup
+            if (currentInput !== "0" && !isNaN(currentInput)) {
+                if (activeTargetRow === "from") {
+                    valueFromStr = currentInput;
+                } else {
+                    valueToStr = currentInput;
+                }
+            }
+            syncCurrencyCalculations();
             cModal.classList.add("active"); 
         };
         document.getElementById("closeCurrency").onclick = () => { cModal.classList.remove("active"); };
@@ -1107,6 +1387,179 @@
             setSheetState("closed");
             exitEditMode();
         };
+
+        /* Keypad Logic Engine For Currency Converter Screen */
+        function focusCurrencyRow(rowTarget) {
+            activeTargetRow = rowTarget;
+            document.getElementById("row-from").classList.remove("focused-row");
+            document.getElementById("row-to").classList.remove("focused-row");
+            document.getElementById(`row-${rowTarget}`).classList.add("focused-row");
+        }
+
+        function pressCurrencyKey(key) {
+            let workingValue = activeTargetRow === "from" ? valueFromStr : valueToStr;
+
+            if (key === "AC") {
+                workingValue = "0";
+            } else if (key === "⌫") {
+                workingValue = workingValue.length > 1 ? workingValue.slice(0, -1) : "0";
+            } else if (key === ".") {
+                if (!workingValue.includes(".")) {
+                    workingValue += ".";
+                }
+            } else {
+                // Number updates
+                if (workingValue === "0") {
+                    workingValue = key;
+                } else {
+                    if (workingValue.replace(/[^0-9]/g, "").length < 10) {
+                        workingValue += key;
+                    }
+                }
+            }
+
+            if (activeTargetRow === "from") {
+                valueFromStr = workingValue;
+            } else {
+                valueToStr = workingValue;
+            }
+
+            syncCurrencyCalculations();
+        }
+
+        function syncCurrencyCalculations() {
+            const valFrom = parseFloat(valueFromStr) || 0;
+            const valTo = parseFloat(valueToStr) || 0;
+
+            const baseRateFrom = conversionRates[selectedFromCurrency];
+            const baseRateTo = conversionRates[selectedToCurrency];
+
+            if (activeTargetRow === "from") {
+                // Convert From -> To
+                const amountInUSD = valFrom / baseRateFrom;
+                const convertedTo = amountInUSD * baseRateTo;
+                valueToStr = convertedTo === 0 ? "0" : Number(convertedTo.toFixed(4)).toString();
+            } else {
+                // Convert To -> From
+                const amountInUSD = valTo / baseRateTo;
+                const convertedFrom = amountInUSD * baseRateFrom;
+                valueFromStr = convertedFrom === 0 ? "0" : Number(convertedFrom.toFixed(4)).toString();
+            }
+
+            document.getElementById("val-from").innerText = valueFromStr;
+            document.getElementById("val-to").innerText = valueToStr;
+            
+            // Sync up card layout row dynamic labels
+            const assetFrom = currencyDataset.find(c => c.code === selectedFromCurrency);
+            const assetTo = currencyDataset.find(c => c.code === selectedToCurrency);
+            
+            document.getElementById("flag-from").innerText = assetFrom.flag;
+            document.getElementById("code-from").innerText = assetFrom.code;
+            document.getElementById("name-from").innerText = assetFrom.name;
+
+            document.getElementById("flag-to").innerText = assetTo.flag;
+            document.getElementById("code-to").innerText = assetTo.code;
+            document.getElementById("name-to").innerText = assetTo.name;
+        }
+
+        /* Alphabet Glider System Engine */
+        let targetedSwitchMode = "from"; 
+
+        // Intercept container clicks to launch selector
+        document.getElementById("code-from").parentElement.parentElement.addEventListener("click", (e) => {
+            targetedSwitchMode = "from";
+            openGlobalCurrencySelector();
+            e.stopPropagation();
+        });
+        document.getElementById("code-to").parentElement.parentElement.addEventListener("click", (e) => {
+            targetedSwitchMode = "to";
+            openGlobalCurrencySelector();
+            e.stopPropagation();
+        });
+
+        document.getElementById("closeSelection").onclick = () => {
+            selModal.classList.remove("active");
+        };
+
+        function openGlobalCurrencySelector() {
+            buildSelectionInterface();
+            selModal.classList.add("active");
+        }
+
+        function buildSelectionInterface() {
+            const listContainer = document.getElementById("selectionListContainer");
+            const gliderTrack = document.getElementById("alphabetGliderTrack");
+            
+            listContainer.innerHTML = "";
+            gliderTrack.innerHTML = "";
+
+            // Sort alphabetical dataset securely
+            const sortedData = [...currencyDataset].sort((a, b) => a.code.localeCompare(b.code));
+            
+            // Map character index arrays
+            const alphabetGroups = {};
+            sortedData.forEach(item => {
+                const initialChar = item.code.charAt(0).toUpperCase();
+                if (!alphabetGroups[initialChar]) {
+                    alphabetGroups[initialChar] = [];
+                }
+                alphabetGroups[initialChar].push(item);
+            });
+
+            const matchingActiveSelectionCode = targetedSwitchMode === "from" ? selectedFromCurrency : selectedToCurrency;
+
+            // Render groups layout structures mapping
+            Object.keys(alphabetGroups).sort().forEach(letter => {
+                // Append anchor header id for smooth jumper referencing mapping
+                const sectionHeader = document.createElement("div");
+                sectionHeader.className = "alphabet-section-header";
+                sectionHeader.innerText = letter;
+                sectionHeader.id = `section-anchor-${letter}`;
+                listContainer.appendChild(sectionHeader);
+
+                const groupWrapperBox = document.createElement("div");
+                groupWrapperBox.className = "selection-group-box";
+
+                alphabetGroups[letter].forEach(currency => {
+                    const isSelected = currency.code === matchingActiveSelectionCode;
+                    const rowItem = document.createElement("div");
+                    rowItem.className = `selection-row-item ${isSelected ? 'active-selected' : ''}`;
+                    rowItem.innerHTML = `
+                        <div class="select-row-left">
+                            <span class="currency-flag">${currency.flag}</span>
+                            <div class="select-row-label">${currency.name}<span>${currency.code}</span></div>
+                        </div>
+                        <div class="select-checkmark">✓</div>
+                    `;
+
+                    rowItem.addEventListener("click", () => {
+                        if (targetedSwitchMode === "from") {
+                            selectedFromCurrency = currency.code;
+                        } else {
+                            selectedToCurrency = currency.code;
+                        }
+                        syncCurrencyCalculations();
+                        selModal.classList.remove("active");
+                    });
+
+                    groupWrapperBox.appendChild(rowItem);
+                });
+
+                listContainer.appendChild(groupWrapperBox);
+
+                // Populate sidebar glider item track element index indicators
+                const gliderLetterNode = document.createElement("span");
+                gliderLetterNode.className = "glider-letter";
+                gliderLetterNode.innerText = letter;
+                gliderLetterNode.addEventListener("click", () => {
+                    const targetSection = document.getElementById(`section-anchor-${letter}`);
+                    if (targetSection) {
+                        targetSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }
+                });
+                gliderTrack.appendChild(gliderLetterNode);
+            });
+        }
 
         function applyTheme(themeValue) {
             document.querySelectorAll(".theme-opt").forEach(item => item.classList.remove("selected"));
