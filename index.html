@@ -233,37 +233,31 @@
             z-index: 200;
         }
 
-        /* 1. Update the Header to align left */
+        /* Update your existing .ios-centered-header block (Line 237) */
 .ios-centered-header {
     display: flex;
-    align-items: center;
-    justify-content: flex-start; /* Aligns items to the left */
-    height: 44px;
-    padding: 0 16px;
-    margin-bottom: 16px;
-    flex-shrink: 0;
-    gap: 10px; /* Space between Back button and title */
-    position: sticky; /* Keeps it visible while scrolling */
+    flex-direction: column; /* Stacks button and title */
+    align-items: flex-start; /* Aligns both to the left */
+    padding: 16px;
+    gap: 8px; /* Space between Back button and Title */
+    position: sticky;
     top: 0;
-    background-color: var(--settings-bg); /* Prevents overlapping content */
+    background-color: var(--settings-bg);
     z-index: 100;
+    height: auto; /* Allow it to grow for the two lines */
+    margin-bottom: 16px;
 }
 
+/* Add this to style your h2 inside that header */
 .ios-centered-header h2 {
-    font-size: 20px;
-    font-weight: 700; /* BOLD */
-    text-align: left;
-    position: relative; /* Remove absolute positioning */
-    transform: none;
-    left: 0;
-    white-space: nowrap;
+    font-size: 32px;
+    font-weight: 700;
+    margin: 0;
+    padding: 0;
 }
 
-        .back-btn-container {
-            display: flex;
-            align-items: center;
-            z-index: 2;
-        }
+
+       
 
         .back-btn {
             background: none;
