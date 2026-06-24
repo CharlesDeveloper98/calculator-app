@@ -193,7 +193,7 @@
             color: var(--orange-btn);
         }
 
-        /* Container for the modals */
+       /* Container for the modals */
 .settings-modal, .currency-modal, .selection-modal {
     position: fixed;
     top: 0;
@@ -205,25 +205,16 @@
     z-index: 100;
     display: flex;
     flex-direction: column;
-    padding: 50px 0 0 0;
+    padding: 0; /* Remove top padding to allow header to be at the very top */
     transform: translateX(100%);
     transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+    overflow: hidden; /* Prevent the whole page from scrolling */
 }
 
 .settings-scroll-area {
-    display: flex;
-    flex-direction: column;
-    padding: 0 20px 100px 20px;
-    
-    /* Change to auto to allow the container to expand with its children */
-    height: auto; 
-    
-    /* Ensure the container is allowed to grow to fit all expanded items */
     flex-grow: 1;
-    
-    /* This allows the whole page to scroll if the expanded list exceeds the viewport */
-    overflow-y: visible; 
-    
+    overflow-y: auto; /* Internal scrolling only */
+    padding: 0 20px 100px 20px;
     -webkit-overflow-scrolling: touch;
 }
 
@@ -242,27 +233,31 @@
             z-index: 200;
         }
 
-        .ios-centered-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            height: 44px;
-            padding: 0 16px;
-            margin-bottom: 16px;
-            flex-shrink: 0;
-            position: relative;
-        }
+        /* 1. Update the Header to align left */
+.ios-centered-header {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start; /* Aligns items to the left */
+    height: 44px;
+    padding: 0 16px;
+    margin-bottom: 16px;
+    flex-shrink: 0;
+    gap: 10px; /* Space between Back button and title */
+    position: sticky; /* Keeps it visible while scrolling */
+    top: 0;
+    background-color: var(--settings-bg); /* Prevents overlapping content */
+    z-index: 100;
+}
 
-        .ios-centered-header h2 {
-            font-size: 20px;
-            font-weight: 600;
-            text-align: center;
-            position: absolute;
-            left: 50%;
-            transform: translateX(-50%);
-            white-space: nowrap;
-            z-index: 1;
-        }
+.ios-centered-header h2 {
+    font-size: 20px;
+    font-weight: 700; /* BOLD */
+    text-align: left;
+    position: relative; /* Remove absolute positioning */
+    transform: none;
+    left: 0;
+    white-space: nowrap;
+}
 
         .back-btn-container {
             display: flex;
