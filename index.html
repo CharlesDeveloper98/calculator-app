@@ -1075,6 +1075,21 @@
                 </div>
             </div>
 
+            <div class="settings-subheader" id="sub-effects">Key Effects</div>
+            <div class="accordion-container" id="container-effects">
+                <div class="accordion-header" onclick="toggleAccordion('container-effects')">
+                    <span id="lbl-effects-val">Enabled</span><span class="arrow-icon">➔</span>
+                </div>
+                <div class="accordion-content">
+                    <div class="option-item effects-opt" data-value="true" id="effects-enabled">
+                        <span id="txt-effects-on">Effects Enabled</span><span class="checkmark">✓</span>
+                    </div>
+                    <div class="option-item effects-opt" data-value="false" id="effects-disabled">
+                        <span id="txt-effects-off">Effects Disabled</span><span class="checkmark">✓</span>
+                    </div>
+                </div>
+            </div>
+
             <div class="settings-subheader" id="sub-palette">Color Palette</div>
             <div class="accordion-container" id="container-palette">
                 <div class="accordion-header" onclick="toggleAccordion('container-palette')">
@@ -1158,25 +1173,29 @@
                 settings: "Settings", back: "Back", theme: "Theme", languages: "Languages", display: "Display",
                 fullscreen: "Full-screen Mode", system: "System", dark: "Dark", light: "Light", error: "Error",
                 history: "History", noHistory: "No History Yet", histLimit: "History Limit",
-                confirmClear: "Are you sure you want to clear history?", edit: "Edit", delete: "Delete", currency: "Converter", done: "Done"
+                confirmClear: "Are you sure you want to clear history?", edit: "Edit", delete: "Delete", currency: "Converter", done: "Done",
+                keyEffects: "Key Effects", enabled: "Enabled", disabled: "Disabled"
             },
             ru: {
                 settings: "Настройки", back: "Назад", theme: "Тема", languages: "Языки", display: "Экран",
                 fullscreen: "Полноэкранный режим", system: "Системная", dark: "Темная", light: "Светлая", error: "Ошибка",
                 history: "История", noHistory: "Истории пока нет", histLimit: "Лимит истории",
-                confirmClear: "Вы уверены, что хотите очистить историю?", edit: "Править", delete: "Удалить", currency: "Конвертер", done: "Готово"
+                confirmClear: "Вы уверены, что хотите очистить историю?", edit: "Править", delete: "Удалить", currency: "Конвертер", done: "Готово",
+                keyEffects: "Эффекты Кнопок", enabled: "Включены", disabled: "Выключены"
             },
             es: {
                 settings: "Ajustes", back: "Atrás", theme: "Tema", languages: "Idiomas", display: "Pantalla",
                 fullscreen: "Pantalla completa", system: "Sistema", dark: "Oscuro", light: "Claro", error: "Error",
                 history: "Historial", noHistory: "Sin historial aún", histLimit: "Límite de historial",
-                confirmClear: "¿Estás seguro de que quieres borrar el historial?", edit: "Editar", delete: "Eliminar", currency: "Conversor", done: "Hecho"
+                confirmClear: "¿Estás seguro de que quieres borrar el historial?", edit: "Editar", delete: "Eliminar", currency: "Conversor", done: "Hecho",
+                keyEffects: "Efectos de Teclas", enabled: "Activado", disabled: "Desactivado"
             },
             fr: {
                 settings: "Réglages", back: "Retour", theme: "Thème", languages: "Langues", display: "Écran",
                 fullscreen: "Plein écran", system: "Système", dark: "Sombre", light: "Clair", error: "Erreur",
                 history: "Historique", noHistory: "No History Yet", histLimit: "Limite d'historique",
-                confirmClear: "Are you sure you want to clear history?", edit: "Modifier", delete: "Supprimer", currency: "Convertisseur", done: "OK"
+                confirmClear: "Are you sure you want to clear history?", edit: "Modifier", delete: "Supprimer", currency: "Convertisseur", done: "OK",
+                keyEffects: "Effets de Touches", enabled: "Activé", disabled: "Désactivé"
             }
         };
 
@@ -1229,7 +1248,7 @@
             { code: "GBP", name: "British Pound", flag: "🇬🇧" },
             { code: "GEL", name: "Georgian Lari", flag: "🇬🇪" },
             { code: "GHS", name: "Ghanaian Cedi", flag: "🇬🇭" },
-            { code: "GIP", name: "Gibraltar Pound", flag: "🇬🇮" },
+            { code: "GIP", name: "Gibraltar Pound", fill: "🇬🇮", flag: "🇬🇮" },
             { code: "GMD", name: "Gambian Dalasi", flag: "🇬🇲" },
             { code: "GNF", name: "Guinean Franc", flag: "🇬🇳" },
             { code: "GTQ", name: "Guatemalan Quetzal", flag: "🇬🇹" },
@@ -1267,7 +1286,7 @@
             { code: "MDL", name: "Moldovan Leu", flag: "🇲🇩" },
             { code: "MGA", name: "Malagasy Ariary", flag: "🇲🇬" },
             { code: "MKD", name: "Macedonian Denar", flag: "🇲🇰" },
-            { code: "MMK", name: "Myanmar Kyat", flag: "🇲мым" },
+            { code: "MMK", name: "Myanmar Kyat", flag: "🇲🇲" },
             { code: "MNT", name: "Mongolian Tugrik", flag: "🇲🇳" },
             { code: "MOP", name: "Macanese Pataca", flag: "🇲🇴" },
             { code: "MRU", name: "Mauritanian Ouguiya", flag: "🇲🇷" },
@@ -1371,6 +1390,7 @@
         let valueFromStr = "1";
         let valueToStr = "0.92";
         let searchFilterQuery = "";
+        let globalEffectsEnabled = true;
 
         const displayEl = document.getElementById("display");
         const exprTrailEl = document.getElementById("exprTrail");
@@ -1380,6 +1400,7 @@
         function configureTactileKeypadFeedback() {
             document.querySelectorAll('.btn').forEach(btn => {
                 btn.addEventListener('touchstart', (e) => {
+                    if (!globalEffectsEnabled) return;
                     const rect = btn.getBoundingClientRect();
                     const touch = e.touches[0];
                     updateLightReflection(btn, touch.clientX - rect.left, touch.clientY - rect.top);
@@ -1390,6 +1411,7 @@
                 }, { passive: true });
 
                 btn.addEventListener('touchmove', (e) => {
+                    if (!globalEffectsEnabled) return;
                     const rect = btn.getBoundingClientRect();
                     const touch = e.touches[0];
                     updateLightReflection(btn, touch.clientX - rect.left, touch.clientY - rect.top);
@@ -1397,6 +1419,7 @@
 
                 btn.addEventListener('touchend', () => {
                     btn.style.backgroundImage = 'none';
+                    if (!globalEffectsEnabled) return;
                     // Rebounds with overshoot bounce matching iOS physics
                     btn.style.transition = "transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.35)";
                     btn.style.transform = "scale(1)";
@@ -1405,6 +1428,7 @@
         }
 
         function updateLightReflection(element, x, y) {
+            if (!globalEffectsEnabled) return;
             element.style.backgroundImage = `radial-gradient(circle 55px at ${x}px ${y}px, rgba(255,255,255,0.42) 0%, rgba(255,255,255,0) 100%)`;
         }
 
@@ -1416,6 +1440,7 @@
             let isDraggingGrid = false;
 
             gridContainer.addEventListener('touchstart', (e) => {
+                if (!globalEffectsEnabled) return;
                 // Only process dragging when not clicking inside an active layout interaction context
                 if (e.target.classList.contains('btn')) {
                     isDraggingGrid = true;
@@ -1426,7 +1451,7 @@
             }, { passive: true });
 
             gridContainer.addEventListener('touchmove', (e) => {
-                if (!isDraggingGrid) return;
+                if (!isDraggingGrid || !globalEffectsEnabled) return;
                 const deltaX = e.touches[0].clientX - startTouchX;
                 const deltaY = e.touches[0].clientY - startTouchY;
 
@@ -2054,6 +2079,11 @@
             document.getElementById("txt-light-theme").innerText = data.light;
             document.getElementById("txt-sys-lang").innerText = data.system;
             document.getElementById("btnHistEdit").innerText = isEditMode ? data.done : data.edit;
+            
+            document.getElementById("sub-effects").innerText = data.keyEffects;
+            document.getElementById("txt-effects-on").innerText = data.keyEffects + " " + data.enabled;
+            document.getElementById("txt-effects-off").innerText = data.keyEffects + " " + data.disabled;
+            document.getElementById("lbl-effects-val").innerText = globalEffectsEnabled ? data.enabled : data.disabled;
 
             renderHistory();
             updateDisplay();
@@ -2106,6 +2136,33 @@
             }
         });
 
+        function applyKeyEffects(enabledValue, isInitRun = false) {
+            document.querySelectorAll(".effects-opt").forEach(item => item.classList.remove("selected"));
+            globalEffectsEnabled = (enabledValue === "true");
+            
+            const targetNode = document.getElementById(globalEffectsEnabled ? "effects-enabled" : "effects-disabled");
+            if (targetNode) targetNode.classList.add("selected");
+            
+            const langKey = getActiveLangKey();
+            document.getElementById("lbl-effects-val").innerText = globalEffectsEnabled ? i18n[langKey].enabled : i18n[langKey].disabled;
+            
+            localStorage.setItem("calculator-effects", enabledValue);
+            
+            if (!globalEffectsEnabled) {
+                document.getElementById('mainCalculatorGrid').style.transform = "translate3d(0, 0, 0)";
+                document.getElementById('currencyCalculatorGrid').style.transform = "translate3d(0, 0, 0)";
+                document.querySelectorAll('.btn').forEach(btn => {
+                    btn.style.backgroundImage = 'none';
+                    btn.style.transform = "scale(1)";
+                });
+            }
+            if (!isInitRun) closeAllAccordions();
+        }
+
+        document.querySelectorAll(".effects-opt").forEach(option => {
+            option.addEventListener("click", function() { applyKeyEffects(this.getAttribute("data-value")); });
+        });
+
         function applyColorPalette(hexColor, isInitRun = false) {
             document.querySelectorAll(".palette-opt").forEach(item => item.classList.remove("selected"));
             
@@ -2145,6 +2202,7 @@
         });
 
         // Application Lifecycles Initialization Engine
+        applyKeyEffects(localStorage.getItem("calculator-effects") || "true", true);
         configureTactileKeypadFeedback();
         setupBouncyDragKeypad('mainCalculatorGrid');
         setupBouncyDragKeypad('currencyCalculatorGrid');
