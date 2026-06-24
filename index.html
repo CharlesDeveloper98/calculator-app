@@ -59,7 +59,7 @@
             padding: 20px;
             overflow: hidden;
             position: relative;
-            transition: background-color 0.3s;
+            transition: background-color 0.35s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
         .top-nav {
@@ -103,7 +103,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            transition: transform 0.2s cubic-bezier(0.25, 1, 0.45, 1), opacity 0.1s ease;
+            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.1s ease;
         }
 
         .nav-btn:active {
@@ -140,14 +140,18 @@
             overflow-x: auto;
         }
 
+        /* Physics-Driven Elastic Fluid Grid Container */
         .grid {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
             gap: 14px;
             margin-bottom: 20px;
+            position: relative;
+            will-change: transform;
+            touch-action: none;
         }
 
-        /* Tactical Liquid & Reflex Bounce Optimization Framework */
+        /* iOS Elastic Liquid Spring Framework Optimization */
         .btn {
             border: none;
             border-radius: 50%;
@@ -161,12 +165,13 @@
             position: relative;
             overflow: hidden;
             background-size: 100% 100%;
-            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), filter 0.1s ease;
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), filter 0.15s ease;
+            will-change: transform;
         }
 
         .btn:active {
-            filter: brightness(1.2);
-            transform: scale(0.88);
+            filter: brightness(1.25);
+            transform: scale(0.85);
         }
 
         .btn-gray {
@@ -252,7 +257,6 @@
             z-index: 2;
         }
 
-        /* Bold, More iOS Native Chevron Properties */
         .back-btn {
             background: none;
             border: none;
@@ -278,7 +282,6 @@
             opacity: 0.4;
         }
 
-        /* Persistent Integrated iOS Search Component Positioning */
         .ios-search-bar-block {
             padding: 0 16px 12px 16px;
             width: 100%;
@@ -415,6 +418,9 @@
             margin: 0 -20px;
             padding-left: 20px;
             padding-right: 20px;
+            position: relative;
+            will-change: transform;
+            touch-action: none;
         }
 
         .currency-keypad-default .dull-disabled {
@@ -557,13 +563,14 @@
             border-color: transparent transparent transparent var(--orange-btn);
         }
 
-        /* Non-Destructive Elastic Accordions Settings Configuration Layout */
+        /* Non-Destructive Elastic Accordions Settings Layout Framework */
         .accordion-container {
             background-color: var(--settings-item-bg);
             border-radius: 12px;
             overflow: hidden;
             margin-bottom: 12px;
-            transition: margin 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), margin 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            will-change: transform;
         }
 
         .accordion-header {
@@ -582,7 +589,7 @@
 
         .accordion-header .arrow-icon {
             color: var(--orange-btn);
-            transition: transform 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             font-weight: bold;
             display: inline-block;
         }
@@ -591,17 +598,17 @@
             transform: rotate(90deg);
         }
 
-        /* Continuous Dynamic Height Flow */
+        /* Fluid Bouncy Interactive Dropdown Height Logic */
         .accordion-content {
             max-height: 0;
             overflow: hidden;
-            transition: max-height 0.35s cubic-bezier(0.25, 1, 0.5, 1);
+            transition: max-height 0.45s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.3s ease;
             background-color: rgba(0, 0, 0, 0.13);
+            opacity: 0;
         }
 
         .accordion-container.expanded .accordion-content {
-            max-height: 500px; 
-            overflow: visible; 
+            opacity: 1;
         }
 
         .option-item {
@@ -874,7 +881,7 @@
         <div class="display" id="display">0</div>
     </div>
 
-    <div class="grid">
+    <div class="grid" id="mainCalculatorGrid">
         <button class="btn btn-gray" onclick="backspace()">⌫</button>
         <button class="btn btn-gray" onclick="clearDisplay()" id="clear-btn">AC</button>
         <button class="btn btn-gray" onclick="inputPercent()">%</button>
@@ -952,7 +959,7 @@
                 </div>
             </div>
 
-            <div class="currency-keypad-default">
+            <div class="currency-keypad-default" id="currencyCalculatorGrid">
                 <button class="btn btn-gray" onclick="pressCurrencyKey('⌫')">⌫</button>
                 <button class="btn btn-gray" onclick="pressCurrencyKey('AC')">AC</button>
                 <button class="btn btn-gray dull-disabled">%</button>
@@ -1151,25 +1158,25 @@
                 settings: "Settings", back: "Back", theme: "Theme", languages: "Languages", display: "Display",
                 fullscreen: "Full-screen Mode", system: "System", dark: "Dark", light: "Light", error: "Error",
                 history: "History", noHistory: "No History Yet", histLimit: "History Limit",
-                confirmClear: "Are you sure you want to clear history?", edit: "Edit", delete: "Delete", currency: "Converter"
+                confirmClear: "Are you sure you want to clear history?", edit: "Edit", delete: "Delete", currency: "Converter", done: "Done"
             },
             ru: {
                 settings: "Настройки", back: "Назад", theme: "Тема", languages: "Языки", display: "Экран",
                 fullscreen: "Полноэкранный режим", system: "Системная", dark: "Темная", light: "Светлая", error: "Ошибка",
                 history: "История", noHistory: "Истории пока нет", histLimit: "Лимит истории",
-                confirmClear: "Вы уверены, что хотите очистить историю?", edit: "Править", delete: "Удалить", currency: "Конвертер"
+                confirmClear: "Вы уверены, что хотите очистить историю?", edit: "Править", delete: "Удалить", currency: "Конвертер", done: "Готово"
             },
             es: {
                 settings: "Ajustes", back: "Atrás", theme: "Tema", languages: "Idiomas", display: "Pantalla",
                 fullscreen: "Pantalla completa", system: "Sistema", dark: "Oscuro", light: "Claro", error: "Error",
                 history: "Historial", noHistory: "Sin historial aún", histLimit: "Límite de historial",
-                confirmClear: "¿Estás seguro de que quieres borrar el historial?", edit: "Editar", delete: "Eliminar", currency: "Conversor"
+                confirmClear: "¿Estás seguro de que quieres borrar el historial?", edit: "Editar", delete: "Eliminar", currency: "Conversor", done: "Hecho"
             },
             fr: {
                 settings: "Réglages", back: "Retour", theme: "Thème", languages: "Langues", display: "Écran",
                 fullscreen: "Plein écran", system: "Système", dark: "Sombre", light: "Clair", error: "Erreur",
                 history: "Historique", noHistory: "No History Yet", histLimit: "Limite d'historique",
-                confirmClear: "Are you sure you want to clear history?", edit: "Modifier", delete: "Supprimer", currency: "Convertisseur"
+                confirmClear: "Are you sure you want to clear history?", edit: "Modifier", delete: "Supprimer", currency: "Convertisseur", done: "OK"
             }
         };
 
@@ -1260,7 +1267,7 @@
             { code: "MDL", name: "Moldovan Leu", flag: "🇲🇩" },
             { code: "MGA", name: "Malagasy Ariary", flag: "🇲🇬" },
             { code: "MKD", name: "Macedonian Denar", flag: "🇲🇰" },
-            { code: "MMK", name: "Myanmar Kyat", flag: "🇲🇲" },
+            { code: "MMK", name: "Myanmar Kyat", flag: "🇲мым" },
             { code: "MNT", name: "Mongolian Tugrik", flag: "🇲🇳" },
             { code: "MOP", name: "Macanese Pataca", flag: "🇲🇴" },
             { code: "MRU", name: "Mauritanian Ouguiya", flag: "🇲🇷" },
@@ -1369,13 +1376,17 @@
         const exprTrailEl = document.getElementById("exprTrail");
         const clearBtnEl = document.getElementById("clear-btn");
 
-        // Dynamic Interactive Liquid Bounce & Reflect Light Engine
+        // Advanced Liquid Touch Speeds & Specular Highlighting Engine
         function configureTactileKeypadFeedback() {
             document.querySelectorAll('.btn').forEach(btn => {
                 btn.addEventListener('touchstart', (e) => {
                     const rect = btn.getBoundingClientRect();
                     const touch = e.touches[0];
                     updateLightReflection(btn, touch.clientX - rect.left, touch.clientY - rect.top);
+                    
+                    // Native Liquid Pop scale swelling behavior on tap
+                    btn.style.transition = "transform 0.1s cubic-bezier(0.1, 1, 0.3, 1)";
+                    btn.style.transform = "scale(0.86)";
                 }, { passive: true });
 
                 btn.addEventListener('touchmove', (e) => {
@@ -1386,14 +1397,56 @@
 
                 btn.addEventListener('touchend', () => {
                     btn.style.backgroundImage = 'none';
+                    // Rebounds with overshoot bounce matching iOS physics
+                    btn.style.transition = "transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.35)";
+                    btn.style.transform = "scale(1)";
                 }, { passive: true });
             });
         }
 
         function updateLightReflection(element, x, y) {
-            // Renders dynamic specular reflection highlighting container borders during touch
-            const baseColor = window.getComputedStyle(element).backgroundColor;
             element.style.backgroundImage = `radial-gradient(circle 55px at ${x}px ${y}px, rgba(255,255,255,0.42) 0%, rgba(255,255,255,0) 100%)`;
+        }
+
+        // Bouncy Gestural Drag Setup Framework for Keypads
+        function setupBouncyDragKeypad(gridId) {
+            const gridContainer = document.getElementById(gridId);
+            let startTouchX = 0;
+            let startTouchY = 0;
+            let isDraggingGrid = false;
+
+            gridContainer.addEventListener('touchstart', (e) => {
+                // Only process dragging when not clicking inside an active layout interaction context
+                if (e.target.classList.contains('btn')) {
+                    isDraggingGrid = true;
+                    startTouchX = e.touches[0].clientX;
+                    startTouchY = e.touches[0].clientY;
+                    gridContainer.style.transition = "none";
+                }
+            }, { passive: true });
+
+            gridContainer.addEventListener('touchmove', (e) => {
+                if (!isDraggingGrid) return;
+                const deltaX = e.touches[0].clientX - startTouchX;
+                const deltaY = e.touches[0].clientY - startTouchY;
+
+                // Logarithmic dampening calculation mapping rubber-band movement profile
+                const rubberX = Math.sign(deltaX) * Math.log(1 + Math.abs(deltaX) * 0.4) * 5;
+                const rubberY = Math.sign(deltaY) * Math.log(1 + Math.abs(deltaY) * 0.4) * 5;
+
+                gridContainer.style.transform = `translate3d(${rubberX}px, ${rubberY}px, 0)`;
+            }, { passive: false });
+
+            const handleDragEnd = () => {
+                if (!isDraggingGrid) return;
+                isDraggingGrid = false;
+                // Snap cleanly right back into exact center using structural spring vectors
+                gridContainer.style.transition = "transform 0.55s cubic-bezier(0.175, 0.885, 0.32, 1.275)";
+                gridContainer.style.transform = "translate3d(0, 0, 0)";
+            };
+
+            gridContainer.addEventListener('touchend', handleDragEnd, { passive: true });
+            gridContainer.addEventListener('touchcancel', handleDragEnd, { passive: true });
         }
 
         function getActiveLangKey() {
@@ -1531,18 +1584,38 @@
             updateDisplay();
         }
 
+        // Fully Dynamic Height Calculation & Bouncy Spring Accordion Handler
         function toggleAccordion(containerId) {
             const container = document.getElementById(containerId);
+            const content = container.querySelector('.accordion-content');
             const isExpanded = container.classList.contains('expanded');
             
+            // Seamlessly collapse all alternate dynamic elements first
             document.querySelectorAll('.accordion-container').forEach(c => {
-                if(c.id !== containerId) c.classList.remove('expanded');
+                if(c.id !== containerId && c.classList.contains('expanded')) {
+                    const activeContent = c.querySelector('.accordion-content');
+                    activeContent.style.maxHeight = "0px";
+                    c.classList.remove('expanded');
+                    c.style.transform = "scale(1)";
+                }
             });
             
             if (isExpanded) {
+                content.style.maxHeight = "0px";
                 container.classList.remove('expanded');
+                container.style.transform = "scale(1)";
             } else {
+                // Computes exact absolute measurements dynamically to display all items fully
+                const fullHeight = content.scrollHeight;
+                content.style.maxHeight = `${fullHeight}px`;
                 container.classList.add('expanded');
+                
+                // Add a micro spring swell to look organic
+                container.style.transform = "scale(1.015)";
+                setTimeout(() => {
+                    container.style.transform = "scale(1)";
+                }, 140);
+
                 setTimeout(() => {
                     container.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
                 }, 150);
@@ -1550,7 +1623,12 @@
         }
 
         function closeAllAccordions() {
-            document.querySelectorAll('.accordion-container').forEach(c => c.classList.remove('expanded'));
+            document.querySelectorAll('.accordion-container').forEach(c => {
+                const content = c.querySelector('.accordion-content');
+                if (content) content.style.maxHeight = "0px";
+                c.classList.remove('expanded');
+                c.style.transform = "scale(1)";
+            });
         }
 
         function saveToHistory(expr, res) {
@@ -2066,8 +2144,10 @@
             option.addEventListener("click", function() { applyLimit(this.getAttribute("data-value")); });
         });
 
-        // Application Lifecycles Init
+        // Application Lifecycles Initialization Engine
         configureTactileKeypadFeedback();
+        setupBouncyDragKeypad('mainCalculatorGrid');
+        setupBouncyDragKeypad('currencyCalculatorGrid');
         applyTheme(localStorage.getItem("calculator-theme") || "system");
         applyLanguage(localStorage.getItem("calculator-lang") || "system");
         applyDisplayMode(localStorage.getItem("calculator-fullscreen") || "false", true);
