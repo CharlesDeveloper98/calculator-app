@@ -210,13 +210,15 @@
         }
 
         .settings-scroll-area {
-            display: flex;
-            flex-direction: column;
-            padding: 0 20px 100px 20px;
-            overflow-y: scroll;
-            height: 100%;
-            -webkit-overflow-scrolling: touch;
-        }
+    display: flex;
+    flex-direction: column;
+    padding: 0 20px 100px 20px;
+    overflow-y: auto;
+    /* This tells the box to take up all screen space, minus 60px for the header */
+    height: calc(100vh - 60px); 
+    -webkit-overflow-scrolling: touch;
+}
+
 
         .settings-modal.active, .currency-modal.active, .selection-modal.active {
             transform: translateX(0);
