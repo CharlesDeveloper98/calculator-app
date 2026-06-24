@@ -233,20 +233,21 @@
             z-index: 200;
         }
 
-        /* Update your existing .ios-centered-header block (Line 237) */
-.ios-centered-header {
+        .ios-centered-header {
     display: flex;
-    flex-direction: column; /* Stacks button and title */
-    align-items: flex-start; /* Aligns both to the left */
+    flex-direction: column;
+    align-items: flex-start;
     padding: 16px;
-    gap: 8px; /* Space between Back button and Title */
+    gap: 0px; /* This controls space between Back button and Title */
     position: sticky;
     top: 0;
     background-color: var(--settings-bg);
     z-index: 100;
-    height: auto; /* Allow it to grow for the two lines */
-    margin-bottom: 16px;
+    
+    /* Change this to match your gap/spacing preference */
+    margin-bottom: 8px; 
 }
+
 
 /* Add this to style your h2 inside that header */
 .ios-centered-header h2 {
