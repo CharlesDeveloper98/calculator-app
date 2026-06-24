@@ -102,7 +102,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            transition: transform 0.1s ease, opacity 0.1s ease;
+            transition: transform 0.2s cubic-bezier(0.25, 1, 0.45, 1), opacity 0.1s ease;
         }
 
         .nav-btn:active {
@@ -156,11 +156,12 @@
             align-items: center;
             aspect-ratio: 1;
             cursor: pointer;
-            transition: filter 0.1s, background-color 0.1s;
+            transition: filter 0.1s, background-color 0.1s, transform 0.2s cubic-bezier(0.25, 1, 0.45, 1);
         }
 
         .btn:active {
             filter: brightness(1.3);
+            transform: scale(0.95);
         }
 
         .btn-gray {
@@ -184,7 +185,7 @@
             color: var(--orange-btn);
         }
 
-        /* Reusable iOS Modal Panel Styles */
+        /* Classic iOS Spring Modal Transitions everywhere */
         .settings-modal, .currency-modal, .selection-modal {
             position: fixed;
             top: 0;
@@ -198,7 +199,7 @@
             flex-direction: column;
             padding: 50px 20px 0px 20px;
             transform: translateX(100%);
-            transition: transform 0.4s cubic-bezier(0.25, 1, 0.45, 1);
+            transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
         .settings-scroll-area {
@@ -214,8 +215,8 @@
         }
 
         .selection-modal {
-            z-index: 200; /* Appears above currency converter layer */
-            padding-right: 35px; /* Leave clean breathing space for the Alphabet Glider track */
+            z-index: 200;
+            padding-right: 35px;
         }
 
         .settings-header, .currency-header, .selection-header {
@@ -238,6 +239,11 @@
             font-size: 17px;
             font-weight: 600;
             cursor: pointer;
+            transition: opacity 0.15s ease;
+        }
+        
+        .done-btn:active, .back-btn:active {
+            opacity: 0.5;
         }
 
         .settings-subheader, .currency-subheader {
@@ -248,7 +254,6 @@
             font-weight: 500;
         }
 
-        /* Currency Converter Screen Design (Matching 1001004758.heic) */
         .currency-interface-container {
             display: flex;
             flex-direction: column;
@@ -272,7 +277,11 @@
             align-items: center;
             cursor: pointer;
             border: 2px solid transparent;
-            transition: border-color 0.2s, background-color 0.2s;
+            transition: border-color 0.3s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.3s cubic-bezier(0.16, 1, 0.3, 1), transform 0.2s ease;
+        }
+        
+        .currency-box:active {
+            transform: scale(0.98);
         }
 
         .currency-box.focused-row {
@@ -325,53 +334,29 @@
             white-space: nowrap;
         }
 
-        /* Converter Keypad Grid System */
-        .currency-keypad {
+        /* Unified Default Grid mapping for Currency Screen */
+        .currency-keypad-default {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
-            gap: 12px;
+            gap: 14px;
             padding-bottom: 30px;
             padding-top: 15px;
             border-top: 0.5px solid var(--divider-color);
             background-color: var(--settings-bg);
         }
 
-        .c-btn {
-            border: none;
-            border-radius: 50%;
-            font-size: 24px;
-            font-weight: 400;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            aspect-ratio: 1;
-            cursor: pointer;
-            background-color: var(--dark-btn);
-            color: var(--dark-btn-text);
-            transition: filter 0.1s;
+        /* Inactive non-essential button state formatting rules */
+        .currency-keypad-default .dull-disabled {
+            opacity: 0.25;
+            filter: grayscale(1);
+            pointer-events: none !important;
         }
 
-        .c-btn:active {
-            filter: brightness(1.4);
-        }
-
-        .c-btn-action {
-            background-color: var(--gray-btn);
-            color: var(--gray-btn-text);
-            font-weight: 600;
-        }
-
-        .c-btn-backspace {
-            background-color: #2c2c2e;
-            color: #ff9f0a;
-        }
-
-        /* Full Currency Selector Window Layout (Matching 1001004759.heic) */
         .selection-list-container {
             flex: 1;
             overflow-y: scroll;
             position: relative;
-            scroll-behavior: smooth;
+            scroll-behavior: auto;
             padding-bottom: 40px;
         }
 
@@ -402,6 +387,12 @@
             font-size: 16px;
             border-bottom: 0.5px solid var(--divider-color);
             cursor: pointer;
+            transition: background-color 0.1s, transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .selection-row-item:active {
+            transform: scale(0.98);
+            background-color: rgba(255, 255, 255, 0.05);
         }
 
         .selection-row-item:last-child {
@@ -436,7 +427,7 @@
             visibility: visible;
         }
 
-        /* Absolute Alphabet Glider Track Sidebar */
+        /* iOS Sidebar Index Glide Rail */
         .alphabet-glider-track {
             position: absolute;
             right: 4px;
@@ -454,10 +445,47 @@
             font-size: 10px;
             font-weight: 700;
             color: var(--orange-btn);
-            cursor: pointer;
             width: 100%;
             text-align: center;
-            padding: 2px 0;
+            padding: 1px 0;
+            pointer-events: none; /* Let the glide track capture container moves smoothly */
+        }
+
+        /* Floating iOS Contacts Popout Preview Callout */
+        .ios-preview-bubble {
+            position: absolute;
+            left: -55px;
+            width: 44px;
+            height: 44px;
+            background-color: var(--orange-btn);
+            color: #ffffff;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+            font-weight: bold;
+            pointer-events: none;
+            opacity: 0;
+            transform: scale(0.4) translateX(20px);
+            transition: opacity 0.15s cubic-bezier(0.16, 1, 0.3, 1), transform 0.15s cubic-bezier(0.16, 1, 0.3, 1);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            z-index: 250;
+        }
+        
+        .ios-preview-bubble.visible {
+            opacity: 1;
+            transform: scale(1) translateX(0);
+        }
+        
+        .ios-preview-bubble::after {
+            content: "";
+            position: absolute;
+            right: -6px;
+            top: 15px;
+            border-width: 7px 0 7px 7px;
+            border-style: solid;
+            border-color: transparent transparent transparent var(--orange-btn);
         }
 
         .accordion-container {
@@ -465,7 +493,6 @@
             border-radius: 12px;
             overflow: hidden;
             margin-bottom: 12px;
-            transition: max-height 0.3s ease-in-out;
         }
 
         .accordion-header {
@@ -475,12 +502,18 @@
             padding: 14px 16px;
             font-size: 17px;
             cursor: pointer;
+            transition: background-color 0.15s, transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        
+        .accordion-header:active {
+            transform: scale(0.98);
         }
 
         .accordion-header .arrow-icon {
             color: var(--orange-btn);
-            transition: transform 0.3s ease;
+            transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
             font-weight: bold;
+            display: inline-block;
         }
 
         .accordion-container.expanded .arrow-icon {
@@ -490,10 +523,11 @@
         .accordion-content {
             max-height: 0;
             overflow: hidden;
-            transition: max-height 0.3s ease-in-out;
+            transition: max-height 0.4s cubic-bezier(0.16, 1, 0.3, 1);
             background-color: rgba(0, 0, 0, 0.1);
         }
 
+        /* Fluid layout sizing adjustments for the expanded option state choices */
         .accordion-container.expanded .accordion-content {
             max-height: 500px;
         }
@@ -506,16 +540,29 @@
             font-size: 17px;
             border-top: 0.5px solid var(--divider-color);
             cursor: pointer;
+            transition: background-color 0.15s, transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        
+        .option-item:active {
+            transform: scale(0.99);
+            background-color: rgba(255, 255, 255, 0.03);
         }
 
         .checkmark {
             color: var(--orange-btn);
             font-weight: bold;
             display: none;
+            transition: transform 0.2s ease;
         }
 
         .option-item.selected .checkmark {
             display: block;
+            animation: springCheck 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        
+        @keyframes springCheck {
+            from { transform: scale(0.4); }
+            to { transform: scale(1); }
         }
 
         .color-circle-preview {
@@ -526,7 +573,7 @@
             box-shadow: 0 0 0 1px rgba(255,255,255,0.15);
         }
 
-        /* Fluid History Sheet Settings Panel */
+        /* Bottom Sheets */
         .bottom-sheet {
             position: fixed;
             bottom: 0;
@@ -540,7 +587,7 @@
             display: flex;
             flex-direction: column;
             transform: translateY(100%);
-            transition: transform 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
             box-shadow: 0 -5px 20px rgba(0,0,0,0.3);
         }
 
@@ -613,11 +660,10 @@
             flex-shrink: 0;
             cursor: pointer;
             transform: translateX(-20px);
-            transition: width 0.3s cubic-bezier(0.25, 1, 0.5, 1), 
-                        margin-right 0.3s cubic-bezier(0.25, 1, 0.5, 1), 
-                        opacity 0.2s cubic-bezier(0.25, 1, 0.5, 1),
-                        transform 0.3s cubic-bezier(0.25, 1, 0.5, 1),
-                        border-color 0.2s ease;
+            transition: width 0.3s cubic-bezier(0.16, 1, 0.3, 1), 
+                        margin-right 0.3s cubic-bezier(0.16, 1, 0.3, 1), 
+                        opacity 0.2s cubic-bezier(0.16, 1, 0.3, 1),
+                        transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
         .history-select-circle::after {
@@ -654,7 +700,7 @@
             border-radius: 12px;
             position: relative;
             transform: translateX(0);
-            transition: transform 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+            transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
         .hist-meta-time {
@@ -686,7 +732,6 @@
             font-size: 17px;
         }
 
-        /* Dialog Overlays */
         .ios-dialog-overlay {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
@@ -704,7 +749,7 @@
             text-align: center;
             overflow: hidden;
             box-shadow: 0 10px 30px rgba(0,0,0,0.4);
-            animation: popIn 0.2s ease-out;
+            animation: popIn 0.25s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
         .ios-dialog-title {
@@ -733,7 +778,7 @@
         .dialog-btn-no { color: #007aff; font-weight: 400; }
 
         @keyframes popIn {
-            from { transform: scale(1.1); opacity: 0; }
+            from { transform: scale(1.15); opacity: 0; }
             to { transform: scale(1); opacity: 1; }
         }
     </style>
@@ -781,7 +826,6 @@
         <button class="btn btn-orange" onclick="calculate()">=</button>
     </div>
 
-    <!-- Fluid History Sheet -->
     <div class="bottom-sheet" id="historySheet">
         <div class="sheet-upper-zone" id="sheetUpperZone">
             <div class="sheet-handle"></div>
@@ -794,7 +838,6 @@
         <div class="sheet-content" id="historyContent"></div>
     </div>
 
-    <!-- Currency Converter Modal Panel -->
     <div class="currency-modal" id="currencyModal">
         <div class="currency-interface-container">
             <div class="currency-header" style="margin-bottom: 10px;">
@@ -802,7 +845,6 @@
                 <button class="done-btn" id="closeCurrency">Done</button>
             </div>
             
-            <!-- Dynamic Converter Form Rows (Ref: 1001004758.heic) -->
             <div class="currency-input-rows">
                 <div class="currency-subheader">From</div>
                 <div class="currency-box focused-row" id="row-from" onclick="focusCurrencyRow('from')">
@@ -829,51 +871,50 @@
                 </div>
             </div>
 
-            <!-- Integrated Compact Core Keypad Panel -->
-            <div class="currency-keypad">
-                <button class="c-btn" onclick="pressCurrencyKey('7')">7</button>
-                <button class="c-btn" onclick="pressCurrencyKey('8')">8</button>
-                <button class="c-btn" onclick="pressCurrencyKey('9')">9</button>
-                <button class="c-btn c-btn-action" onclick="pressCurrencyKey('AC')">AC</button>
+            <div class="currency-keypad-default">
+                <button class="btn btn-gray" onclick="pressCurrencyKey('⌫')">⌫</button>
+                <button class="btn btn-gray" onclick="pressCurrencyKey('AC')">AC</button>
+                <button class="btn btn-gray dull-disabled">%</button>
+                <button class="btn btn-orange dull-disabled">÷</button>
 
-                <button class="c-btn" onclick="pressCurrencyKey('4')">4</button>
-                <button class="c-btn" onclick="pressCurrencyKey('5')">5</button>
-                <button class="c-btn" onclick="pressCurrencyKey('6')">6</button>
-                <button class="c-btn c-btn-backspace" onclick="pressCurrencyKey('⌫')">⌫</button>
+                <button class="btn btn-dark" onclick="pressCurrencyKey('7')">7</button>
+                <button class="btn btn-dark" onclick="pressCurrencyKey('8')">8</button>
+                <button class="btn btn-dark" onclick="pressCurrencyKey('9')">9</button>
+                <button class="btn btn-orange dull-disabled">×</button>
 
-                <button class="c-btn" onclick="pressCurrencyKey('1')">1</button>
-                <button class="c-btn" onclick="pressCurrencyKey('2')">2</button>
-                <button class="c-btn" onclick="pressCurrencyKey('3')">3</button>
-                <button class="c-btn" style="visibility: hidden;"></button> <!-- Balanced Layout Space -->
+                <button class="btn btn-dark" onclick="pressCurrencyKey('4')">4</button>
+                <button class="btn btn-dark" onclick="pressCurrencyKey('5')">5</button>
+                <button class="btn btn-dark" onclick="pressCurrencyKey('6')">6</button>
+                <button class="btn btn-orange dull-disabled">−</button>
 
-                <button class="c-btn" style="visibility: hidden;"></button>
-                <button class="c-btn" onclick="pressCurrencyKey('0')">0</button>
-                <button class="c-btn" onclick="pressCurrencyKey('.')">.</button>
-                <button class="c-btn" style="visibility: hidden;"></button>
+                <button class="btn btn-dark" onclick="pressCurrencyKey('1')">1</button>
+                <button class="btn btn-dark" onclick="pressCurrencyKey('2')">2</button>
+                <button class="btn btn-dark" onclick="pressCurrencyKey('3')">3</button>
+                <button class="btn btn-orange dull-disabled">+</button>
+
+                <button class="btn btn-dark dull-disabled">+/-</button>
+                <button class="btn btn-dark" onclick="pressCurrencyKey('0')">0</button>
+                <button class="btn btn-dark" onclick="pressCurrencyKey('.')">.</button>
+                <button class="btn btn-orange dull-disabled">=</button>
             </div>
         </div>
     </div>
 
-    <!-- Global Change Currency Navigation View Panel (Ref: 1001004759.heic) -->
     <div class="selection-modal" id="selectionModal">
         <div class="selection-header">
             <button class="back-btn" id="closeSelection">Back</button>
             <h2>Change Currency</h2>
-            <div style="width: 40px;"></div> <!-- visual centering balance -->
+            <div style="width: 40px;"></div>
         </div>
 
-        <!-- Scroll Content Anchor List Mapping -->
         <div class="selection-list-container" id="selectionListContainer">
-            <!-- Programmatically injected via alphabet system index maps -->
-        </div>
+            </div>
 
-        <!-- Absolute Vertical Glider Track Navigation System -->
         <div class="alphabet-glider-track" id="alphabetGliderTrack">
-            <!-- A-Z target index elements injected via arrays -->
-        </div>
+            <div class="ios-preview-bubble" id="iosPreviewBubble">A</div>
+            </div>
     </div>
 
-    <!-- Settings View Configuration Panel -->
     <div class="settings-modal" id="settingsModal">
         <div class="settings-scroll-area">
             <div class="settings-header">
@@ -1034,7 +1075,6 @@
             }
         };
 
-        // Real-world extensive currency metadata dictionary with flag pairs 
         const currencyDataset = [
             { code: "AED", name: "United Arab Emirates Dirham", flag: "🇦🇪" },
             { code: "AFN", name: "Afghani", flag: "🇦🇫" },
@@ -1054,7 +1094,6 @@
             { code: "ZAR", name: "South African Rand", flag: "🇿🇦" }
         ];
 
-        // Mock structural conversion baseline references relative to 1 USD base
         const conversionRates = {
             USD: 1.0, EUR: 0.92, GBP: 0.79, CAD: 1.36, JPY: 156.4, NGN: 1480.0,
             AED: 3.67, AFN: 70.5, ALL: 92.3, AMD: 388.2, ANG: 1.80, AOA: 843.5, ARS: 890.0, AUD: 1.51, CNY: 7.24, ZAR: 18.2
@@ -1068,10 +1107,9 @@
         let isEditMode = false;
         let selectedItems = new Set();
 
-        // Currency feature states
         let selectedFromCurrency = "USD";
         let selectedToCurrency = "EUR";
-        let activeTargetRow = "from"; // Track which row receives keypad entry
+        let activeTargetRow = "from";
         let valueFromStr = "1";
         let valueToStr = "0.92";
 
@@ -1356,7 +1394,6 @@
             }
         });
 
-        // Navigation Controllers
         const sModal = document.getElementById("settingsModal");
         const cModal = document.getElementById("currencyModal");
         const selModal = document.getElementById("selectionModal");
@@ -1365,7 +1402,6 @@
         document.getElementById("closeSettings").onclick = () => { sModal.classList.remove("active"); closeAllAccordions(); };
 
         document.getElementById("openCurrency").onclick = () => { 
-            // Feed calculator value cleanly into converter row initial state setup
             if (currentInput !== "0" && !isNaN(currentInput)) {
                 if (activeTargetRow === "from") {
                     valueFromStr = currentInput;
@@ -1388,7 +1424,6 @@
             exitEditMode();
         };
 
-        /* Keypad Logic Engine For Currency Converter Screen */
         function focusCurrencyRow(rowTarget) {
             activeTargetRow = rowTarget;
             document.getElementById("row-from").classList.remove("focused-row");
@@ -1408,7 +1443,6 @@
                     workingValue += ".";
                 }
             } else {
-                // Number updates
                 if (workingValue === "0") {
                     workingValue = key;
                 } else {
@@ -1435,12 +1469,10 @@
             const baseRateTo = conversionRates[selectedToCurrency];
 
             if (activeTargetRow === "from") {
-                // Convert From -> To
                 const amountInUSD = valFrom / baseRateFrom;
                 const convertedTo = amountInUSD * baseRateTo;
                 valueToStr = convertedTo === 0 ? "0" : Number(convertedTo.toFixed(4)).toString();
             } else {
-                // Convert To -> From
                 const amountInUSD = valTo / baseRateTo;
                 const convertedFrom = amountInUSD * baseRateFrom;
                 valueFromStr = convertedFrom === 0 ? "0" : Number(convertedFrom.toFixed(4)).toString();
@@ -1449,7 +1481,6 @@
             document.getElementById("val-from").innerText = valueFromStr;
             document.getElementById("val-to").innerText = valueToStr;
             
-            // Sync up card layout row dynamic labels
             const assetFrom = currencyDataset.find(c => c.code === selectedFromCurrency);
             const assetTo = currencyDataset.find(c => c.code === selectedToCurrency);
             
@@ -1462,16 +1493,14 @@
             document.getElementById("name-to").innerText = assetTo.name;
         }
 
-        /* Alphabet Glider System Engine */
         let targetedSwitchMode = "from"; 
 
-        // Intercept container clicks to launch selector
-        document.getElementById("code-from").parentElement.parentElement.addEventListener("click", (e) => {
+        document.getElementById("row-from").addEventListener("click", (e) => {
             targetedSwitchMode = "from";
             openGlobalCurrencySelector();
             e.stopPropagation();
         });
-        document.getElementById("code-to").parentElement.parentElement.addEventListener("click", (e) => {
+        document.getElementById("row-to").addEventListener("click", (e) => {
             targetedSwitchMode = "to";
             openGlobalCurrencySelector();
             e.stopPropagation();
@@ -1489,14 +1518,15 @@
         function buildSelectionInterface() {
             const listContainer = document.getElementById("selectionListContainer");
             const gliderTrack = document.getElementById("alphabetGliderTrack");
+            const previewBubble = document.getElementById("iosPreviewBubble");
             
             listContainer.innerHTML = "";
-            gliderTrack.innerHTML = "";
-
-            // Sort alphabetical dataset securely
-            const sortedData = [...currencyDataset].sort((a, b) => a.code.localeCompare(b.code));
             
-            // Map character index arrays
+            // Clean up old letters while preserving the preview bubble element node safely
+            const oldLetters = gliderTrack.querySelectorAll('.glider-letter');
+            oldLetters.forEach(el => el.remove());
+
+            const sortedData = [...currencyDataset].sort((a, b) => a.code.localeCompare(b.code));
             const alphabetGroups = {};
             sortedData.forEach(item => {
                 const initialChar = item.code.charAt(0).toUpperCase();
@@ -1507,10 +1537,9 @@
             });
 
             const matchingActiveSelectionCode = targetedSwitchMode === "from" ? selectedFromCurrency : selectedToCurrency;
+            const uniqueLettersOrdered = Object.keys(alphabetGroups).sort();
 
-            // Render groups layout structures mapping
-            Object.keys(alphabetGroups).sort().forEach(letter => {
-                // Append anchor header id for smooth jumper referencing mapping
+            uniqueLettersOrdered.forEach(letter => {
                 const sectionHeader = document.createElement("div");
                 sectionHeader.className = "alphabet-section-header";
                 sectionHeader.innerText = letter;
@@ -1547,18 +1576,63 @@
 
                 listContainer.appendChild(groupWrapperBox);
 
-                // Populate sidebar glider item track element index indicators
                 const gliderLetterNode = document.createElement("span");
                 gliderLetterNode.className = "glider-letter";
                 gliderLetterNode.innerText = letter;
-                gliderLetterNode.addEventListener("click", () => {
-                    const targetSection = document.getElementById(`section-anchor-${letter}`);
-                    if (targetSection) {
-                        targetSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                    }
-                });
                 gliderTrack.appendChild(gliderLetterNode);
             });
+
+            /* High Performance iOS Alphabet continuous Glide Gesture Implementation handler mapping handles */
+            function handleTrackGlide(clientY) {
+                const trackBounds = gliderTrack.getBoundingClientRect();
+                let relativeY = clientY - trackBounds.top;
+                // clamp boundaries
+                relativeY = Math.max(0, Math.min(relativeY, trackBounds.height));
+                
+                const percent = relativeY / trackBounds.height;
+                let index = Math.floor(percent * uniqueLettersOrdered.length);
+                if (index >= uniqueLettersOrdered.length) index = uniqueLettersOrdered.length - 1;
+                if (index < 0) index = 0;
+                
+                const targetedLetter = uniqueLettersOrdered[index];
+                if (targetedLetter) {
+                    previewBubble.innerText = targetedLetter;
+                    previewBubble.classList.add("visible");
+                    
+                    // Position the pop-out bubble dynamically to align with your thumb
+                    previewBubble.style.top = `${relativeY - 12}px`;
+                    
+                    const targetSection = document.getElementById(`section-anchor-${targetedLetter}`);
+                    if (targetSection) {
+                        targetSection.scrollIntoView({ behavior: 'auto', block: 'start' });
+                    }
+                }
+            }
+
+            gliderTrack.ontouchstart = (e) => {
+                handleTrackGlide(e.touches[0].clientY);
+                e.preventDefault();
+            };
+
+            gliderTrack.ontouchmove = (e) => {
+                handleTrackGlide(e.touches[0].clientY);
+                e.preventDefault();
+            };
+
+            gliderTrack.ontouchend = () => {
+                previewBubble.classList.remove("visible");
+            };
+            
+            // Standard Desktop Mouse Support Fallbacks
+            gliderTrack.onmousedown = (e) => {
+                handleTrackGlide(e.clientY);
+                window.onmousemove = (moveEvent) => handleTrackGlide(moveEvent.clientY);
+                window.onmouseup = () => {
+                    previewBubble.classList.remove("visible");
+                    window.onmousemove = null;
+                    window.onmouseup = null;
+                };
+            };
         }
 
         function applyTheme(themeValue) {
