@@ -185,7 +185,7 @@
             color: var(--orange-btn);
         }
 
-        /* Classic iOS Spring Modal Transitions everywhere */
+        /* iOS Centered Navigation Header Layout Mechanics */
         .settings-modal, .currency-modal, .selection-modal {
             position: fixed;
             top: 0;
@@ -197,7 +197,7 @@
             z-index: 100;
             display: flex;
             flex-direction: column;
-            padding: 50px 20px 0px 20px;
+            padding: 50px 0 0px 0;
             transform: translateX(100%);
             transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
         }
@@ -205,7 +205,7 @@
         .settings-scroll-area {
             display: flex;
             flex-direction: column;
-            padding-bottom: 80px;
+            padding: 0 20px 100px 20px;
             overflow-y: scroll;
             -webkit-overflow-scrolling: touch;
         }
@@ -216,34 +216,115 @@
 
         .selection-modal {
             z-index: 200;
-            padding-right: 35px;
         }
 
-        .settings-header, .currency-header, .selection-header {
-            display: flex;
-            justify-content: space-between;
+        .ios-centered-header {
+            display: grid;
+            grid-template-columns: 80px 1fr 80px;
             align-items: center;
-            margin-bottom: 24px;
+            height: 44px;
+            padding: 0 8px;
+            margin-bottom: 16px;
             flex-shrink: 0;
+            position: relative;
         }
 
-        .settings-header h2, .currency-header h2, .selection-header h2 {
-            font-size: 28px;
-            font-weight: 700;
+        .ios-centered-header h2 {
+            font-size: 20px;
+            font-weight: 600;
+            text-align: center;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
 
-        .done-btn, .back-btn {
+        .back-btn-container {
+            display: flex;
+            align-items: center;
+        }
+
+        .back-btn {
             background: none;
             border: none;
             color: var(--orange-btn);
             font-size: 17px;
-            font-weight: 600;
+            font-weight: 400;
             cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 3px;
             transition: opacity 0.15s ease;
         }
         
-        .done-btn:active, .back-btn:active {
-            opacity: 0.5;
+        .back-btn span {
+            font-size: 24px;
+            line-height: 1;
+            margin-top: -2px;
+        }
+        
+        .back-btn:active {
+            opacity: 0.4;
+        }
+
+        .header-right-action {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            padding-right: 8px;
+        }
+
+        .search-trigger-btn {
+            background: none;
+            border: none;
+            color: var(--orange-btn);
+            font-size: 20px;
+            cursor: pointer;
+            padding: 4px;
+            transition: transform 0.2s ease;
+        }
+
+        /* Elastic Header Search Bar Deployment Box */
+        .ios-search-bar-wrapper {
+            position: absolute;
+            left: 12px;
+            right: 12px;
+            top: 6px;
+            height: 36px;
+            background-color: var(--settings-item-bg);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            padding: 0 10px;
+            transform: scaleX(0.8) opacity;
+            opacity: 0;
+            pointer-events: none;
+            transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.2s ease;
+            z-index: 5;
+        }
+
+        .ios-search-bar-wrapper.search-active {
+            transform: scaleX(1);
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .ios-search-input {
+            flex: 1;
+            background: none;
+            border: none;
+            color: var(--settings-text);
+            font-size: 16px;
+            margin-left: 6px;
+            outline: none;
+        }
+
+        .ios-search-close {
+            background: none;
+            border: none;
+            color: #8e8e93;
+            font-size: 14px;
+            cursor: pointer;
+            padding: 2px 6px;
         }
 
         .settings-subheader, .currency-subheader {
@@ -259,12 +340,13 @@
             flex-direction: column;
             height: 100%;
             justify-content: space-between;
+            padding: 0 20px;
         }
 
         .currency-input-rows {
             flex: 1;
             overflow-y: auto;
-            padding-top: 10px;
+            padding-top: 5px;
         }
 
         .currency-box {
@@ -334,7 +416,6 @@
             white-space: nowrap;
         }
 
-        /* Unified Default Grid mapping for Currency Screen */
         .currency-keypad-default {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
@@ -343,9 +424,11 @@
             padding-top: 15px;
             border-top: 0.5px solid var(--divider-color);
             background-color: var(--settings-bg);
+            margin: 0 -20px;
+            padding-left: 20px;
+            padding-right: 20px;
         }
 
-        /* Inactive non-essential button state formatting rules */
         .currency-keypad-default .dull-disabled {
             opacity: 0.25;
             filter: grayscale(1);
@@ -357,7 +440,7 @@
             overflow-y: scroll;
             position: relative;
             scroll-behavior: auto;
-            padding-bottom: 40px;
+            padding: 0 35px 40px 20px;
         }
 
         .selection-list-container::-webkit-scrollbar {
@@ -427,7 +510,6 @@
             visibility: visible;
         }
 
-        /* iOS Sidebar Index Glide Rail */
         .alphabet-glider-track {
             position: absolute;
             right: 4px;
@@ -448,10 +530,9 @@
             width: 100%;
             text-align: center;
             padding: 1px 0;
-            pointer-events: none; /* Let the glide track capture container moves smoothly */
+            pointer-events: none;
         }
 
-        /* Floating iOS Contacts Popout Preview Callout */
         .ios-preview-bubble {
             position: absolute;
             left: -55px;
@@ -488,6 +569,7 @@
             border-color: transparent transparent transparent var(--orange-btn);
         }
 
+        /* Fixed Settings Option Overflow Handling Rules */
         .accordion-container {
             background-color: var(--settings-item-bg);
             border-radius: 12px;
@@ -520,16 +602,17 @@
             transform: rotate(90deg);
         }
 
+        /* Dynamic Expand Window Truncation Patch Fix */
         .accordion-content {
             max-height: 0;
             overflow: hidden;
             transition: max-height 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-            background-color: rgba(0, 0, 0, 0.1);
+            background-color: rgba(0, 0, 0, 0.13);
         }
 
-        /* Fluid layout sizing adjustments for the expanded option state choices */
         .accordion-container.expanded .accordion-content {
-            max-height: 500px;
+            max-height: 450px; /* Highly responsive safety clearance height */
+            overflow-y: auto;  /* Inherent fluid scroll protective layer */
         }
 
         .option-item {
@@ -626,11 +709,14 @@
             font-weight: 700;
         }
 
-        .sheet-content {
-            flex: 1;
-            overflow-y: auto;
-            padding: 0 20px 30px 20px;
-            -webkit-overflow-scrolling: touch;
+        .done-btn {
+            background: none;
+            border: none;
+            color: var(--orange-btn);
+            font-size: 17px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: opacity 0.15s ease;
         }
 
         .history-list {
@@ -826,6 +912,7 @@
         <button class="btn btn-orange" onclick="calculate()">=</button>
     </div>
 
+    <!-- Fluid History Sheet -->
     <div class="bottom-sheet" id="historySheet">
         <div class="sheet-upper-zone" id="sheetUpperZone">
             <div class="sheet-handle"></div>
@@ -838,16 +925,20 @@
         <div class="sheet-content" id="historyContent"></div>
     </div>
 
+    <!-- Converter Screen Pane Mapping -->
     <div class="currency-modal" id="currencyModal">
         <div class="currency-interface-container">
-            <div class="currency-header" style="margin-bottom: 10px;">
+            <div class="ios-centered-header">
+                <div class="back-btn-container">
+                    <button class="back-btn" id="closeCurrency"><span>‹</span>Back</button>
+                </div>
                 <h2 id="title-currency">Converter</h2>
-                <button class="done-btn" id="closeCurrency">Done</button>
+                <div></div>
             </div>
             
             <div class="currency-input-rows">
                 <div class="currency-subheader">From</div>
-                <div class="currency-box focused-row" id="row-from" onclick="focusCurrencyRow('from')">
+                <div class="currency-box focused-row" id="row-from">
                     <div class="currency-row-left">
                         <span class="currency-flag" id="flag-from">🇺🇸</span>
                         <div class="currency-code-container">
@@ -859,7 +950,7 @@
                 </div>
 
                 <div class="currency-subheader">To</div>
-                <div class="currency-box" id="row-to" onclick="focusCurrencyRow('to')">
+                <div class="currency-box" id="row-to">
                     <div class="currency-row-left">
                         <span class="currency-flag" id="flag-to">🇪🇺</span>
                         <div class="currency-code-container">
@@ -900,28 +991,43 @@
         </div>
     </div>
 
+    <!-- Global Currency Selection View Panel -->
     <div class="selection-modal" id="selectionModal">
-        <div class="selection-header">
-            <button class="back-btn" id="closeSelection">Back</button>
-            <h2>Change Currency</h2>
-            <div style="width: 40px;"></div>
+        <div class="ios-centered-header" id="selectionHeaderRow">
+            <div class="back-btn-container">
+                <button class="back-btn" id="closeSelection"><span>‹</span>Back</button>
+            </div>
+            <h2 id="title-selection" style="font-size: 20px;">Change Currency</h2>
+            <div class="header-right-action">
+                <button class="search-trigger-btn" id="searchTrigger">🔍</button>
+            </div>
+
+            <!-- Integrated Smooth Search Input overlay box -->
+            <div class="ios-search-bar-wrapper" id="searchBarWrapper">
+                <span>🔍</span>
+                <input type="text" class="ios-search-input" id="currencySearchField" placeholder="Search currency...">
+                <button class="ios-search-close" id="searchCancelBtn">Cancel</button>
+            </div>
         </div>
 
-        <div class="selection-list-container" id="selectionListContainer">
-            </div>
+        <div class="selection-list-container" id="selectionListContainer"></div>
 
         <div class="alphabet-glider-track" id="alphabetGliderTrack">
             <div class="ios-preview-bubble" id="iosPreviewBubble">A</div>
-            </div>
+        </div>
     </div>
 
+    <!-- Settings Panel Configuration Module -->
     <div class="settings-modal" id="settingsModal">
-        <div class="settings-scroll-area">
-            <div class="settings-header">
-                <h2 id="title-settings">Settings</h2>
-                <button class="done-btn" id="closeSettings">Done</button>
+        <div class="ios-centered-header">
+            <div class="back-btn-container">
+                <button class="back-btn" id="closeSettings"><span>‹</span>Back</button>
             </div>
-            
+            <h2 id="title-settings">Settings</h2>
+            <div></div>
+        </div>
+
+        <div class="settings-scroll-area">
             <div class="settings-subheader" id="sub-theme">Theme</div>
             <div class="accordion-container" id="container-theme">
                 <div class="accordion-header" onclick="toggleAccordion('container-theme')">
@@ -1050,31 +1156,32 @@
     <script>
         const i18n = {
             en: {
-                settings: "Settings", done: "Done", theme: "Theme", languages: "Languages", display: "Display",
+                settings: "Settings", back: "Back", theme: "Theme", languages: "Languages", display: "Display",
                 fullscreen: "Full-screen Mode", system: "System", dark: "Dark", light: "Light", error: "Error",
                 history: "History", noHistory: "No History Yet", histLimit: "History Limit",
                 confirmClear: "Are you sure you want to clear history?", edit: "Edit", delete: "Delete", currency: "Converter"
             },
             ru: {
-                settings: "Настройки", done: "Готово", theme: "Тема", languages: "Языки", display: "Экран",
+                settings: "Настройки", back: "Назад", theme: "Тема", languages: "Языки", display: "Экран",
                 fullscreen: "Полноэкранный режим", system: "Системная", dark: "Темная", light: "Светлая", error: "Ошибка",
                 history: "История", noHistory: "Истории пока нет", histLimit: "Лимит истории",
                 confirmClear: "Вы уверены, что хотите очистить историю?", edit: "Править", delete: "Удалить", currency: "Конвертер"
             },
             es: {
-                settings: "Ajustes", done: "Hecho", theme: "Tema", languages: "Idiomas", display: "Pantalla",
+                settings: "Ajustes", back: "Atrás", theme: "Tema", languages: "Idiomas", display: "Pantalla",
                 fullscreen: "Pantalla completa", system: "Sistema", dark: "Oscuro", light: "Claro", error: "Error",
                 history: "Historial", noHistory: "Sin historial aún", histLimit: "Límite de historial",
                 confirmClear: "¿Estás seguro de que quieres borrar el historial?", edit: "Editar", delete: "Eliminar", currency: "Conversor"
             },
             fr: {
-                settings: "Réglages", done: "Ok", theme: "Thème", languages: "Langues", display: "Écran",
+                settings: "Réglages", back: "Retour", theme: "Thème", languages: "Langues", display: "Écran",
                 fullscreen: "Plein écran", system: "Système", dark: "Sombre", light: "Clair", error: "Erreur",
                 history: "Historique", noHistory: "No History Yet", histLimit: "Limite d'historique",
                 confirmClear: "Are you sure you want to clear history?", edit: "Modifier", delete: "Supprimer", currency: "Convertisseur"
             }
         };
 
+        // Fully Comprehensive Global Currencies Database Listing
         const currencyDataset = [
             { code: "AED", name: "United Arab Emirates Dirham", flag: "🇦🇪" },
             { code: "AFN", name: "Afghani", flag: "🇦🇫" },
@@ -1084,19 +1191,172 @@
             { code: "AOA", name: "Angolan Kwanza", flag: "🇦🇴" },
             { code: "ARS", name: "Argentine Peso", flag: "🇦🇷" },
             { code: "AUD", name: "Australian Dollar", flag: "🇦🇺" },
+            { code: "AWG", name: "Aruban Florin", flag: "🇦🇼" },
+            { code: "AZN", name: "Azerbaijani Manat", flag: "🇦🇿" },
+            { code: "BAM", name: "Bosnia-Herz. Conv. Mark", flag: "🇧🇦" },
+            { code: "BBD", name: "Barbadian Dollar", flag: "🇧🇧" },
+            { code: "BDT", name: "Bangladeshi Taka", flag: "🇧🇩" },
+            { code: "BGN", name: "Bulgarian Lev", flag: "🇧🇬" },
+            { code: "BHD", name: "Bahraini Dinar", flag: "🇧🇭" },
+            { code: "BIF", name: "Burundian Franc", flag: "🇧🇮" },
+            { code: "BMD", name: "Bermudan Dollar", flag: "🇧🇲" },
+            { code: "BND", name: "Brunei Dollar", flag: "🇧🇳" },
+            { code: "BOB", name: "Bolivian Boliviano", flag: "🇧🇴" },
+            { code: "BRL", name: "Brazilian Real", flag: "🇧🇷" },
+            { code: "BSD", name: "Bahamian Dollar", flag: "🇧🇸" },
+            { code: "BTN", name: "Bhutanese Ngultrum", flag: "🇧🇹" },
+            { code: "BWP", name: "Botswanan Pula", flag: "🇧🇼" },
+            { code: "BYN", name: "Belarusian Ruble", flag: "🇧🇾" },
+            { code: "BZD", name: "Belize Dollar", flag: "🇧🇿" },
             { code: "CAD", name: "Canadian Dollar", flag: "🇨🇦" },
+            { code: "CDF", name: "Congolese Franc", flag: "🇨🇩" },
+            { code: "CHF", name: "Swiss Franc", flag: "🇨🇭" },
+            { code: "CLP", name: "Chilean Peso", flag: "🇨🇱" },
             { code: "CNY", name: "Chinese Yuan", flag: "🇨🇳" },
+            { code: "COP", name: "Colombian Peso", flag: "🇨🇴" },
+            { code: "CRC", name: "Costa Rican Colón", flag: "🇨🇷" },
+            { code: "CUP", name: "Cuban Peso", flag: "🇨🇺" },
+            { code: "CVE", name: "Cape Verdean Escudo", flag: "🇨🇻" },
+            { code: "CZK", name: "Czech Koruna", flag: "🇨🇿" },
+            { code: "DJF", name: "Djiboutian Franc", flag: "🇩🇯" },
+            { code: "DKK", name: "Danish Krone", flag: "🇩🇰" },
+            { code: "DOP", name: "Dominican Peso", flag: "🇩🇴" },
+            { code: "DZD", name: "Algerian Dinar", flag: "🇩🇿" },
+            { code: "EGP", name: "Egyptian Pound", flag: "🇪🇬" },
+            { code: "ERN", name: "Eritrean Nakfa", flag: "🇪🇷" },
+            { code: "ETB", name: "Ethiopian Birr", flag: "🇪🇹" },
             { code: "EUR", name: "Euro", flag: "🇪🇺" },
+            { code: "FJD", name: "Fijian Dollar", flag: "🇫🇯" },
+            { code: "FKP", name: "Falkland Islands Pound", flag: "🇫🇰" },
             { code: "GBP", name: "British Pound", flag: "🇬🇧" },
+            { code: "GEL", name: "Georgian Lari", flag: "🇬🇪" },
+            { code: "GHS", name: "Ghanaian Cedi", flag: "🇬🇭" },
+            { code: "GIP", name: "Gibraltar Pound", flag: "🇬🇮" },
+            { code: "GMD", name: "Gambian Dalasi", flag: "🇬🇲" },
+            { code: "GNF", name: "Guinean Franc", flag: "🇬🇳" },
+            { code: "GTQ", name: "Guatemalan Quetzal", flag: "🇬🇹" },
+            { code: "GYD", name: "Guyanese Dollar", flag: "🇬🇾" },
+            { code: "HKD", name: "Hong Kong Dollar", flag: "🇭🇰" },
+            { code: "HNL", name: "Honduran Lempira", flag: "🇭🇳" },
+            { code: "HRK", name: "Croatian Kuna", flag: "🇭🇷" },
+            { code: "HTG", name: "Haitian Gourde", flag: "🇭🇹" },
+            { code: "HUF", name: "Hungarian Forint", flag: "🇭🇺" },
+            { code: "IDR", name: "Indonesian Rupiah", flag: "🇮🇩" },
+            { code: "ILS", name: "Israeli New Shekel", flag: "🇮🇱" },
+            { code: "INR", name: "Indian Rupee", flag: "🇮🇳" },
+            { code: "IQD", name: "Iraqi Dinar", flag: "🇮🇶" },
+            { code: "IRR", name: "Iranian Rial", flag: "🇮🇷" },
+            { code: "ISK", name: "Icelandic Króna", flag: "🇮🇸" },
+            { code: "JMD", name: "Jamaican Dollar", flag: "🇯🇲" },
+            { code: "JOD", name: "Jordanian Dinar", flag: "🇯🇴" },
             { code: "JPY", name: "Japanese Yen", flag: "🇯🇵" },
+            { code: "KES", name: "Kenyan Shilling", flag: "🇰🇪" },
+            { code: "KGS", name: "Kyrgystani Som", flag: "🇰🇬" },
+            { code: "KHR", name: "Cambodian Riel", flag: "🇰🇭" },
+            { code: "KMF", name: "Comorian Franc", flag: "🇰🇲" },
+            { code: "KPW", name: "North Korean Won", flag: "🇰🇵" },
+            { code: "KRW", name: "South Korean Won", flag: "🇰🇷" },
+            { code: "KWD", name: "Kuwaiti Dinar", flag: "🇰🇼" },
+            { code: "KYD", name: "Cayman Islands Dollar", flag: "🇰🇾" },
+            { code: "KZT", name: "Kazakhstani Tenge", flag: "🇰🇿" },
+            { code: "LAK", name: "Laotian Kip", flag: "🇱🇦" },
+            { code: "LBP", name: "Lebanese Pound", flag: "🇱🇧" },
+            { code: "LKR", name: "Sri Lankan Rupee", flag: "🇱🇰" },
+            { code: "LRD", name: "Liberian Dollar", flag: "🇱🇷" },
+            { code: "LSL", name: "Lesotho Loti", flag: "🇱🇸" },
+            { code: "LYD", name: "Libyan Dinar", flag: "🇱🇾" },
+            { code: "MAD", name: "Moroccan Dirham", flag: "🇲🇦" },
+            { code: "MDL", name: "Moldovan Leu", flag: "🇲🇩" },
+            { code: "MGA", name: "Malagasy Ariary", flag: "🇲🇬" },
+            { code: "MKD", name: "Macedonian Denar", flag: "🇲🇰" },
+            { code: "MMK", name: "Myanmar Kyat", flag: "🇲🇲" },
+            { code: "MNT", name: "Mongolian Tugrik", flag: "🇲🇳" },
+            { code: "MOP", name: "Macanese Pataca", flag: "🇲🇴" },
+            { code: "MRU", name: "Mauritanian Ouguiya", flag: "🇲🇷" },
+            { code: "MUR", name: "Mauritian Rupee", flag: "🇲🇺" },
+            { code: "MVR", name: "Maldivian Rufiyaa", flag: "🇲🇻" },
+            { code: "MWK", name: "Malawian Kwacha", flag: "🇲🇼" },
+            { code: "MXN", name: "Mexican Peso", flag: "🇲🇽" },
+            { code: "MYR", name: "Malaysian Ringgit", flag: "🇲🇾" },
+            { code: "MZN", name: "Mozambican Metical", flag: "🇲🇿" },
+            { code: "NAD", name: "Namibian Dollar", flag: "🇳🇦" },
             { code: "NGN", name: "Nigerian Naira", flag: "🇳🇬" },
+            { code: "NIO", name: "Nicaraguan Córdoba", flag: "🇳🇮" },
+            { code: "NOK", name: "Norwegian Krone", flag: "🇳🇴" },
+            { code: "NPR", name: "Nepalese Rupee", flag: "🇳🇵" },
+            { code: "NZD", name: "New Zealand Dollar", flag: "🇳🇿" },
+            { code: "OMR", name: "Omani Rial", flag: "🇴🇲" },
+            { code: "PAB", name: "Panamanian Balboa", flag: "🇵🇦" },
+            { code: "PEN", name: "Peruvian Sol", flag: "🇵🇪" },
+            { code: "PGK", name: "Papua New Guinean Kina", flag: "🇵🇬" },
+            { code: "PHP", name: "Philippine Peso", flag: "🇵🇭" },
+            { code: "PKR", name: "Pakistani Rupee", flag: "🇵🇰" },
+            { code: "PLN", name: "Polish Zloty", flag: "🇵🇱" },
+            { code: "PYG", name: "Paraguayan Guarani", flag: "🇵🇾" },
+            { code: "QAR", name: "Qatari Rial", flag: "🇶🇦" },
+            { code: "RON", name: "Romanian Leu", flag: "🇷🇴" },
+            { code: "RSD", name: "Serbian Dinar", flag: "🇷🇸" },
+            { code: "RUB", name: "Russian Ruble", flag: "🇷🇺" },
+            { code: "RWF", name: "Rwandan Franc", flag: "🇷🇼" },
+            { code: "SAR", name: "Saudi Riyal", flag: "🇸🇦" },
+            { code: "SBD", name: "Solomon Islands Dollar", flag: "🇸🇧" },
+            { code: "SCR", name: "Seychellois Rupee", flag: "🇸🇨" },
+            { code: "SDG", name: "Sudanese Pound", flag: "🇸🇩" },
+            { code: "SEK", name: "Swedish Krona", flag: "🇸🇪" },
+            { code: "SGD", name: "Singapore Dollar", flag: "🇸🇬" },
+            { code: "SHP", name: "St. Helena Pound", flag: "🇸🇭" },
+            { code: "SLL", name: "Sierra Leonean Leone", flag: "🇸🇱" },
+            { code: "SOS", name: "Somali Shilling", flag: "🇸🇴" },
+            { code: "SRD", name: "Surinamese Dollar", flag: "🇸🇷" },
+            { code: "STN", name: "São Tomé Dobra", flag: "🇸🇹" },
+            { code: "SVC", name: "Salvadoran Colón", flag: "🇸🇻" },
+            { code: "SYP", name: "Syrian Pound", flag: "🇸🇾" },
+            { code: "SZL", name: "Swazi Lilangeni", flag: "🇸🇿" },
+            { code: "THB", name: "Thai Baht", flag: "🇹🇭" },
+            { code: "TJS", name: "Tajikistani Somoni", flag: "🇹🇯" },
+            { code: "TMT", name: "Turkmenistani Manat", flag: "🇹🇲" },
+            { code: "TND", name: "Tunisian Dinar", flag: "🇹🇳" },
+            { code: "TOP", name: "Tongan Paʻanga", flag: "🇹🇴" },
+            { code: "TRY", name: "Turkish Lira", flag: "🇹🇷" },
+            { code: "TTD", name: "Trinidad & Tobago Dollar", flag: "🇹🇹" },
+            { code: "TWD", name: "New Taiwan Dollar", flag: "🇹🇼" },
+            { code: "TZS", name: "Tanzanian Shilling", flag: "🇹🇿" },
+            { code: "UAH", name: "Ukrainian Hryvnia", flag: "🇺🇦" },
+            { code: "UGX", name: "Ugandan Shilling", flag: "🇺🇬" },
             { code: "USD", name: "US Dollar", flag: "🇺🇸" },
-            { code: "ZAR", name: "South African Rand", flag: "🇿🇦" }
+            { code: "UYU", name: "Uruguayan Peso", flag: "🇺🇾" },
+            { code: "UZS", name: "Uzbekistani Som", flag: "🇺🇿" },
+            { code: "VES", name: "Venezuelan Bolívar", flag: "🇻🇪" },
+            { code: "VND", name: "Vietnamese Dong", flag: "🇻🇳" },
+            { code: "VUV", name: "Vanuatu Vatu", flag: "🇻🇺" },
+            { code: "WST", name: "Samoan Tala", flag: "🇼🇸" },
+            { code: "XAF", name: "Central African CFA Franc", flag: "🇨🇲" },
+            { code: "XCD", name: "East Caribbean Dollar", flag: "🇩🇲" },
+            { code: "XOF", name: "West African CFA Franc", flag: "🇨🇮" },
+            { code: "XPF", name: "CFP Franc", flag: "🇵🇫" },
+            { code: "YER", name: "Yemeni Rial", flag: "🇾🇪" },
+            { code: "ZAR", name: "South African Rand", flag: "🇿🇦" },
+            { code: "ZMW", name: "Zambian Kwacha", flag: "🇿🇲" },
+            { code: "ZWL", name: "Zimbabwean Dollar", flag: "🇿🇼" }
         ];
 
         const conversionRates = {
             USD: 1.0, EUR: 0.92, GBP: 0.79, CAD: 1.36, JPY: 156.4, NGN: 1480.0,
-            AED: 3.67, AFN: 70.5, ALL: 92.3, AMD: 388.2, ANG: 1.80, AOA: 843.5, ARS: 890.0, AUD: 1.51, CNY: 7.24, ZAR: 18.2
+            AED: 3.67, AFN: 70.5, ALL: 92.3, AMD: 388.2, ANG: 1.80, AOA: 843.5, ARS: 890.0, AUD: 1.51, CNY: 7.24, ZAR: 18.2,
+            AWG: 1.80, AZN: 1.70, BAM: 1.80, BBD: 2.00, BDT: 117.5, BGN: 1.80, BHD: 0.376, BIF: 2875, BMD: 1.00, BND: 1.35,
+            BOB: 6.91, BRL: 5.25, BSD: 1.00, BTN: 83.3, BWP: 13.6, BYN: 3.26, BZD: 2.00, CDF: 2800, CHF: 0.91, CLP: 920,
+            COP: 3850, CRC: 515, CUP: 24.0, CVE: 101.4, CZK: 22.8, DJF: 177.7, DKK: 6.87, DOP: 59.2, DZD: 134.5, EGP: 47.2,
+            ERN: 15.0, ETB: 57.4, FJD: 2.24, FKP: 0.79, GEL: 2.72, GHS: 14.5, GIP: 0.79, GMD: 67.9, GNF: 8600, GTQ: 7.77,
+            GYD: 209.3, HKD: 7.81, HNL: 24.7, HRK: 6.93, HTG: 132.5, HUF: 356, IDR: 16200, ILS: 3.68, INR: 83.3, IQD: 1310,
+            IRR: 42000, ISK: 138.2, JMD: 156.1, JOD: 0.709, KES: 131.5, KGS: 87.9, KHR: 4110, KMF: 452.6, KPW: 900, KRW: 1365,
+            KWD: 0.307, KYD: 0.833, KZT: 443, LAK: 21450, LBP: 89500, LKR: 299, LRD: 194.2, LSL: 18.2, LYD: 4.84, MAD: 10.0,
+            MDL: 17.7, MGA: 4430, MKD: 56.6, MMK: 2100, MNT: 3450, MOP: 8.05, MRU: 39.6, MUR: 46.4, MVR: 15.4, MWK: 1735,
+            MXN: 16.7, MYR: 4.71, MZN: 63.9, NAD: 18.2, NIO: 36.8, NOK: 10.6, NPR: 133.3, NZD: 1.63, OMR: 0.385, PAB: 1.00,
+            PEN: 3.73, PGK: 3.88, PHP: 58.1, PKR: 278.5, PLN: 3.93, PYG: 7520, QAR: 3.64, RON: 4.58, RSD: 107.7, RUB: 90.2,
+            RWF: 1310, SAR: 3.75, SBD: 8.48, SCR: 13.5, SDG: 601, SEK: 10.7, SGD: 1.35, SHP: 0.79, SLL: 22450, SOS: 571,
+            SRD: 31.2, STN: 22.5, SVC: 8.75, SYP: 13000, SZL: 18.2, THB: 36.6, TJS: 10.9, TMT: 3.50, TND: 3.12, TOP: 2.36,
+            TRY: 32.2, TTD: 6.79, TWD: 32.3, TZS: 2600, UAH: 40.1, UGX: 3780, UYU: 38.8, UZS: 12600, VES: 36.5, VND: 25450,
+            VUV: 121.2, WST: 2.73, XAF: 603.5, XCD: 2.70, XOF: 603.5, XPF: 110.0, YER: 250.3, ZMW: 26.8, ZWL: 322
         };
 
         let currentInput = "0";
@@ -1112,6 +1372,7 @@
         let activeTargetRow = "from";
         let valueFromStr = "1";
         let valueToStr = "0.92";
+        let searchFilterQuery = "";
 
         const displayEl = document.getElementById("display");
         const exprTrailEl = document.getElementById("exprTrail");
@@ -1264,6 +1525,10 @@
                 container.classList.remove('expanded');
             } else {
                 container.classList.add('expanded');
+                // Auto-center target scroll offset path for small viewport heights
+                setTimeout(() => {
+                    container.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                }, 150);
             }
         }
 
@@ -1403,12 +1668,10 @@
 
         document.getElementById("openCurrency").onclick = () => { 
             if (currentInput !== "0" && !isNaN(currentInput)) {
-                if (activeTargetRow === "from") {
-                    valueFromStr = currentInput;
-                } else {
-                    valueToStr = currentInput;
-                }
+                if (activeTargetRow === "from") valueFromStr = currentInput;
+                else valueToStr = currentInput;
             }
+            focusCurrencyRow("from");
             syncCurrencyCalculations();
             cModal.classList.add("active"); 
         };
@@ -1439,24 +1702,16 @@
             } else if (key === "⌫") {
                 workingValue = workingValue.length > 1 ? workingValue.slice(0, -1) : "0";
             } else if (key === ".") {
-                if (!workingValue.includes(".")) {
-                    workingValue += ".";
-                }
+                if (!workingValue.includes(".")) workingValue += ".";
             } else {
-                if (workingValue === "0") {
-                    workingValue = key;
-                } else {
-                    if (workingValue.replace(/[^0-9]/g, "").length < 10) {
-                        workingValue += key;
-                    }
+                if (workingValue === "0") workingValue = key;
+                else {
+                    if (workingValue.replace(/[^0-9]/g, "").length < 10) workingValue += key;
                 }
             }
 
-            if (activeTargetRow === "from") {
-                valueFromStr = workingValue;
-            } else {
-                valueToStr = workingValue;
-            }
+            if (activeTargetRow === "from") valueFromStr = workingValue;
+            else valueToStr = workingValue;
 
             syncCurrencyCalculations();
         }
@@ -1465,8 +1720,8 @@
             const valFrom = parseFloat(valueFromStr) || 0;
             const valTo = parseFloat(valueToStr) || 0;
 
-            const baseRateFrom = conversionRates[selectedFromCurrency];
-            const baseRateTo = conversionRates[selectedToCurrency];
+            const baseRateFrom = conversionRates[selectedFromCurrency] || 1;
+            const baseRateTo = conversionRates[selectedToCurrency] || 1;
 
             if (activeTargetRow === "from") {
                 const amountInUSD = valFrom / baseRateFrom;
@@ -1484,33 +1739,67 @@
             const assetFrom = currencyDataset.find(c => c.code === selectedFromCurrency);
             const assetTo = currencyDataset.find(c => c.code === selectedToCurrency);
             
-            document.getElementById("flag-from").innerText = assetFrom.flag;
-            document.getElementById("code-from").innerText = assetFrom.code;
-            document.getElementById("name-from").innerText = assetFrom.name;
-
-            document.getElementById("flag-to").innerText = assetTo.flag;
-            document.getElementById("code-to").innerText = assetTo.code;
-            document.getElementById("name-to").innerText = assetTo.name;
+            if (assetFrom) {
+                document.getElementById("flag-from").innerText = assetFrom.flag;
+                document.getElementById("code-from").innerText = assetFrom.code;
+                document.getElementById("name-from").innerText = assetFrom.name;
+            }
+            if (assetTo) {
+                document.getElementById("flag-to").innerText = assetTo.flag;
+                document.getElementById("code-to").innerText = assetTo.code;
+                document.getElementById("name-to").innerText = assetTo.name;
+            }
         }
 
         let targetedSwitchMode = "from"; 
 
         document.getElementById("row-from").addEventListener("click", (e) => {
             targetedSwitchMode = "from";
+            focusCurrencyRow("from");
             openGlobalCurrencySelector();
             e.stopPropagation();
         });
         document.getElementById("row-to").addEventListener("click", (e) => {
             targetedSwitchMode = "to";
+            focusCurrencyRow("to");
             openGlobalCurrencySelector();
             e.stopPropagation();
         });
 
         document.getElementById("closeSelection").onclick = () => {
+            exitSearchMode();
             selModal.classList.remove("active");
         };
 
+        // Header Search Interaction Logic Setup
+        const searchTrigger = document.getElementById("searchTrigger");
+        const searchBarWrapper = document.getElementById("searchBarWrapper");
+        const currencySearchField = document.getElementById("currencySearchField");
+        const searchCancelBtn = document.getElementById("searchCancelBtn");
+
+        searchTrigger.onclick = () => {
+            searchBarWrapper.classList.add("search-active");
+            currencySearchField.focus();
+        };
+
+        searchCancelBtn.onclick = () => {
+            exitSearchMode();
+        };
+
+        currencySearchField.oninput = (e) => {
+            searchFilterQuery = e.target.value.trim().toLowerCase();
+            buildSelectionInterface();
+        };
+
+        function exitSearchMode() {
+            searchFilterQuery = "";
+            currencySearchField.value = "";
+            searchBarWrapper.classList.remove("search-active");
+            buildSelectionInterface();
+        }
+
         function openGlobalCurrencySelector() {
+            exitSearchMode();
             buildSelectionInterface();
             selModal.classList.add("active");
         }
@@ -1522,22 +1811,33 @@
             
             listContainer.innerHTML = "";
             
-            // Clean up old letters while preserving the preview bubble element node safely
             const oldLetters = gliderTrack.querySelectorAll('.glider-letter');
             oldLetters.forEach(el => el.remove());
 
-            const sortedData = [...currencyDataset].sort((a, b) => a.code.localeCompare(b.code));
+            // Apply global filtering criteria
+            let filteredDataset = currencyDataset;
+            if (searchFilterQuery) {
+                filteredDataset = currencyDataset.filter(item => 
+                    item.code.toLowerCase().includes(searchFilterQuery) || 
+                    item.name.toLowerCase().includes(searchFilterQuery)
+                );
+            }
+
+            const sortedData = [...filteredDataset].sort((a, b) => a.code.localeCompare(b.code));
             const alphabetGroups = {};
             sortedData.forEach(item => {
                 const initialChar = item.code.charAt(0).toUpperCase();
-                if (!alphabetGroups[initialChar]) {
-                    alphabetGroups[initialChar] = [];
-                }
+                if (!alphabetGroups[initialChar]) alphabetGroups[initialChar] = [];
                 alphabetGroups[initialChar].push(item);
             });
 
             const matchingActiveSelectionCode = targetedSwitchMode === "from" ? selectedFromCurrency : selectedToCurrency;
             const uniqueLettersOrdered = Object.keys(alphabetGroups).sort();
+
+            if (uniqueLettersOrdered.length === 0) {
+                listContainer.innerHTML = `<div class="no-history-msg">No Currencies Found</div>`;
+                return;
+            }
 
             uniqueLettersOrdered.forEach(letter => {
                 const sectionHeader = document.createElement("div");
@@ -1562,12 +1862,10 @@
                     `;
 
                     rowItem.addEventListener("click", () => {
-                        if (targetedSwitchMode === "from") {
-                            selectedFromCurrency = currency.code;
-                        } else {
-                            selectedToCurrency = currency.code;
-                        }
+                        if (targetedSwitchMode === "from") selectedFromCurrency = currency.code;
+                        else selectedToCurrency = currency.code;
                         syncCurrencyCalculations();
+                        exitSearchMode();
                         selModal.classList.remove("active");
                     });
 
@@ -1582,11 +1880,9 @@
                 gliderTrack.appendChild(gliderLetterNode);
             });
 
-            /* High Performance iOS Alphabet continuous Glide Gesture Implementation handler mapping handles */
             function handleTrackGlide(clientY) {
                 const trackBounds = gliderTrack.getBoundingClientRect();
                 let relativeY = clientY - trackBounds.top;
-                // clamp boundaries
                 relativeY = Math.max(0, Math.min(relativeY, trackBounds.height));
                 
                 const percent = relativeY / trackBounds.height;
@@ -1598,8 +1894,6 @@
                 if (targetedLetter) {
                     previewBubble.innerText = targetedLetter;
                     previewBubble.classList.add("visible");
-                    
-                    // Position the pop-out bubble dynamically to align with your thumb
                     previewBubble.style.top = `${relativeY - 12}px`;
                     
                     const targetSection = document.getElementById(`section-anchor-${targetedLetter}`);
@@ -1613,17 +1907,12 @@
                 handleTrackGlide(e.touches[0].clientY);
                 e.preventDefault();
             };
-
             gliderTrack.ontouchmove = (e) => {
                 handleTrackGlide(e.touches[0].clientY);
                 e.preventDefault();
             };
-
-            gliderTrack.ontouchend = () => {
-                previewBubble.classList.remove("visible");
-            };
+            gliderTrack.ontouchend = () => previewBubble.classList.remove("visible");
             
-            // Standard Desktop Mouse Support Fallbacks
             gliderTrack.onmousedown = (e) => {
                 handleTrackGlide(e.clientY);
                 window.onmousemove = (moveEvent) => handleTrackGlide(moveEvent.clientY);
@@ -1669,10 +1958,11 @@
             document.getElementById("lbl-lang-val").innerText = nativeLabels[langValue] || data.system;
 
             document.getElementById("title-settings").innerText = data.settings;
-            document.getElementById("closeSettings").innerText = data.done;
+            document.getElementById("closeSettings").innerHTML = `<span>‹</span>${data.back}`;
             document.getElementById("title-history").innerText = data.history;
             document.getElementById("title-currency").innerText = data.currency;
-            document.getElementById("closeCurrency").innerText = data.done;
+            document.getElementById("closeCurrency").innerHTML = `<span>‹</span>${data.back}`;
+            document.getElementById("closeSelection").innerHTML = `<span>‹</span>${data.back}`;
             document.getElementById("sub-theme").innerText = data.theme;
             document.getElementById("sub-lang").innerText = data.languages;
             document.getElementById("sub-display").innerText = data.display;
@@ -1751,9 +2041,7 @@
         }
 
         document.querySelectorAll(".palette-opt").forEach(option => {
-            option.addEventListener("click", function() {
-                applyColorPalette(this.getAttribute("data-value"));
-            });
+            option.addEventListener("click", function() { applyColorPalette(this.getAttribute("data-value")); });
         });
 
         function applyLimit(limitValue) {
