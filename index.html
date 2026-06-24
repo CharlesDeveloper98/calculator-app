@@ -193,31 +193,32 @@
             color: var(--orange-btn);
         }
 
-        .settings-modal, .currency-modal, .selection-modal {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: var(--settings-bg);
-            color: var(--settings-text);
-            z-index: 100;
-            display: flex;
-            flex-direction: column;
-            padding: 50px 0 0px 0;
-            transform: translateX(100%);
-            transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
-        }
+        /* Settings View Configuration Panel */
+.settings-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: var(--settings-bg);
+  color: var(--settings-text);
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+  padding: 50px 20px 0px 20px;
+  overflow-y: scroll;
+  -webkit-overflow-scrolling: touch;
+  transform: translateX(100%);
+  transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
 
         .settings-scroll-area {
-    display: flex;
-    flex-direction: column;
-    padding: 0 20px 100px 20px;
-    overflow-y: auto;
-    /* This tells the box to take up all screen space, minus 60px for the header */
-    height: calc(100vh - 60px); 
-    -webkit-overflow-scrolling: touch;
+  display: flex;
+  flex-direction: column;
+  padding-bottom: 80px; /* Crucial padding to prevent scroll options truncation */
 }
+
 
 
         .settings-modal.active, .currency-modal.active, .selection-modal.active {
