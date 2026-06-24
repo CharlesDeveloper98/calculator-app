@@ -140,7 +140,6 @@
             overflow-x: auto;
         }
 
-        /* Physics-Driven Elastic Fluid Grid Container */
         .grid {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
@@ -151,7 +150,6 @@
             touch-action: none;
         }
 
-        /* iOS Elastic Liquid Spring Framework Optimization */
         .btn {
             border: none;
             border-radius: 50%;
@@ -195,7 +193,6 @@
             color: var(--orange-btn);
         }
 
-        /* Modal Substructures */
         .settings-modal, .currency-modal, .selection-modal {
             position: fixed;
             top: 0;
@@ -563,7 +560,6 @@
             border-color: transparent transparent transparent var(--orange-btn);
         }
 
-        /* Non-Destructive Elastic Accordions Settings Layout Framework */
         .accordion-container {
             background-color: var(--settings-item-bg);
             border-radius: 12px;
@@ -598,7 +594,6 @@
             transform: rotate(90deg);
         }
 
-        /* Fluid Bouncy Interactive Dropdown Height Logic */
         .accordion-content {
             max-height: 0;
             overflow: hidden;
@@ -652,7 +647,6 @@
             box-shadow: 0 0 0 1px rgba(255,255,255,0.15);
         }
 
-        /* Bottom Sheets */
         .bottom-sheet {
             position: fixed;
             bottom: 0;
@@ -1045,6 +1039,15 @@
                 </div>
             </div>
 
+            <div class="settings-subheader" id="sub-font">Font</div>
+            <div class="accordion-container" id="container-font">
+                <div class="accordion-header" onclick="toggleAccordion('container-font')">
+                    <span id="lbl-font-val">Default</span><span class="arrow-icon">➔</span>
+                </div>
+                <div class="accordion-content">
+                    </div>
+            </div>
+
             <div class="settings-subheader" id="sub-lang">Languages</div>
             <div class="accordion-container" id="container-lang">
                 <div class="accordion-header" onclick="toggleAccordion('container-lang')">
@@ -1168,6 +1171,7 @@
     </div>
 
     <script>
+        // [Existing JS code remains unchanged...]
         const i18n = {
             en: {
                 settings: "Settings", back: "Back", theme: "Theme", languages: "Languages", display: "Display",
@@ -1396,7 +1400,6 @@
         const exprTrailEl = document.getElementById("exprTrail");
         const clearBtnEl = document.getElementById("clear-btn");
 
-        // Advanced Liquid Touch Speeds & Specular Highlighting Engine
         function configureTactileKeypadFeedback() {
             document.querySelectorAll('.btn').forEach(btn => {
                 btn.addEventListener('touchstart', (e) => {
@@ -1404,8 +1407,6 @@
                     const rect = btn.getBoundingClientRect();
                     const touch = e.touches[0];
                     updateLightReflection(btn, touch.clientX - rect.left, touch.clientY - rect.top);
-                    
-                    // Native Liquid Pop scale swelling behavior on tap
                     btn.style.transition = "transform 0.1s cubic-bezier(0.1, 1, 0.3, 1)";
                     btn.style.transform = "scale(0.86)";
                 }, { passive: true });
@@ -1420,7 +1421,6 @@
                 btn.addEventListener('touchend', () => {
                     btn.style.backgroundImage = 'none';
                     if (!globalEffectsEnabled) return;
-                    // Rebounds with overshoot bounce matching iOS physics
                     btn.style.transition = "transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.35)";
                     btn.style.transform = "scale(1)";
                 }, { passive: true });
@@ -1432,7 +1432,6 @@
             element.style.backgroundImage = `radial-gradient(circle 55px at ${x}px ${y}px, rgba(255,255,255,0.42) 0%, rgba(255,255,255,0) 100%)`;
         }
 
-        // Bouncy Gestural Drag Setup Framework for Keypads
         function setupBouncyDragKeypad(gridId) {
             const gridContainer = document.getElementById(gridId);
             let startTouchX = 0;
@@ -1441,7 +1440,6 @@
 
             gridContainer.addEventListener('touchstart', (e) => {
                 if (!globalEffectsEnabled) return;
-                // Only process dragging when not clicking inside an active layout interaction context
                 if (e.target.classList.contains('btn')) {
                     isDraggingGrid = true;
                     startTouchX = e.touches[0].clientX;
@@ -1454,18 +1452,14 @@
                 if (!isDraggingGrid || !globalEffectsEnabled) return;
                 const deltaX = e.touches[0].clientX - startTouchX;
                 const deltaY = e.touches[0].clientY - startTouchY;
-
-                // Logarithmic dampening calculation mapping rubber-band movement profile
                 const rubberX = Math.sign(deltaX) * Math.log(1 + Math.abs(deltaX) * 0.4) * 5;
                 const rubberY = Math.sign(deltaY) * Math.log(1 + Math.abs(deltaY) * 0.4) * 5;
-
                 gridContainer.style.transform = `translate3d(${rubberX}px, ${rubberY}px, 0)`;
             }, { passive: false });
 
             const handleDragEnd = () => {
                 if (!isDraggingGrid) return;
                 isDraggingGrid = false;
-                // Snap cleanly right back into exact center using structural spring vectors
                 gridContainer.style.transition = "transform 0.55s cubic-bezier(0.175, 0.885, 0.32, 1.275)";
                 gridContainer.style.transform = "translate3d(0, 0, 0)";
             };
@@ -1609,13 +1603,11 @@
             updateDisplay();
         }
 
-        // Fully Dynamic Height Calculation & Bouncy Spring Accordion Handler
         function toggleAccordion(containerId) {
             const container = document.getElementById(containerId);
             const content = container.querySelector('.accordion-content');
             const isExpanded = container.classList.contains('expanded');
             
-            // Seamlessly collapse all alternate dynamic elements first
             document.querySelectorAll('.accordion-container').forEach(c => {
                 if(c.id !== containerId && c.classList.contains('expanded')) {
                     const activeContent = c.querySelector('.accordion-content');
@@ -1630,17 +1622,13 @@
                 container.classList.remove('expanded');
                 container.style.transform = "scale(1)";
             } else {
-                // Computes exact absolute measurements dynamically to display all items fully
                 const fullHeight = content.scrollHeight;
                 content.style.maxHeight = `${fullHeight}px`;
                 container.classList.add('expanded');
-                
-                // Add a micro spring swell to look organic
                 container.style.transform = "scale(1.015)";
                 setTimeout(() => {
                     container.style.transform = "scale(1)";
                 }, 140);
-
                 setTimeout(() => {
                     container.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
                 }, 150);
@@ -1659,7 +1647,6 @@
         function saveToHistory(expr, res) {
             let history = JSON.parse(localStorage.getItem("calc-history") || "[]");
             const limit = parseInt(localStorage.getItem("calc-history-limit") || "10");
-            
             const now = new Date();
             const timeStr = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
             const dateStr = now.toLocaleDateString([], { month: 'short', day: 'numeric' });
@@ -1816,7 +1803,6 @@
 
         function pressCurrencyKey(key) {
             let workingValue = activeTargetRow === "from" ? valueFromStr : valueToStr;
-
             if (key === "AC") {
                 workingValue = "0";
             } else if (key === "⌫") {
@@ -1829,17 +1815,14 @@
                     if (workingValue.replace(/[^0-9]/g, "").length < 10) workingValue += key;
                 }
             }
-
             if (activeTargetRow === "from") valueFromStr = workingValue;
             else valueToStr = workingValue;
-
             syncCurrencyCalculations();
         }
 
         function syncCurrencyCalculations() {
             const valFrom = parseFloat(valueFromStr) || 0;
             const valTo = parseFloat(valueToStr) || 0;
-
             const baseRateFrom = conversionRates[selectedFromCurrency] || 1;
             const baseRateTo = conversionRates[selectedToCurrency] || 1;
 
@@ -1914,9 +1897,7 @@
             const listContainer = document.getElementById("selectionListContainer");
             const gliderTrack = document.getElementById("alphabetGliderTrack");
             const previewBubble = document.getElementById("iosPreviewBubble");
-            
             listContainer.innerHTML = "";
-            
             const oldLetters = gliderTrack.querySelectorAll('.glider-letter');
             oldLetters.forEach(el => el.remove());
 
@@ -1989,18 +1970,15 @@
                 const trackBounds = gliderTrack.getBoundingClientRect();
                 let relativeY = clientY - trackBounds.top;
                 relativeY = Math.max(0, Math.min(relativeY, trackBounds.height));
-                
                 const percent = relativeY / trackBounds.height;
                 let index = Math.floor(percent * uniqueLettersOrdered.length);
                 if (index >= uniqueLettersOrdered.length) index = uniqueLettersOrdered.length - 1;
                 if (index < 0) index = 0;
-                
                 const targetedLetter = uniqueLettersOrdered[index];
                 if (targetedLetter) {
                     previewBubble.innerText = targetedLetter;
                     previewBubble.classList.add("visible");
                     previewBubble.style.top = `${relativeY - 12}px`;
-                    
                     const targetSection = document.getElementById(`section-anchor-${targetedLetter}`);
                     if (targetSection) {
                         targetSection.scrollIntoView({ behavior: 'auto', block: 'start' });
@@ -2008,14 +1986,8 @@
                 }
             }
 
-            gliderTrack.ontouchstart = (e) => {
-                handleTrackGlide(e.touches[0].clientY);
-                e.preventDefault();
-            };
-            gliderTrack.ontouchmove = (e) => {
-                handleTrackGlide(e.touches[0].clientY);
-                e.preventDefault();
-            };
+            gliderTrack.ontouchstart = (e) => { handleTrackGlide(e.touches[0].clientY); e.preventDefault(); };
+            gliderTrack.ontouchmove = (e) => { handleTrackGlide(e.touches[0].clientY); e.preventDefault(); };
             gliderTrack.ontouchend = () => previewBubble.classList.remove("visible");
             
             gliderTrack.onmousedown = (e) => {
@@ -2033,9 +2005,7 @@
             document.querySelectorAll(".theme-opt").forEach(item => item.classList.remove("selected"));
             const targetNode = document.getElementById(`opt-${themeValue}`);
             if(targetNode) targetNode.classList.add("selected");
-            
             document.getElementById("lbl-theme-val").innerText = themeValue.charAt(0).toUpperCase() + themeValue.slice(1);
-
             if (themeValue === "system") {
                 const isDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
                 document.documentElement.setAttribute("data-theme", isDark ? "dark" : "light");
@@ -2055,13 +2025,10 @@
             const targetNode = document.getElementById(`lang-${langValue}`);
             if(targetNode) targetNode.classList.add("selected");
             localStorage.setItem("calculator-lang", langValue);
-
             const activeKey = getActiveLangKey();
             const data = i18n[activeKey];
-            
             const nativeLabels = { system: data.system, ru: "Russian", es: "Spanish", fr: "French" };
             document.getElementById("lbl-lang-val").innerText = nativeLabels[langValue] || data.system;
-
             document.getElementById("title-settings").innerText = data.settings;
             document.getElementById("closeSettings").innerHTML = `<svg viewBox="0 0 24 40" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M20 4L4 20L20 36" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"/></svg>${data.back}`;
             document.getElementById("title-history").innerText = data.history;
@@ -2079,12 +2046,10 @@
             document.getElementById("txt-light-theme").innerText = data.light;
             document.getElementById("txt-sys-lang").innerText = data.system;
             document.getElementById("btnHistEdit").innerText = isEditMode ? data.done : data.edit;
-            
             document.getElementById("sub-effects").innerText = data.keyEffects;
             document.getElementById("txt-effects-on").innerText = data.keyEffects + " " + data.enabled;
             document.getElementById("txt-effects-off").innerText = data.keyEffects + " " + data.disabled;
             document.getElementById("lbl-effects-val").innerText = globalEffectsEnabled ? data.enabled : data.disabled;
-
             renderHistory();
             updateDisplay();
             closeAllAccordions();
@@ -2103,7 +2068,6 @@
 
         function applyDisplayMode(isFull, isInitRun = false) {
             document.querySelectorAll(".disp-opt").forEach(item => item.classList.remove("selected"));
-            
             if (isFull === "true") {
                 document.getElementById("disp-full").classList.add("selected");
                 document.getElementById("lbl-display-val").innerText = "Full-screen Mode";
@@ -2139,15 +2103,11 @@
         function applyKeyEffects(enabledValue, isInitRun = false) {
             document.querySelectorAll(".effects-opt").forEach(item => item.classList.remove("selected"));
             globalEffectsEnabled = (enabledValue === "true");
-            
             const targetNode = document.getElementById(globalEffectsEnabled ? "effects-enabled" : "effects-disabled");
             if (targetNode) targetNode.classList.add("selected");
-            
             const langKey = getActiveLangKey();
             document.getElementById("lbl-effects-val").innerText = globalEffectsEnabled ? i18n[langKey].enabled : i18n[langKey].disabled;
-            
             localStorage.setItem("calculator-effects", enabledValue);
-            
             if (!globalEffectsEnabled) {
                 document.getElementById('mainCalculatorGrid').style.transform = "translate3d(0, 0, 0)";
                 document.getElementById('currencyCalculatorGrid').style.transform = "translate3d(0, 0, 0)";
@@ -2165,13 +2125,11 @@
 
         function applyColorPalette(hexColor, isInitRun = false) {
             document.querySelectorAll(".palette-opt").forEach(item => item.classList.remove("selected"));
-            
             const targetOpt = document.querySelector(`.palette-opt[data-value="${hexColor}"]`);
             if (targetOpt) {
                 targetOpt.classList.add("selected");
                 document.getElementById("lbl-palette-val").innerText = targetOpt.querySelector("span").innerText.split(" (")[0];
             }
-            
             document.documentElement.style.setProperty('--orange-btn', hexColor);
             localStorage.setItem("calculator-palette", hexColor);
             if(!isInitRun) closeAllAccordions();
@@ -2185,10 +2143,8 @@
             document.querySelectorAll(".limit-option").forEach(item => item.classList.remove("selected"));
             const targetNode = document.getElementById(`limit-${limitValue}`);
             if(targetNode) targetNode.classList.add("selected");
-            
             document.getElementById("lbl-limit-val").innerText = limitValue;
             localStorage.setItem("calc-history-limit", limitValue);
-            
             let history = JSON.parse(localStorage.getItem("calc-history") || "[]");
             if (history.length > parseInt(limitValue)) {
                 history = history.slice(0, parseInt(limitValue));
@@ -2201,7 +2157,6 @@
             option.addEventListener("click", function() { applyLimit(this.getAttribute("data-value")); });
         });
 
-        // Application Lifecycles Initialization Engine
         applyKeyEffects(localStorage.getItem("calculator-effects") || "true", true);
         configureTactileKeypadFeedback();
         setupBouncyDragKeypad('mainCalculatorGrid');
