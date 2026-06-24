@@ -72,13 +72,42 @@
             z-index: 10;
         }
 
+        .nav-right-group {
+            display: flex;
+            align-items: center;
+            background-color: rgba(255, 255, 255, 0.08);
+            border-radius: 12px;
+            padding: 2px 8px;
+            transition: background-color 0.3s;
+        }
+        
+        [data-theme="light"] .nav-right-group {
+            background-color: rgba(0, 0, 0, 0.05);
+        }
+
+        .nav-divider {
+            width: 1px;
+            height: 20px;
+            background-color: var(--divider-color);
+            margin: 0 4px;
+        }
+
         .nav-btn {
             background: none;
             border: none;
             color: var(--orange-btn);
             font-size: 24px;
             cursor: pointer;
-            padding: 5px;
+            padding: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.1s ease, opacity 0.1s ease;
+        }
+
+        .nav-btn:active {
+            transform: scale(0.9);
+            opacity: 0.7;
         }
 
         .display-container {
@@ -155,8 +184,8 @@
             color: var(--orange-btn);
         }
 
-        /* Settings View Configuration Panel */
-        .settings-modal {
+        /* Reusable iOS Modal Panel Styles */
+        .settings-modal, .currency-modal {
             position: fixed;
             top: 0;
             left: 0;
@@ -171,20 +200,20 @@
             overflow-y: scroll;
             -webkit-overflow-scrolling: touch;
             transform: translateX(100%);
-            transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+            transition: transform 0.4s cubic-bezier(0.25, 1, 0.45, 1);
         }
 
-        .settings-scroll-area {
+        .settings-scroll-area, .currency-scroll-area {
             display: flex;
             flex-direction: column;
-            padding-bottom: 80px; /* Crucial padding to prevent scroll options truncation */
+            padding-bottom: 80px;
         }
 
-        .settings-modal.active {
+        .settings-modal.active, .currency-modal.active {
             transform: translateX(0);
         }
 
-        .settings-header {
+        .settings-header, .currency-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -192,7 +221,7 @@
             flex-shrink: 0;
         }
 
-        .settings-header h2 {
+        .settings-header h2, .currency-header h2 {
             font-size: 28px;
             font-weight: 700;
         }
@@ -206,12 +235,38 @@
             cursor: pointer;
         }
 
-        .settings-subheader {
+        .settings-subheader, .currency-subheader {
             font-size: 13px;
             text-transform: uppercase;
             color: #8e8e93;
             margin: 18px 0 8px 10px;
             font-weight: 500;
+        }
+
+        /* Currency App Styles */
+        .currency-box {
+            background-color: var(--settings-item-bg);
+            border-radius: 14px;
+            padding: 16px;
+            margin-bottom: 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .currency-info select {
+            background: none;
+            border: none;
+            color: var(--settings-text);
+            font-size: 20px;
+            font-weight: 600;
+            outline: none;
+            cursor: pointer;
+        }
+
+        .currency-value {
+            font-size: 24px;
+            font-weight: 300;
         }
 
         .accordion-container {
@@ -249,7 +304,7 @@
         }
 
         .accordion-container.expanded .accordion-content {
-            max-height: 500px; /* Increased to fit expanded palette variations completely */
+            max-height: 500px;
         }
 
         .option-item {
@@ -346,7 +401,6 @@
             gap: 12px;
         }
 
-        /* Hardware Accelerated Smooth iOS Sliding Animation Layout Elements */
         .history-wrapper {
             display: flex;
             align-items: center;
@@ -392,7 +446,6 @@
             display: block;
         }
 
-        /* Slide Right Target Class Animation Activators */
         .editing .history-select-circle {
             width: 22px;
             margin-right: 14px;
@@ -498,7 +551,11 @@
 
     <div class="top-nav">
         <button class="nav-btn" id="openHistory">⋮☰</button>
-        <button class="nav-btn" id="openSettings">⚙️</button>
+        <div class="nav-right-group">
+            <button class="nav-btn" id="openCurrency" style="font-size: 20px;">💱</button>
+            <div class="nav-divider"></div>
+            <button class="nav-btn" id="openSettings">⚙️</button>
+        </div>
     </div>
 
     <div class="display-container">
@@ -543,6 +600,39 @@
             </div>
         </div>
         <div class="sheet-content" id="historyContent"></div>
+    </div>
+
+    <div class="currency-modal" id="currencyModal">
+        <div class="currency-scroll-area">
+            <div class="currency-header">
+                <h2 id="title-currency">Converter</h2>
+                <button class="done-btn" id="closeCurrency">Done</button>
+            </div>
+            
+            <div class="currency-subheader">From</div>
+            <div class="currency-box">
+                <div class="currency-info">
+                    <select id="currency-from">
+                        <option value="USD">🇺🇸 USD - US Dollar</option>
+                        <option value="EUR">🇪🇺 EUR - Euro</option>
+                        <option value="GBP">🇬🇧 GBP - British Pound</option>
+                    </select>
+                </div>
+                <div class="currency-value" id="val-from">1.00</div>
+            </div>
+
+            <div class="currency-subheader">To</div>
+            <div class="currency-box">
+                <div class="currency-info">
+                    <select id="currency-to">
+                        <option value="EUR">🇪🇺 EUR - Euro</option>
+                        <option value="USD">🇺🇸 USD - US Dollar</option>
+                        <option value="GBP">🇬🇧 GBP - British Pound</option>
+                    </select>
+                </div>
+                <div class="currency-value" id="val-to">0.92</div>
+            </div>
+        </div>
     </div>
 
     <div class="settings-modal" id="settingsModal">
@@ -683,25 +773,25 @@
                 settings: "Settings", done: "Done", theme: "Theme", languages: "Languages", display: "Display",
                 fullscreen: "Full-screen Mode", system: "System", dark: "Dark", light: "Light", error: "Error",
                 history: "History", noHistory: "No History Yet", histLimit: "History Limit",
-                confirmClear: "Are you sure you want to clear history?", edit: "Edit", delete: "Delete"
+                confirmClear: "Are you sure you want to clear history?", edit: "Edit", delete: "Delete", currency: "Converter"
             },
             ru: {
                 settings: "Настройки", done: "Готово", theme: "Тема", languages: "Языки", display: "Экран",
                 fullscreen: "Полноэкранный режим", system: "Системная", dark: "Темная", light: "Светлая", error: "Ошибка",
                 history: "История", noHistory: "Истории пока нет", histLimit: "Лимит истории",
-                confirmClear: "Вы уверены, что хотите очистить историю?", edit: "Править", delete: "Удалить"
+                confirmClear: "Вы уверены, что хотите очистить историю?", edit: "Править", delete: "Удалить", currency: "Конвертер"
             },
             es: {
                 settings: "Ajustes", done: "Hecho", theme: "Tema", languages: "Idiomas", display: "Pantalla",
                 fullscreen: "Pantalla completa", system: "Sistema", dark: "Oscuro", light: "Claro", error: "Error",
                 history: "Historial", noHistory: "Sin historial aún", histLimit: "Límite de historial",
-                confirmClear: "¿Estás seguro de que quieres borrar el historial?", edit: "Editar", delete: "Eliminar"
+                confirmClear: "¿Estás seguro de que quieres borrar el historial?", edit: "Editar", delete: "Eliminar", currency: "Conversor"
             },
             fr: {
                 settings: "Réglages", done: "Ok", theme: "Thème", languages: "Langues", display: "Écran",
                 fullscreen: "Plein écran", system: "Système", dark: "Sombre", light: "Clair", error: "Erreur",
                 history: "Historique", noHistory: "No History Yet", histLimit: "Limite d'historique",
-                confirmClear: "Are you sure you want to clear history?", edit: "Modifier", delete: "Supprimer"
+                confirmClear: "Are you sure you want to clear history?", edit: "Modifier", delete: "Supprimer", currency: "Convertisseur"
             }
         };
 
@@ -994,14 +1084,19 @@
             }
         });
 
+        // Modal Panel Controller Links (Settings & Currency)
         const sModal = document.getElementById("settingsModal");
-        document.getElementById("openSettings").onclick = () => {
-            sModal.classList.add("active");
+        const cModal = document.getElementById("currencyModal");
+
+        document.getElementById("openSettings").onclick = () => { sModal.classList.add("active"); };
+        document.getElementById("closeSettings").onclick = () => { sModal.classList.remove("active"); closeAllAccordions(); };
+
+        document.getElementById("openCurrency").onclick = () => { 
+            // Set conversion target base defaults dynamically from standard display window
+            document.getElementById("val-from").innerText = currentInput !== "0" ? displayEl.innerText : "1.00";
+            cModal.classList.add("active"); 
         };
-        document.getElementById("closeSettings").onclick = () => { 
-            sModal.classList.remove("active"); 
-            closeAllAccordions(); 
-        };
+        document.getElementById("closeCurrency").onclick = () => { cModal.classList.remove("active"); };
 
         document.getElementById("btnConfirmNo").onclick = () => {
             document.getElementById("dialogOverlay").style.display = "none";
@@ -1049,6 +1144,8 @@
             document.getElementById("title-settings").innerText = data.settings;
             document.getElementById("closeSettings").innerText = data.done;
             document.getElementById("title-history").innerText = data.history;
+            document.getElementById("title-currency").innerText = data.currency;
+            document.getElementById("closeCurrency").innerText = data.done;
             document.getElementById("sub-theme").innerText = data.theme;
             document.getElementById("sub-lang").innerText = data.languages;
             document.getElementById("sub-display").innerText = data.display;
@@ -1070,7 +1167,6 @@
             option.addEventListener("click", function() { applyLanguage(this.getAttribute("data-value")); });
         });
 
-        // FORCE FULL-SCREEN configuration state preservation loop handlers
         function enforceSavedDisplayMode() {
             const targetState = localStorage.getItem("calculator-fullscreen");
             if (targetState === "true" && !document.fullscreenElement) {
@@ -1102,7 +1198,6 @@
             option.addEventListener("click", function() { applyDisplayMode(this.getAttribute("data-value")); });
         });
 
-        // Enforce state match dynamically on interaction handlers if container unmount dropped state
         window.addEventListener("click", enforceSavedDisplayMode, { passive: true });
         window.addEventListener("touchstart", enforceSavedDisplayMode, { passive: true });
 
