@@ -210,21 +210,28 @@
     transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-/* Scrollable area for the settings list */
 .settings-scroll-area {
     display: flex;
     flex-direction: column;
     padding: 0 20px 100px 20px;
-    overflow-y: auto;
     
-    /* Removed the restrictive calc(100vh - 60px) height */
-    /* Use flex: 1 to allow it to expand naturally within the modal */
+    /* Change to auto to allow the container to expand with its children */
     height: auto; 
-    flex: 1;
-    min-height: 0;
+    
+    /* Ensure the container is allowed to grow to fit all expanded items */
+    flex-grow: 1;
+    
+    /* This allows the whole page to scroll if the expanded list exceeds the viewport */
+    overflow-y: visible; 
     
     -webkit-overflow-scrolling: touch;
 }
+
+/* Optional: If you need a scrollbar on the whole screen */
+.settings-modal {
+    overflow-y: auto;
+}
+
 
 
         .settings-modal.active, .currency-modal.active, .selection-modal.active {
