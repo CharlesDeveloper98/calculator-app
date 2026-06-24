@@ -45,7 +45,8 @@
             padding: 0;
             user-select: none;
             -webkit-user-select: none;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            font-family: -apple-system, "SF Pro Display", "SF Pro Text", "SF Pro Icons", Helvetica, Arial, sans-serif;
+            letter-spacing: -0.022em;
         }
 
         body {
@@ -146,6 +147,7 @@
             margin-bottom: 20px;
         }
 
+        /* Tactical Liquid & Reflex Bounce Optimization Framework */
         .btn {
             border: none;
             border-radius: 50%;
@@ -156,12 +158,15 @@
             align-items: center;
             aspect-ratio: 1;
             cursor: pointer;
-            transition: filter 0.1s, background-color 0.1s, transform 0.2s cubic-bezier(0.25, 1, 0.45, 1);
+            position: relative;
+            overflow: hidden;
+            background-size: 100% 100%;
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), filter 0.1s ease;
         }
 
         .btn:active {
-            filter: brightness(1.3);
-            transform: scale(0.95);
+            filter: brightness(1.2);
+            transform: scale(0.88);
         }
 
         .btn-gray {
@@ -185,7 +190,7 @@
             color: var(--orange-btn);
         }
 
-        /* iOS Centered Navigation Header Layout Mechanics */
+        /* Modal Substructures */
         .settings-modal, .currency-modal, .selection-modal {
             position: fixed;
             top: 0;
@@ -207,6 +212,7 @@
             flex-direction: column;
             padding: 0 20px 100px 20px;
             overflow-y: scroll;
+            height: 100%;
             -webkit-overflow-scrolling: touch;
         }
 
@@ -219,11 +225,11 @@
         }
 
         .ios-centered-header {
-            display: grid;
-            grid-template-columns: 80px 1fr 80px;
+            display: flex;
             align-items: center;
+            justify-content: space-between;
             height: 44px;
-            padding: 0 8px;
+            padding: 0 16px;
             margin-bottom: 16px;
             flex-shrink: 0;
             position: relative;
@@ -233,16 +239,20 @@
             font-size: 20px;
             font-weight: 600;
             text-align: center;
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
             white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
+            z-index: 1;
         }
 
         .back-btn-container {
             display: flex;
             align-items: center;
+            z-index: 2;
         }
 
+        /* Bold, More iOS Native Chevron Properties */
         .back-btn {
             background: none;
             border: none;
@@ -252,60 +262,44 @@
             cursor: pointer;
             display: flex;
             align-items: center;
-            gap: 3px;
+            gap: 6px;
             transition: opacity 0.15s ease;
+            padding: 4px 0;
         }
         
-        .back-btn span {
-            font-size: 24px;
-            line-height: 1;
-            margin-top: -2px;
+        .back-btn svg {
+            width: 12px;
+            height: 21px;
+            stroke-width: 3px;
+            display: block;
         }
         
         .back-btn:active {
             opacity: 0.4;
         }
 
-        .header-right-action {
-            display: flex;
-            justify-content: flex-end;
-            align-items: center;
-            padding-right: 8px;
+        /* Persistent Integrated iOS Search Component Positioning */
+        .ios-search-bar-block {
+            padding: 0 16px 12px 16px;
+            width: 100%;
+            box-sizing: border-box;
         }
 
-        .search-trigger-btn {
-            background: none;
-            border: none;
-            color: var(--orange-btn);
-            font-size: 20px;
-            cursor: pointer;
-            padding: 4px;
-            transition: transform 0.2s ease;
-        }
-
-        /* Elastic Header Search Bar Deployment Box */
-        .ios-search-bar-wrapper {
-            position: absolute;
-            left: 12px;
-            right: 12px;
-            top: 6px;
-            height: 36px;
+        .ios-search-inline-field {
             background-color: var(--settings-item-bg);
             border-radius: 10px;
             display: flex;
             align-items: center;
             padding: 0 10px;
-            transform: scaleX(0.8) opacity;
-            opacity: 0;
-            pointer-events: none;
-            transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.2s ease;
-            z-index: 5;
+            height: 36px;
         }
 
-        .ios-search-bar-wrapper.search-active {
-            transform: scaleX(1);
-            opacity: 1;
-            pointer-events: auto;
+        .ios-search-inline-field span {
+            color: #8e8e93;
+            font-size: 16px;
+            margin-right: 6px;
+            display: flex;
+            align-items: center;
         }
 
         .ios-search-input {
@@ -313,18 +307,12 @@
             background: none;
             border: none;
             color: var(--settings-text);
-            font-size: 16px;
-            margin-left: 6px;
+            font-size: 17px;
             outline: none;
         }
 
-        .ios-search-close {
-            background: none;
-            border: none;
+        .ios-search-input::placeholder {
             color: #8e8e93;
-            font-size: 14px;
-            cursor: pointer;
-            padding: 2px 6px;
         }
 
         .settings-subheader, .currency-subheader {
@@ -513,7 +501,7 @@
         .alphabet-glider-track {
             position: absolute;
             right: 4px;
-            top: 110px;
+            top: 160px;
             bottom: 40px;
             width: 24px;
             display: flex;
@@ -569,12 +557,13 @@
             border-color: transparent transparent transparent var(--orange-btn);
         }
 
-        /* Fixed Settings Option Overflow Handling Rules */
+        /* Non-Destructive Elastic Accordions Settings Configuration Layout */
         .accordion-container {
             background-color: var(--settings-item-bg);
             border-radius: 12px;
             overflow: hidden;
             margin-bottom: 12px;
+            transition: margin 0.3s cubic-bezier(0.25, 1, 0.5, 1);
         }
 
         .accordion-header {
@@ -593,7 +582,7 @@
 
         .accordion-header .arrow-icon {
             color: var(--orange-btn);
-            transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+            transition: transform 0.3s cubic-bezier(0.25, 1, 0.5, 1);
             font-weight: bold;
             display: inline-block;
         }
@@ -602,17 +591,17 @@
             transform: rotate(90deg);
         }
 
-        /* Dynamic Expand Window Truncation Patch Fix */
+        /* Continuous Dynamic Height Flow */
         .accordion-content {
             max-height: 0;
             overflow: hidden;
-            transition: max-height 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            transition: max-height 0.35s cubic-bezier(0.25, 1, 0.5, 1);
             background-color: rgba(0, 0, 0, 0.13);
         }
 
         .accordion-container.expanded .accordion-content {
-            max-height: 450px; /* Highly responsive safety clearance height */
-            overflow-y: auto;  /* Inherent fluid scroll protective layer */
+            max-height: 500px; 
+            overflow: visible; 
         }
 
         .option-item {
@@ -912,7 +901,6 @@
         <button class="btn btn-orange" onclick="calculate()">=</button>
     </div>
 
-    <!-- Fluid History Sheet -->
     <div class="bottom-sheet" id="historySheet">
         <div class="sheet-upper-zone" id="sheetUpperZone">
             <div class="sheet-handle"></div>
@@ -925,12 +913,14 @@
         <div class="sheet-content" id="historyContent"></div>
     </div>
 
-    <!-- Converter Screen Pane Mapping -->
     <div class="currency-modal" id="currencyModal">
         <div class="currency-interface-container">
             <div class="ios-centered-header">
                 <div class="back-btn-container">
-                    <button class="back-btn" id="closeCurrency"><span>‹</span>Back</button>
+                    <button class="back-btn" id="closeCurrency">
+                        <svg viewBox="0 0 24 40" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M20 4L4 20L20 36" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                        Back
+                    </button>
                 </div>
                 <h2 id="title-currency">Converter</h2>
                 <div></div>
@@ -991,22 +981,22 @@
         </div>
     </div>
 
-    <!-- Global Currency Selection View Panel -->
     <div class="selection-modal" id="selectionModal">
         <div class="ios-centered-header" id="selectionHeaderRow">
             <div class="back-btn-container">
-                <button class="back-btn" id="closeSelection"><span>‹</span>Back</button>
+                <button class="back-btn" id="closeSelection">
+                    <svg viewBox="0 0 24 40" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M20 4L4 20L20 36" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    Back
+                </button>
             </div>
-            <h2 id="title-selection" style="font-size: 20px;">Change Currency</h2>
-            <div class="header-right-action">
-                <button class="search-trigger-btn" id="searchTrigger">🔍</button>
-            </div>
+            <h2 id="title-selection">Change Currency</h2>
+            <div></div>
+        </div>
 
-            <!-- Integrated Smooth Search Input overlay box -->
-            <div class="ios-search-bar-wrapper" id="searchBarWrapper">
+        <div class="ios-search-bar-block">
+            <div class="ios-search-line-field">
                 <span>🔍</span>
                 <input type="text" class="ios-search-input" id="currencySearchField" placeholder="Search currency...">
-                <button class="ios-search-close" id="searchCancelBtn">Cancel</button>
             </div>
         </div>
 
@@ -1017,11 +1007,13 @@
         </div>
     </div>
 
-    <!-- Settings Panel Configuration Module -->
     <div class="settings-modal" id="settingsModal">
         <div class="ios-centered-header">
             <div class="back-btn-container">
-                <button class="back-btn" id="closeSettings"><span>‹</span>Back</button>
+                <button class="back-btn" id="closeSettings">
+                    <svg viewBox="0 0 24 40" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M20 4L4 20L20 36" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    Back
+                </button>
             </div>
             <h2 id="title-settings">Settings</h2>
             <div></div>
@@ -1181,7 +1173,6 @@
             }
         };
 
-        // Fully Comprehensive Global Currencies Database Listing
         const currencyDataset = [
             { code: "AED", name: "United Arab Emirates Dirham", flag: "🇦🇪" },
             { code: "AFN", name: "Afghani", flag: "🇦🇫" },
@@ -1194,7 +1185,7 @@
             { code: "AWG", name: "Aruban Florin", flag: "🇦🇼" },
             { code: "AZN", name: "Azerbaijani Manat", flag: "🇦🇿" },
             { code: "BAM", name: "Bosnia-Herz. Conv. Mark", flag: "🇧🇦" },
-            { code: "BBD", name: "Barbadian Dollar", flag: "🇧🇧" },
+            { code: "BBD", name: "Barbadian Dollar", fill: "🇧🇧", flag: "🇧🇧" },
             { code: "BDT", name: "Bangladeshi Taka", flag: "🇧🇩" },
             { code: "BGN", name: "Bulgarian Lev", flag: "🇧🇬" },
             { code: "BHD", name: "Bahraini Dinar", flag: "🇧🇭" },
@@ -1378,6 +1369,33 @@
         const exprTrailEl = document.getElementById("exprTrail");
         const clearBtnEl = document.getElementById("clear-btn");
 
+        // Dynamic Interactive Liquid Bounce & Reflect Light Engine
+        function configureTactileKeypadFeedback() {
+            document.querySelectorAll('.btn').forEach(btn => {
+                btn.addEventListener('touchstart', (e) => {
+                    const rect = btn.getBoundingClientRect();
+                    const touch = e.touches[0];
+                    updateLightReflection(btn, touch.clientX - rect.left, touch.clientY - rect.top);
+                }, { passive: true });
+
+                btn.addEventListener('touchmove', (e) => {
+                    const rect = btn.getBoundingClientRect();
+                    const touch = e.touches[0];
+                    updateLightReflection(btn, touch.clientX - rect.left, touch.clientY - rect.top);
+                }, { passive: true });
+
+                btn.addEventListener('touchend', () => {
+                    btn.style.backgroundImage = 'none';
+                }, { passive: true });
+            });
+        }
+
+        function updateLightReflection(element, x, y) {
+            // Renders dynamic specular reflection highlighting container borders during touch
+            const baseColor = window.getComputedStyle(element).backgroundColor;
+            element.style.backgroundImage = `radial-gradient(circle 55px at ${x}px ${y}px, rgba(255,255,255,0.42) 0%, rgba(255,255,255,0) 100%)`;
+        }
+
         function getActiveLangKey() {
             const savedLang = localStorage.getItem("calculator-lang") || "system";
             if (savedLang === "system") {
@@ -1525,7 +1543,6 @@
                 container.classList.remove('expanded');
             } else {
                 container.classList.add('expanded');
-                // Auto-center target scroll offset path for small viewport heights
                 setTimeout(() => {
                     container.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
                 }, 150);
@@ -1767,39 +1784,25 @@
         });
 
         document.getElementById("closeSelection").onclick = () => {
-            exitSearchMode();
+            clearSearchInput();
             selModal.classList.remove("active");
         };
 
-        // Header Search Interaction Logic Setup
-        const searchTrigger = document.getElementById("searchTrigger");
-        const searchBarWrapper = document.getElementById("searchBarWrapper");
         const currencySearchField = document.getElementById("currencySearchField");
-        const searchCancelBtn = document.getElementById("searchCancelBtn");
-
-        searchTrigger.onclick = () => {
-            searchBarWrapper.classList.add("search-active");
-            currencySearchField.focus();
-        };
-
-        searchCancelBtn.onclick = () => {
-            exitSearchMode();
-        };
 
         currencySearchField.oninput = (e) => {
             searchFilterQuery = e.target.value.trim().toLowerCase();
             buildSelectionInterface();
         };
 
-        function exitSearchMode() {
+        function clearSearchInput() {
             searchFilterQuery = "";
             currencySearchField.value = "";
-            searchBarWrapper.classList.remove("search-active");
             buildSelectionInterface();
         }
 
         function openGlobalCurrencySelector() {
-            exitSearchMode();
+            clearSearchInput();
             buildSelectionInterface();
             selModal.classList.add("active");
         }
@@ -1814,7 +1817,6 @@
             const oldLetters = gliderTrack.querySelectorAll('.glider-letter');
             oldLetters.forEach(el => el.remove());
 
-            // Apply global filtering criteria
             let filteredDataset = currencyDataset;
             if (searchFilterQuery) {
                 filteredDataset = currencyDataset.filter(item => 
@@ -1865,7 +1867,7 @@
                         if (targetedSwitchMode === "from") selectedFromCurrency = currency.code;
                         else selectedToCurrency = currency.code;
                         syncCurrencyCalculations();
-                        exitSearchMode();
+                        clearSearchInput();
                         selModal.classList.remove("active");
                     });
 
@@ -1958,11 +1960,11 @@
             document.getElementById("lbl-lang-val").innerText = nativeLabels[langValue] || data.system;
 
             document.getElementById("title-settings").innerText = data.settings;
-            document.getElementById("closeSettings").innerHTML = `<span>‹</span>${data.back}`;
+            document.getElementById("closeSettings").innerHTML = `<svg viewBox="0 0 24 40" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M20 4L4 20L20 36" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"/></svg>${data.back}`;
             document.getElementById("title-history").innerText = data.history;
             document.getElementById("title-currency").innerText = data.currency;
-            document.getElementById("closeCurrency").innerHTML = `<span>‹</span>${data.back}`;
-            document.getElementById("closeSelection").innerHTML = `<span>‹</span>${data.back}`;
+            document.getElementById("closeCurrency").innerHTML = `<svg viewBox="0 0 24 40" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M20 4L4 20L20 36" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"/></svg>${data.back}`;
+            document.getElementById("closeSelection").innerHTML = `<svg viewBox="0 0 24 40" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M20 4L4 20L20 36" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"/></svg>${data.back}`;
             document.getElementById("sub-theme").innerText = data.theme;
             document.getElementById("sub-lang").innerText = data.languages;
             document.getElementById("sub-display").innerText = data.display;
@@ -2064,6 +2066,8 @@
             option.addEventListener("click", function() { applyLimit(this.getAttribute("data-value")); });
         });
 
+        // Application Lifecycles Init
+        configureTactileKeypadFeedback();
         applyTheme(localStorage.getItem("calculator-theme") || "system");
         applyLanguage(localStorage.getItem("calculator-lang") || "system");
         applyDisplayMode(localStorage.getItem("calculator-fullscreen") || "false", true);
