@@ -193,29 +193,39 @@
             color: var(--orange-btn);
         }
 
-        .settings-modal, .currency-modal, .selection-modal {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: var(--settings-bg);
-            color: var(--settings-text);
-            z-index: 100;
-            display: flex;
-            flex-direction: column;
-            padding: 50px 0 0 0;
-            transform: translateX(100%);
-            transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
-        }
+        /* Container for the modals */
+.settings-modal, .currency-modal, .selection-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: var(--settings-bg);
+    color: var(--settings-text);
+    z-index: 100;
+    display: flex;
+    flex-direction: column;
+    padding: 50px 0 0 0;
+    transform: translateX(100%);
+    transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+}
 
-        .settings-scroll-area {
-            display: flex;
-            flex-direction: column;
-            padding: 20px 20px 150px 20px; /* Increased bottom padding */
-            overflow-y: auto;
-            flex: 1;
-        }
+/* Scrollable area for the settings list */
+.settings-scroll-area {
+    display: flex;
+    flex-direction: column;
+    padding: 0 20px 100px 20px;
+    overflow-y: auto;
+    
+    /* Removed the restrictive calc(100vh - 60px) height */
+    /* Use flex: 1 to allow it to expand naturally within the modal */
+    height: auto; 
+    flex: 1;
+    min-height: 0;
+    
+    -webkit-overflow-scrolling: touch;
+}
+
 
         .settings-modal.active, .currency-modal.active, .selection-modal.active {
             transform: translateX(0);
