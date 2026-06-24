@@ -49,6 +49,78 @@
             letter-spacing: -0.022em;
         }
 
+/* 3D Flip Container */
+        .calculator-wrapper { width: 100%; height: 100%; position: relative; }
+        .calculator-flipper { width: 100%; height: 100%; transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1); transform-style: preserve-3d; }
+        .calculator-flipper.flipped { transform: rotateY(180deg); }
+        .calculator-side { position: absolute; width: 100%; height: 100%; backface-visibility: hidden; padding: 20px; display: flex; flex-direction: column; }
+        .back { transform: rotateY(180deg); }
+
+        .top-nav { display: flex; justify-content: space-between; align-items: center; padding-top: 30px; }
+        .nav-group { display: flex; align-items: center; background: rgba(255,255,255,0.08); border-radius: 12px; padding: 2px 8px; }
+        .nav-divider { width: 1px; height: 20px; background-color: var(--divider-color); margin: 0 8px; }
+        .nav-btn { background: none; border: none; color: var(--orange-btn); font-size: 18px; cursor: pointer; padding: 6px; }
+
+        .display-container { flex-grow: 1; display: flex; flex-direction: column; justify-content: flex-end; align-items: flex-end; padding: 20px; }
+        .display { font-size: 70px; font-weight: 300; }
+        
+        .grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; padding-bottom: 20px; }
+        .scientific-grid { grid-template-columns: repeat(5, 1fr); }
+        .btn { border: none; border-radius: 50%; aspect-ratio: 1; font-size: 24px; cursor: pointer; background: var(--dark-btn); color: var(--dark-btn-text); }
+        
+        /* [Include your existing Modal/Sheet CSS here] */
+    </style>
+</head>
+<body>
+
+<div class="calculator-wrapper">
+    <div class="calculator-flipper" id="calculatorFlipper">
+        
+        <div class="calculator-side front">
+            <div class="top-nav">
+                <div class="nav-group">
+                    <button class="nav-btn" id="btnSciToggle">Sci</button>
+                    <div class="nav-divider"></div>
+                    <button class="nav-btn" id="openCurrency">💱</button>
+                </div>
+                <button class="nav-btn" id="openSettings">⚙️</button>
+            </div>
+            <div class="display-container">
+                <div class="display" id="display">0</div>
+            </div>
+            <div class="grid" id="mainCalculatorGrid">
+                <button class="btn" onclick="inputNum('1')">1</button>
+                <button class="btn" onclick="inputNum('2')">2</button>
+                <button class="btn" onclick="inputNum('3')">3</button>
+                <button class="btn btn-orange" onclick="calculate()">=</button>
+            </div>
+        </div>
+
+        <div class="calculator-side back">
+            <div class="top-nav">
+                <button class="nav-btn" id="btnBackToBasic">Back</button>
+            </div>
+            <div class="display-container"></div>
+            <div class="grid scientific-grid">
+                <button class="btn" onclick="sciOp('sin')">sin</button>
+                <button class="btn" onclick="sciOp('cos')">cos</button>
+                <button class="btn" onclick="sciOp('tan')">tan</button>
+                <button class="btn" onclick="sciOp('log')">log</button>
+                <button class="btn" onclick="sciOp('π')">π</button>
+                </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    const flipper = document.getElementById('calculatorFlipper');
+    document.getElementById('btnSciToggle').onclick = () => flipper.classList.add('flipped');
+    document.getElementById('btnBackToBasic').onclick = () => flipper.classList.remove('flipped');
+    
+    function sciOp(op) { console.log("Scientific operation: " + op); }
+
+        
+
         body {
             background-color: var(--bg-color);
             color: var(--text-color);
