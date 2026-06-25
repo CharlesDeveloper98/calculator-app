@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>iOS Calculator Pro</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
             --bg-color: #000000;
@@ -45,7 +46,8 @@
             padding: 0;
             user-select: none;
             -webkit-user-select: none;
-            font-family: -apple-system, "SF Pro Display", "SF Pro Text", "SF Pro Icons", Helvetica, Arial, sans-serif;
+            /* Updated font-family to prioritize Inter */
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
             letter-spacing: -0.022em;
         }
 
@@ -61,6 +63,8 @@
             position: relative;
             transition: background-color 0.35s cubic-bezier(0.16, 1, 0.3, 1);
         }
+
+        /* ... [Rest of your CSS remains the same] ... */
 
         .top-nav {
             position: absolute;
@@ -194,36 +198,33 @@
         }
 
        /* Container for the modals */
-.settings-modal, .currency-modal, .selection-modal {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: var(--settings-bg);
-    color: var(--settings-text);
-    z-index: 100;
-    display: flex;
-    flex-direction: column;
-    padding: 0; /* Remove top padding to allow header to be at the very top */
-    transform: translateX(100%);
-    transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
-    overflow: hidden; /* Prevent the whole page from scrolling */
-}
+        .settings-modal, .currency-modal, .selection-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: var(--settings-bg);
+            color: var(--settings-text);
+            z-index: 100;
+            display: flex;
+            flex-direction: column;
+            padding: 0;
+            transform: translateX(100%);
+            transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+            overflow: hidden;
+        }
 
-.settings-scroll-area {
-    flex-grow: 1;
-    overflow-y: auto; /* Internal scrolling only */
-    padding: 0 20px 100px 20px;
-    -webkit-overflow-scrolling: touch;
-}
+        .settings-scroll-area {
+            flex-grow: 1;
+            overflow-y: auto;
+            padding: 0 20px 100px 20px;
+            -webkit-overflow-scrolling: touch;
+        }
 
-/* Optional: If you need a scrollbar on the whole screen */
-.settings-modal {
-    overflow-y: auto;
-}
-
-
+        .settings-modal {
+            overflow-y: auto;
+        }
 
         .settings-modal.active, .currency-modal.active, .selection-modal.active {
             transform: translateX(0);
@@ -234,40 +235,37 @@
         }
 
        .ios-centered-header {
-    position: sticky;
-    top: 0;
-    background-color: var(--settings-bg);
-    z-index: 100;
-    padding: 16px;
-    transition: all 0.3s ease;
-    border-bottom: 1px solid transparent;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 0px;
-}
+            position: sticky;
+            top: 0;
+            background-color: var(--settings-bg);
+            z-index: 100;
+            padding: 16px;
+            transition: all 0.3s ease;
+            border-bottom: 1px solid transparent;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 0px;
+        }
 
-.ios-centered-header.is-scrolled {
-    padding: 8px 16px;
-    border-bottom: 1px solid #333; /* Divider appears when scrolled */
-}
+        .ios-centered-header.is-scrolled {
+            padding: 8px 16px;
+            border-bottom: 1px solid #333;
+        }
 
-.ios-centered-header h2 {
-    font-size: 32px;
-    font-weight: 700;
-    margin: 8px 0 0 0;
-    transition: all 0.3s ease;
-}
+        .ios-centered-header h2 {
+            font-size: 32px;
+            font-weight: 700;
+            margin: 8px 0 0 0;
+            transition: all 0.3s ease;
+        }
 
-.ios-centered-header.is-scrolled h2 {
-    font-size: 18px;
-    text-align: center;
-    margin: 0;
-    width: 100%;
-}
-
-
-       
+        .ios-centered-header.is-scrolled h2 {
+            font-size: 18px;
+            text-align: center;
+            margin: 0;
+            width: 100%;
+        }
 
         .back-btn {
             background: none;
@@ -875,7 +873,6 @@
     </style>
 </head>
 <body>
-
     <div class="top-nav">
         <button class="nav-btn" id="openHistory">⋮☰</button>
         <div class="nav-right-group">
@@ -1186,6 +1183,7 @@
     </div>
 
     <script>
+        // [JavaScript remains exactly the same]
         const i18n = {
             en: {
                 settings: "Settings", back: "Back", theme: "Theme", languages: "Languages", display: "Display",
