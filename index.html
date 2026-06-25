@@ -2227,28 +2227,6 @@ body.font-sf {
         applyLimit(localStorage.getItem("calc-history-limit") || "10");
     </script>
 </body>
-    // Add this function
-function applyFont(fontValue) {
-    document.querySelectorAll(".font-opt").forEach(item => item.classList.remove("selected"));
-    const selectedItem = document.getElementById('font-' + fontValue);
-    if(selectedItem) selectedItem.classList.add("selected");
-    
-    document.body.classList.remove('font-default', 'font-sf');
-    document.body.classList.add('font-' + fontValue);
-    
-    localStorage.setItem("calculator-font", fontValue);
-    document.getElementById("lbl-font-val").innerText = (fontValue === 'sf') ? "San Francisco" : "System Default";
-}
-
-// Attach listeners to your options
-document.querySelectorAll(".font-opt").forEach(option => {
-    option.addEventListener("click", function() {
-        applyFont(this.getAttribute("data-value"));
-    });
-});
-
-// Run this on startup to remember the user's last choice
-applyFont(localStorage.getItem("calculator-font") || "default");
 
     <script>
   const scrollArea = document.querySelector('.settings-scroll-area');
