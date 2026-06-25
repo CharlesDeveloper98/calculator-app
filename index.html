@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>iOS Calculator Pro</title>
-    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Inter:wght@300;400;600;700&family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Inter:wght@300;400;600;700&family=Permanent+Marker&family=Playfair+Display&family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet">
     
     <style>
         /* ADDED: Define your custom font here */
@@ -1075,7 +1075,7 @@
             <div class="settings-subheader" id="sub-font">Font</div>
 <div class="accordion-container" id="container-font">
     <div class="accordion-header" onclick="toggleAccordion('container-font')">
-        <span id="lbl-font-val">System Default</span><span class="arrow-icon">➔</span>
+        <span id="lbl-font-val">Inter</span><span class="arrow-icon">➔</span>
     </div>
     <div class="accordion-content">
         <div class="option-item font-opt" data-value="Inter" id="font-inter">
@@ -1091,6 +1091,16 @@
         <div class="option-item font-opt" data-value="monospace" id="font-mono">
             <span>Monospace</span><span class="checkmark">✓</span>
         </div>
+
+<div class="option-item font-opt" data-value="playfair-display" id="font-playfair">
+            <span>Playfair Display</span><span class="checkmark">✓</span>
+        </div>
+
+<div class="option-item font-opt" data-value="permanent-marker" id="font-marker">
+            <span>Permanent Marker</span><span class="checkmark">✓</span>
+        </div>
+
+        
     </div>
 </div>
 
@@ -2231,6 +2241,8 @@ function applyFont(fontValue) {
     const stacks = {
         'dm-serif-display': "'DM Serif Display', serif", // Add your new font here
         'Inter': "'Inter', sans-serif",
+        'permanent-marker': "'Permanent Marker', cursive", // Add your new font here
+        'playfair-display': "'Playfair Display', serif", // Add your new font here
         'monospace': "'Roboto Mono', monospace",
         'system': "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif"
     };
