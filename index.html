@@ -5,39 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>iOS Calculator Pro</title>
     <style>
-    /* ADD THIS BLOCK HERE */
-    @font-face {
-    font-family: 'MyCustomFont';
-    src: url('./regular.ttf') format('truetype');
-    font-weight: 400;
-}
-
-@font-face {
-    font-family: 'MyCustomFont';
-    src: url('./medium.ttf') format('truetype');
-    font-weight: 500;
-}
-
-@font-face {
-    font-family: 'MyCustomFont';
-    src: url('./semi_bold.ttf') format('truetype');
-    font-weight: 600;
-}
-
-@font-face {
-    font-family: 'MyCustomFont';
-    src: url('./bold.ttf') format('truetype');
-    font-weight: 700;
-}
-
-body.font-default {
-    font-family: 'MyCustomFont', sans-serif !important;
-}
-body.font-sf {
-    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", sans-serif !important;
-}
-
-
         :root {
             --bg-color: #000000;
             --text-color: #ffffff;
@@ -73,16 +40,14 @@ body.font-sf {
         }
 
         * {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-    user-select: none;
-    -webkit-user-select: none;
-    /* REPLACE THE OLD FONT-FAMILY LINE WITH THIS: */
-    font-family: 'MyCustomFont' !important;
-    letter-spacing: -0.022em;
-}
-
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            user-select: none;
+            -webkit-user-select: none;
+            font-family: -apple-system, "SF Pro Display", "SF Pro Text", "SF Pro Icons", Helvetica, Arial, sans-serif;
+            letter-spacing: -0.022em;
+        }
 
         body {
             background-color: var(--bg-color);
@@ -189,7 +154,7 @@ body.font-sf {
             border: none;
             border-radius: 50%;
             font-size: 32px;
-            font-weight: 500;
+            font-weight: 400;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -1089,24 +1054,14 @@ body.font-sf {
                 </div>
             </div>
 
-           <div class="settings-subheader" id="sub-font">Font</div>
+            <div class="settings-subheader" id="sub-font">Font</div>
             <div class="accordion-container" id="container-font">
                 <div class="accordion-header" onclick="toggleAccordion('container-font')">
                     <span id="lbl-font-val">Default</span><span class="arrow-icon">➔</span>
                 </div>
-
-                 <div class="accordion-content">
-            <div class="option-item font-opt" data-value="default" id="font-default">
-                <span>System Default</span><span class="checkmark">✓</span>
+                <div class="accordion-content">
+                    </div>
             </div>
-            <div class="option-item font-opt" data-value="sf" id="font-sf">
-                <span>San Francisco</span><span class="checkmark">✓</span>
-            </div>
-        </div>
-    </div>
-
-            
-
 
             <div class="settings-subheader" id="sub-lang">Languages</div>
             <div class="accordion-container" id="container-lang">
@@ -2227,7 +2182,6 @@ body.font-sf {
         applyLimit(localStorage.getItem("calc-history-limit") || "10");
     </script>
 </body>
-
     <script>
   const scrollArea = document.querySelector('.settings-scroll-area');
   const header = document.querySelector('.ios-centered-header');
