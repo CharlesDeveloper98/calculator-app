@@ -61,39 +61,32 @@
             --sheet-bg: #f2f2f7;
         }
 
-/* --- iOS 26 Mode Specific Overrides --- */
-
-/* Base settings for iOS 26 mode */
+/* iOS 26 Theme Overrides */
 body.mode-ios26 {
-    transition: background-color 0.35s ease;
-}
-
-/* Dark Theme for iOS 26 */
-body.mode-ios26[data-theme="dark"] {
     background-color: #000000 !important;
 }
-body.mode-ios26[data-theme="dark"] .mode-select-box,
-body.mode-ios26[data-theme="dark"] .settings-item,
-body.mode-ios26[data-theme="dark"] .currency-box,
-body.mode-ios26[data-theme="dark"] .accordion-container,
-body.mode-ios26[data-theme="dark"] .selection-group-box,
-body.mode-ios26[data-theme="dark"] .ios-search-inline-field {
-    background-color: #1b1b1d !important;
-    border-radius: 20px !important; /* iOS 26 rounded style */
+
+/* Backgrounds for pages/sheets */
+body.mode-ios26 .settings-modal, 
+body.mode-ios26 .bottom-sheet, 
+body.mode-ios26 .currency-modal,
+body.mode-ios26 .selection-modal {
+    background-color: #000000 !important; /* Changed to #000000 */
 }
 
-/* Light Theme for iOS 26 */
-body.mode-ios26[data-theme="light"] {
-    background-color: #f3f2f7 !important;
+/* Menu/Box backgrounds */
+body.mode-ios26 .settings-item-bg,
+body.mode-ios26 .history-item,
+body.mode-ios26 .mode-select-box,
+body.mode-ios26 .accordion-container,
+body.mode-ios26 .currency-box,
+body.mode-ios26 .selection-group-box {
+    background-color: #1b1b1d !important; /* Changed to #1b1b1d */
 }
-body.mode-ios26[data-theme="light"] .mode-select-box,
-body.mode-ios26[data-theme="light"] .settings-item,
-body.mode-ios26[data-theme="light"] .currency-box,
-body.mode-ios26[data-theme="light"] .accordion-container,
-body.mode-ios26[data-theme="light"] .selection-group-box,
-body.mode-ios26[data-theme="light"] .ios-search-inline-field {
-    background-color: #ffffff !important;
-    border-radius: 20px !important; /* iOS 26 rounded style */
+
+/* Keypad Shape: Change from 50% circle to ~25% rounded corners */
+body.mode-ios26 .btn {
+    border-radius: 25% !important; 
 }
 
 
