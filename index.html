@@ -2343,13 +2343,7 @@ body.mode-ios26[data-theme="light"] .ios-search-inline-field {
         applyLanguage(localStorage.getItem("calculator-lang") || "system");
         applyDisplayMode(localStorage.getItem("calculator-fullscreen") || "false", true);
         applyColorPalette(localStorage.getItem("calculator-palette") || "#ff9f0a", true);
-        applyLimit(localStorage.getItem("calc-history-limit") || "10");
-
-// ADD THIS LINE:
-// Load saved mode or default to 'ios18'
-selectMode(localStorage.getItem("calculator-mode") || "ios18");
-
-    
+        applyLimit(localStorage.getItem("calc-history-limit") || "10");    
     </script>
 </body>
     <script>
