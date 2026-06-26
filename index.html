@@ -2344,6 +2344,12 @@ body.mode-ios26[data-theme="light"] .ios-search-inline-field {
         applyDisplayMode(localStorage.getItem("calculator-fullscreen") || "false", true);
         applyColorPalette(localStorage.getItem("calculator-palette") || "#ff9f0a", true);
         applyLimit(localStorage.getItem("calc-history-limit") || "10");
+
+// ADD THIS LINE:
+// Load saved mode or default to 'ios18'
+selectMode(localStorage.getItem("calculator-mode") || "ios18");
+
+    
     </script>
 </body>
     <script>
