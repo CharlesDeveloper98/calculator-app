@@ -108,8 +108,8 @@ body.mode-ios26 .btn {
 
 /* History Tab/Sheet adjustments */
 body.mode-ios26 .bottom-sheet {
-    border-top-left-radius: 42px;
-    border-top-right-radius: 42px;
+    border-top-left-radius: 24px;
+    border-top-right-radius: 24px;
 }
 
 
@@ -2421,6 +2421,16 @@ function selectMode(mode) {
     const currentTheme = localStorage.getItem("calculator-theme") || "system";
     applyTheme(currentTheme); 
 }
+
+        // Add this logic to run on initial load
+document.addEventListener('DOMContentLoaded', () => {
+    // Check localStorage, default to 'ios18' if null
+    const savedMode = localStorage.getItem('calculator-mode') || 'ios18';
+    
+    // Apply the saved (or default) mode
+    selectMode(savedMode);
+});
+
 
         
         
