@@ -61,72 +61,33 @@
             --sheet-bg: #f2f2f7;
         }
 
-/* iOS 26 Theme Overrides */
+/* iOS/* 1. Define the buckets based on the theme */
+:root, body.theme-light {
+    --bg-color: #f2f2f7;      /* Light mode background */
+    --item-bg: #ffffff;       /* Light mode card color */
+    --text-color: #000000;    /* Light mode text */
+}
+
+body.theme-dark {
+    --bg-color: #000000;      /* Dark mode background */
+    --item-bg: #1c1c1e;       /* Dark mode card color */
+    --text-color: #ffffff;    /* Dark mode text */
+}
+
+/* 2. Apply these to your elements */
+body {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+}
+
+.settings-item, .mode-select-box {
+    background-color: var(--item-bg);
+}
+
+/* 3. iOS 26 adjustments (ONLY if needed) */
 body.mode-ios26 {
-    background-color: #000000 !important;
+    /* If iOS 26 should look different, put only that structural code here */
 }
-
-/* Backgrounds for pages/sheets */
-body.mode-ios26 .settings-modal, 
-body.mode-ios26 .bottom-sheet, 
-body.mode-ios26 .currency-modal,
-body.mode-ios26 .selection-modal {
-    background-color: #000000 !important; /* Changed to #000000 */
-}
-
-/* Menu/Box backgrounds */
-body.mode-ios26 .settings-item-bg,
-body.mode-ios26 .history-item,
-body.mode-ios26 .mode-select-box,
-body.mode-ios26 .accordion-container,
-body.mode-ios26 .currency-box,
-body.mode-ios26 .selection-group-box {
-    background-color: #1b1b1d !important; /* Changed to #1b1b1d */
-}
-
-/* Match Header to Background */
-body.mode-ios26 .ios-centered-header {
-    background-color: #000000 !important;
-}
-        
-
-        body.mode-ios26 .history-item {
-    border-radius: 42px !important;
-}
-
-
-/* Rounded corners for buttons and elements */
-body.mode-ios26 .btn {
-    border-radius: 42px !important; /* iOS 26 style rounded corners */
-}
-
-        
-/* Keypad Shape: Change from 50% circle to ~25% rounded corners */
-body.mode-ios26 .btn {
-    border-radius: 50% !important; 
-}
-
-/* History Tab/Sheet adjustments */
-body.mode-ios26 .bottom-sheet {
-    border-top-left-radius: 24px;
-    border-top-right-radius: 24px;
-}
-
-
-/* iOS 26 Theme Specifics */
-body.mode-ios26.theme-dark {
-    --settings-bg: #000000;
-    --settings-item-bg: #1b1b1d;
-    --settings-text: #ffffff;
-}
-
-body.mode-ios26.theme-light {
-    --settings-bg: #f2f2f7;
-    --settings-item-bg: #ffffff;
-    --settings-text: #000000;
-}
-
-            
 
     
         * {
@@ -2206,20 +2167,10 @@ body.mode-ios26.theme-light {
         }
 
        function applyTheme(themeValue) {
-    // 1. Clear 'selected' class from all options
-    document.querySelectorAll('.theme-opt').forEach(item => item.classList.remove('selected'));
-    
-    // 2. Mark the new selection
-    const targetNode = document.getElementById('opt-' + themeValue);
-    if (targetNode) targetNode.classList.add('selected');
-    
-    // 3. Update the label
-    const label = document.getElementById('lbl-theme-val');
-    if (label) label.innerText = themeValue.charAt(0).toUpperCase() + themeValue.slice(1);
-
-    // 4. Forcefully update body classes
+    // 1. Remove old classes
     document.body.classList.remove('theme-dark', 'theme-light');
-    
+
+    // 2. Add the new class
     if (themeValue === 'system') {
         const isDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
         document.body.classList.add(isDark ? 'theme-dark' : 'theme-light');
@@ -2227,9 +2178,10 @@ body.mode-ios26.theme-light {
         document.body.classList.add('theme-' + themeValue);
     }
 
-    // 5. Persist the choice
+    // 3. Save
     localStorage.setItem("calculator-theme", themeValue);
 }
+
 
 document.querySelectorAll('.theme-opt').forEach(option => {
     option.addEventListener('click', function() {
