@@ -61,6 +61,35 @@
             --sheet-bg: #f2f2f7;
         }
 
+/* iOS 26 Theme Overrides */
+body.mode-ios26 {
+    background-color: #000000 !important;
+}
+
+body.mode-ios26 .settings-modal, 
+body.mode-ios26 .bottom-sheet, 
+body.mode-ios26 .currency-modal,
+body.mode-ios26 .selection-modal {
+    background-color: #1b1b1d !important;
+}
+
+body.mode-ios26 .settings-item-bg,
+body.mode-ios26 .history-item {
+    background-color: #1b1b1d !important;
+}
+
+/* Rounded Corners for Calculator Grid and History Items */
+body.mode-ios26 .btn,
+body.mode-ios26 .history-item,
+body.mode-ios26 .mode-select-box,
+body.mode-ios26 .accordion-container,
+body.mode-ios26 .currency-box {
+    border-radius: 20px !important; /* Adjust for more/less rounded */
+}
+
+
+            
+
         * {
     box-sizing: border-box;
     margin: 0;
@@ -2350,20 +2379,28 @@ document.querySelectorAll('.font-opt').forEach(option => {
 function selectMode(mode) {
     // 1. Update UI classes
     document.querySelectorAll('.mode-option').forEach(el => el.classList.remove('active'));
-    document.querySelector(`.mode-option[data-mode="${mode}"]`).classList.add('active');
+    const selectedOpt = document.querySelector(`.mode-option[data-mode="${mode}"]`);
+    if(selectedOpt) selectedOpt.classList.add('active');
     
-    // 2. Move the line (iOS 18 = 0%, iOS 26 = 50%)
+    // 2. Move the line
     const line = document.getElementById('modeAccentLine');
     line.style.transform = mode === 'ios18' ? 'translateX(0%)' : 'translateX(100%)';
     
-    // 3. Save
+    // 3. Apply iOS 26 class to body
+    if (mode === 'ios26') {
+        document.body.classList.add('mode-ios26');
+    } else {
+        document.body.classList.remove('mode-ios26');
+    }
+    
+    // 4. Save
     localStorage.setItem("calculator-mode", mode);
 }
 
-// Initialize on load
+// Update initialization
 document.addEventListener("DOMContentLoaded", () => {
     const savedMode = localStorage.getItem("calculator-mode") || "ios18";
-    selectMode(savedMode);
+    selectMode(savedMode); // This will now correctly apply the class on load
 });
 
         
