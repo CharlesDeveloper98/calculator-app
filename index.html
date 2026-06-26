@@ -61,33 +61,31 @@
             --sheet-bg: #f2f2f7;
         }
 
-/* iOS 26 Theme Overrides */
+/* --- UPDATED iOS 26 MODE OVERRIDES --- */
 body.mode-ios26 {
-    background-color: #000000 !important;
+    background-color: var(--bg-color) !important;
 }
 
-/* Backgrounds for pages/sheets */
-body.mode-ios26 .settings-modal, 
-body.mode-ios26 .bottom-sheet, 
-body.mode-ios26 .currency-modal,
-body.mode-ios26 .selection-modal {
-    background-color: #000000 !important; /* Changed to #000000 */
-}
-
-/* Menu/Box backgrounds */
-body.mode-ios26 .settings-item-bg,
-body.mode-ios26 .history-item,
-body.mode-ios26 .mode-select-box,
-body.mode-ios26 .accordion-container,
-body.mode-ios26 .currency-box,
-body.mode-ios26 .selection-group-box {
-    background-color: #1b1b1d !important; /* Changed to #1b1b1d */
-}
-
-/* Keypad Shape: Change from 50% circle to ~25% rounded corners */
+/* Rounded corners for buttons and elements */
 body.mode-ios26 .btn {
-    border-radius: 25% !important; 
+    border-radius: 20px !important; /* iOS 26 style rounded corners */
 }
+
+body.mode-ios26 .history-item {
+    border-radius: 16px !important;
+}
+
+/* Match Header to Background */
+body.mode-ios26 .ios-centered-header {
+    background-color: var(--bg-color) !important;
+}
+
+/* History Tab/Sheet adjustments */
+body.mode-ios26 .bottom-sheet {
+    border-top-left-radius: 24px;
+    border-top-right-radius: 24px;
+}
+
 
 
 
@@ -2380,31 +2378,25 @@ document.querySelectorAll('.font-opt').forEach(option => {
 });
 
 function selectMode(mode) {
-    // 1. Update UI classes
     document.querySelectorAll('.mode-option').forEach(el => el.classList.remove('active'));
     const selectedOpt = document.querySelector(`.mode-option[data-mode="${mode}"]`);
     if(selectedOpt) selectedOpt.classList.add('active');
     
-    // 2. Move the line
     const line = document.getElementById('modeAccentLine');
     line.style.transform = mode === 'ios18' ? 'translateX(0%)' : 'translateX(100%)';
     
-    // 3. Apply iOS 26 class to body
     if (mode === 'ios26') {
         document.body.classList.add('mode-ios26');
     } else {
         document.body.classList.remove('mode-ios26');
     }
     
-    // 4. Save
     localStorage.setItem("calculator-mode", mode);
+    
+    // Force re-apply theme to ensure CSS variables match the current Light/Dark setting
+    const currentTheme = localStorage.getItem("calculator-theme") || "system";
+    applyTheme(currentTheme); 
 }
-
-// Update initialization
-document.addEventListener("DOMContentLoaded", () => {
-    const savedMode = localStorage.getItem("calculator-mode") || "ios18";
-    selectMode(savedMode); // This will now correctly apply the class on load
-});
 
         
         
