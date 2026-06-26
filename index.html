@@ -27,9 +27,9 @@
             font-style: normal;
         }
 
-        :root {
-            --bg-color: #000000;
-            --text-color: #ffffff;
+-        :root {
+           background-color: var(--item-bg)
+            --textcolor: #ffffff;
             --gray-btn: #a5a5a5;
             --gray-btn-text: #000000;
             --dark-btn: #333333;
@@ -45,7 +45,7 @@
         }
 
         [data-theme="light"] {
-            --bg-color: #f2f2f7;
+           background-color: var(--item-bg)
             --text-color: #000000;
             --gray-btn: #e5e5ea;
             --gray-btn-text: #000000;
@@ -61,33 +61,29 @@
             --sheet-bg: #f2f2f7;
         }
 
-/* iOS/* 1. Define the buckets based on the theme */
+/* Define Variables */
 :root, body.theme-light {
-    --bg-color: #f2f2f7;      /* Light mode background */
-    --item-bg: #ffffff;       /* Light mode card color */
-    --text-color: #000000;    /* Light mode text */
+    --bg-color: #f2f2f7;
+    --item-bg: #ffffff;
+    --text-color: #000000;
 }
 
 body.theme-dark {
-    --bg-color: #000000;      /* Dark mode background */
-    --item-bg: #1c1c1e;       /* Dark mode card color */
-    --text-color: #ffffff;    /* Dark mode text */
+    --bg-color: #000000;
+    --item-bg: #1c1c1e;
+    --text-color: #ffffff;
 }
 
-/* 2. Apply these to your elements */
+/* Apply Variables */
 body {
-    background-color: var(--bg-color);
-    color: var(--text-color);
+    background-color: var(--bg-color) !important; /* Force use of variable */
+    color: var(--text-color) !important;
 }
 
-.settings-item, .mode-select-box {
-    background-color: var(--item-bg);
+.settings-item, .mode-select-box, .accordion-container {
+    background-color: var(--item-bg) !important;
 }
 
-/* 3. iOS 26 adjustments (ONLY if needed) */
-body.mode-ios26 {
-    /* If iOS 26 should look different, put only that structural code here */
-}
 
     
         * {
@@ -2166,22 +2162,22 @@ body.mode-ios26 {
             };
         }
 
-       function applyTheme(themeValue) {
-    // 1. Remove old classes
+      function applyTheme(themeValue) {
+    // 1. Remove old theme classes
     document.body.classList.remove('theme-dark', 'theme-light');
-
-    // 2. Add the new class
+    
+    // 2. Add new theme class
     if (themeValue === 'system') {
         const isDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
         document.body.classList.add(isDark ? 'theme-dark' : 'theme-light');
     } else {
         document.body.classList.add('theme-' + themeValue);
     }
-
+    
     // 3. Save
     localStorage.setItem("calculator-theme", themeValue);
+    console.log("Theme applied:", themeValue); // Debugging: check console to see if this runs
 }
-
 
 document.querySelectorAll('.theme-opt').forEach(option => {
     option.addEventListener('click', function() {
