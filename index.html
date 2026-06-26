@@ -113,6 +113,20 @@ body.mode-ios26 .bottom-sheet {
 }
 
 
+/* iOS 26 Theme Specifics */
+body.mode-ios26.theme-dark {
+    --settings-bg: #000000;
+    --settings-item-bg: #1b1b1d;
+    --settings-text: #ffffff;
+}
+
+body.mode-ios26.theme-light {
+    --settings-bg: #f2f2f7;
+    --settings-item-bg: #ffffff;
+    --settings-text: #000000;
+}
+
+            
 
     
         * {
@@ -2192,23 +2206,35 @@ body.mode-ios26 .bottom-sheet {
         }
 
         function applyTheme(themeValue) {
-            document.querySelectorAll(".theme-opt").forEach(item => item.classList.remove("selected"));
-            const targetNode = document.getElementById(`opt-${themeValue}`);
-            if(targetNode) targetNode.classList.add("selected");
-            document.getElementById("lbl-theme-val").innerText = themeValue.charAt(0).toUpperCase() + themeValue.slice(1);
-            if (themeValue === "system") {
-                const isDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
-                document.documentElement.setAttribute("data-theme", isDark ? "dark" : "light");
-            } else {
-                document.documentElement.setAttribute("data-theme", themeValue);
-            }
-            localStorage.setItem("calculator-theme", themeValue);
-            closeAllAccordions();
-        }
+    // 1. Update UI Selection (Active class)
+    document.querySelectorAll('.theme-opt').forEach(item => item.classList.remove('selected'));
+    const targetNode = document.getElementById('opt-' + themeValue);
+    if (targetNode) targetNode.classList.add('selected');
+    
+    // 2. Update Label
+    document.getElementById('lbl-theme-val').innerText = themeValue.charAt(0).toUpperCase() + themeValue.slice(1);
 
-        document.querySelectorAll(".theme-opt").forEach(option => {
-            option.addEventListener("click", function() { applyTheme(this.getAttribute("data-value")); });
-        });
+    // 3. Update Body Classes for CSS control
+    // Remove existing theme classes so they don't conflict
+    document.body.classList.remove('theme-dark', 'theme-light', 'theme-system');
+    
+    // Add the specific theme class to body
+    document.body.classList.add('theme-' + themeValue);
+
+    // 4. Handle System Logic (for automatic switching)
+    if (themeValue === 'system') {
+        const isDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        document.body.classList.add(isDark ? 'theme-dark' : 'theme-light');
+    }
+
+    // 5. Keep data-attribute if you need it for other parts of your app
+    document.documentElement.setAttribute("data-theme", themeValue);
+
+    // 6. Save and Close
+    localStorage.setItem("calculator-theme", themeValue);
+    closeAllAccordions();
+}
+
 
         function applyLanguage(langValue) {
             document.querySelectorAll(".lang-option").forEach(item => item.classList.remove("selected"));
