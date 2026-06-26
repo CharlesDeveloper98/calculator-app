@@ -2227,57 +2227,63 @@
     <script>
 
 function applyFont(fontValue) {
-    // 1. UI Selection: Clean up all items
-    document.querySelectorAll('.font-opt').forEach(item => item.classList.remove("selected"));
-
-    // 2. Add 'selected' class to the active one
-    // Ensure the selector matches the exact case of your HTML data-value
-    const selectedEl = document.querySelector(`.font-opt[data-value="${fontValue}"]`);
-    if (selectedEl) {
-        selectedEl.classList.add("selected");
-    }
-
-    // 3. Define Font Stacks
-    const stacks = {
-        'dm-serif-display': "'DM Serif Display', serif", // Add your new font here
+    // 3. Define Font Stacks (Moved outside so it can be reused)
+    const fontStacks = {
+        'dm-serif-display': "'DM Serif Display', serif",
         'Inter': "'Inter', sans-serif",
-        'permanent-marker': "'Permanent Marker', cursive", // Add your new font here
-        'playfair-display': "'Playfair Display', serif", // Add your new font here
+        'permanent-marker': "'Permanent Marker', cursive",
+        'playfair-display': "'Playfair Display', serif",
         'lobster': "'Lobster', cursive",
         'system': "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif"
     };
 
-    // 4. Apply to variable
-    document.documentElement.style.setProperty('--main-font', stacks[fontValue]);
+    function applyFont(fontValue) {
+        // 1. UI Selection: Clean up all items
+        document.querySelectorAll('.font-opt').forEach(item => item.classList.remove("selected"));
 
-    // 5. Update Label
-    const label = document.getElementById('lbl-font-val');
-    if (label) {
-        label.innerText = fontValue === 'system' ? 'System Default' : 
-                          fontValue === 'monospace' ? 'Monospace' : fontValue;
+        // 2. Add 'selected' class to the active one
+        const selectedEl = document.querySelector(`.font-opt[data-value="${fontValue}"]`);
+        if (selectedEl) {
+            selectedEl.classList.add("selected");
+        }
+
+        // 3. Apply to CSS variable
+        // Use the map defined above
+        const fontStack = fontStacks[fontValue] || fontStacks['Inter'];
+        document.documentElement.style.setProperty('--main-font', fontStack);
+
+        // 4. Update Label
+        const label = document.getElementById('lbl-font-val');
+        if (label) {
+            // Find the display name text from the clicked element or default to the key
+            const displayName = selectedEl ? selectedEl.querySelector('span').innerText : fontValue;
+            label.innerText = displayName;
+        }
+
+        // 5. Save
+        localStorage.setItem("calculator-font", fontValue);
     }
 
-    // 6. Save
-    localStorage.setItem("calculator-font", fontValue);
-}
-// PASTE THE EVENT LISTENERS HERE:
-document.querySelectorAll('.font-opt').forEach(option => {
-    option.addEventListener('click', function() {
-        applyFont(this.getAttribute('data-value'));
+    // Event Listeners
+    document.querySelectorAll('.font-opt').forEach(option => {
+        option.addEventListener('click', function() {
+            applyFont(this.getAttribute('data-value'));
+        });
     });
-});
-        
-  const scrollArea = document.querySelector('.settings-scroll-area');
-  const header = document.querySelector('.ios-centered-header');
 
-  if (scrollArea && header) {
-    scrollArea.addEventListener('scroll', () => {
-      if (scrollArea.scrollTop > 50) {
-        header.classList.add('is-scrolled');
-      } else {
-        header.classList.remove('is-scrolled');
-      }
-    });
-  }
+    // --- INITIALIZATION ---
+    // This runs as soon as the page loads to restore the last used font
+    const savedFont = localStorage.getItem("calculator-font") || "Inter";
+    applyFont(savedFont);
+
+    // Scroll header logic
+    const scrollArea = document.querySelector('.settings-scroll-area');
+    const header = document.querySelector('.ios-centered-header');
+    if (scrollArea && header) {
+        scrollArea.addEventListener('scroll', () => {
+            if (scrollArea.scrollTop > 50) header.classList.add('is-scrolled');
+            else header.classList.remove('is-scrolled');
+        });
+    }
 </script>
 </html>
