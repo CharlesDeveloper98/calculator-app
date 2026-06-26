@@ -1110,6 +1110,22 @@
         </div>
 
         <div class="settings-scroll-area">
+
+<div class="settings-subheader">Mode</div>
+<div class="mode-box-container">
+    <div class="mode-select-box" id="modeBox">
+        <div class="mode-option" data-mode="ios18" onclick="selectMode('ios18')">
+            <span class="mode-name">iOS 18</span>
+            <div class="mode-selector" id="sel-ios18"></div>
+        </div>
+        <div class="mode-option" data-mode="ios26" onclick="selectMode('ios26')">
+            <span class="mode-name">iOS 26</span>
+            <div class="mode-selector" id="sel-ios26"></div>
+        </div>
+        <div class="mode-accent-line" id="modeAccentLine"></div>
+    </div>
+</div>
+
             <div class="settings-subheader" id="sub-theme">Theme</div>
             <div class="accordion-container" id="container-theme">
                 <div class="accordion-header" onclick="toggleAccordion('container-theme')">
@@ -1255,25 +1271,6 @@
                     </div>
                 </div>
             </div>
-
-
-
-<div class="settings-subheader">Mode</div>
-<div class="mode-box-container">
-    <div class="mode-select-box" id="modeBox">
-        <div class="mode-option" data-mode="ios18" onclick="selectMode('ios18')">
-            <span class="mode-name">iOS 18</span>
-            <div class="mode-selector" id="sel-ios18"></div>
-        </div>
-        <div class="mode-option" data-mode="ios26" onclick="selectMode('ios26')">
-            <span class="mode-name">iOS 26</span>
-            <div class="mode-selector" id="sel-ios26"></div>
-        </div>
-        <div class="mode-accent-line" id="modeAccentLine"></div>
-    </div>
-</div>
-
-
             
             <div class="settings-subheader" id="sub-hist-limit">History Limit</div>
             <div class="accordion-container" id="container-limit">
