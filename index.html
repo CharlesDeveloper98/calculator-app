@@ -61,48 +61,49 @@
             --sheet-bg: #f2f2f7;
         }
 
-/* --- UPDATED iOS 26 MODE OVERRIDES --- */
+/* 1. Theme Background & Item Colors */
 body.mode-ios26 {
-    background-color: #000000 !important; /* Full background black */
+    background-color: #000000 !important;
 }
 
-/* Header background match */
-body.mode-ios26 .ios-centered-header {
-    background-color: #000000 !important; 
-}
-
-/* Settings, Containers, and Modals background */
-body.mode-ios26 .settings-modal,
-body.mode-ios26 .currency-modal,
-body.mode-ios26 .selection-modal,
-body.mode-ios26 .bottom-sheet,
+/* Update menu boxes, currency items, and settings groups */
 body.mode-ios26 .mode-select-box,
-body.mode-ios26 .accordion-container,
-body.mode-ios26 .selection-group-box,
-body.mode-ios26 .history-item {
+body.mode-ios26 .settings-item,
+body.mode-ios26 .currency-item,
+body.mode-ios26 .accordion-container {
     background-color: #1b1b1d !important;
+    border-radius: 12px;
 }
 
-/* Rounded corners for everything */
-body.mode-ios26 .btn,
-body.mode-ios26 .mode-select-box,
-body.mode-ios26 .accordion-container,
-body.mode-ios26 .history-item,
-body.mode-ios26 .selection-group-box,
-body.mode-ios26 .currency-box {
-    border-radius: 20px !important;
+/* 2. Navigation Arrows (Chevrons) */
+/* Update 'Back' button to left chevron */
+body.mode-ios26 .back-btn::before {
+    content: "‹";
+    font-size: 24px;
+    margin-right: 5px;
 }
 
-/* Calculator keypad default circular */
-body.mode-ios26 .grid .btn,
-body.mode-ios26 .currency-keypad-default .btn {
-    border-radius: 50% !important;
+/* Update standard navigation arrows to right chevron */
+body.mode-ios26 .nav-arrow::after {
+    content: "›";
+    font-size: 20px;
+    color: #ff9500; /* Standard iOS Orange */
 }
 
-/* Change Back arrow to Right Chevron */
-body.mode-ios26 .back-btn svg path {
-    d: path("M9 6l12 12l-12 12"); /* Defines a right-pointing chevron shape */
+/* 3. Updated Icons (iOS Style) */
+/* Replace text/placeholders with proper icon paths or fonts */
+body.mode-ios26 .icon-history {
+    background-image: url('path/to/clock-arrow-circlepath.svg'); /* Representative of iOS history icon */
 }
+
+body.mode-ios26 .icon-settings {
+    background-image: url('path/to/gearshape.fill.svg'); /* Representative of iOS settings icon */
+}
+
+body.mode-ios26 .icon-currency {
+    background-image: url('path/to/dollarsign.circle.svg'); /* Representative of iOS currency icon */
+}
+
 
 
 
