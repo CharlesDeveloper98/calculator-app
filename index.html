@@ -61,47 +61,39 @@
             --sheet-bg: #f2f2f7;
         }
 
-/* 1. Theme Background & Item Colors */
+/* --- iOS 26 Mode Specific Overrides --- */
+
+/* Base settings for iOS 26 mode */
 body.mode-ios26 {
+    transition: background-color 0.35s ease;
+}
+
+/* Dark Theme for iOS 26 */
+body.mode-ios26[data-theme="dark"] {
     background-color: #000000 !important;
 }
-
-/* Update menu boxes, currency items, and settings groups */
-body.mode-ios26 .mode-select-box,
-body.mode-ios26 .settings-item,
-body.mode-ios26 .currency-item,
-body.mode-ios26 .accordion-container {
+body.mode-ios26[data-theme="dark"] .mode-select-box,
+body.mode-ios26[data-theme="dark"] .settings-item,
+body.mode-ios26[data-theme="dark"] .currency-box,
+body.mode-ios26[data-theme="dark"] .accordion-container,
+body.mode-ios26[data-theme="dark"] .selection-group-box,
+body.mode-ios26[data-theme="dark"] .ios-search-inline-field {
     background-color: #1b1b1d !important;
-    border-radius: 12px;
+    border-radius: 20px !important; /* iOS 26 rounded style */
 }
 
-/* 2. Navigation Arrows (Chevrons) */
-/* Update 'Back' button to left chevron */
-body.mode-ios26 .back-btn::before {
-    content: "‹";
-    font-size: 24px;
-    margin-right: 5px;
+/* Light Theme for iOS 26 */
+body.mode-ios26[data-theme="light"] {
+    background-color: #f3f2f7 !important;
 }
-
-/* Update standard navigation arrows to right chevron */
-body.mode-ios26 .nav-arrow::after {
-    content: "›";
-    font-size: 20px;
-    color: #ff9500; /* Standard iOS Orange */
-}
-
-/* 3. Updated Icons (iOS Style) */
-/* Replace text/placeholders with proper icon paths or fonts */
-body.mode-ios26 .icon-history {
-    background-image: url('path/to/clock-arrow-circlepath.svg'); /* Representative of iOS history icon */
-}
-
-body.mode-ios26 .icon-settings {
-    background-image: url('path/to/gearshape.fill.svg'); /* Representative of iOS settings icon */
-}
-
-body.mode-ios26 .icon-currency {
-    background-image: url('path/to/dollarsign.circle.svg'); /* Representative of iOS currency icon */
+body.mode-ios26[data-theme="light"] .mode-select-box,
+body.mode-ios26[data-theme="light"] .settings-item,
+body.mode-ios26[data-theme="light"] .currency-box,
+body.mode-ios26[data-theme="light"] .accordion-container,
+body.mode-ios26[data-theme="light"] .selection-group-box,
+body.mode-ios26[data-theme="light"] .ios-search-inline-field {
+    background-color: #ffffff !important;
+    border-radius: 20px !important; /* iOS 26 rounded style */
 }
 
 
@@ -2413,10 +2405,11 @@ function selectMode(mode) {
     
     localStorage.setItem("calculator-mode", mode);
     
-    // Force re-apply theme to ensure CSS variables match the current Light/Dark setting
+    // Refresh theme application to apply new iOS 26 variables
     const currentTheme = localStorage.getItem("calculator-theme") || "system";
     applyTheme(currentTheme); 
 }
+
 
         
         
