@@ -2396,25 +2396,32 @@ document.querySelectorAll('.font-opt').forEach(option => {
 });
 
 function selectMode(mode) {
+    // 1. Remove active class from all options
     document.querySelectorAll('.mode-option').forEach(el => el.classList.remove('active'));
+    
+    // 2. Add active class to the selected one
     const selectedOpt = document.querySelector(`.mode-option[data-mode="${mode}"]`);
     if(selectedOpt) selectedOpt.classList.add('active');
     
+    // 3. Move the accent line
     const line = document.getElementById('modeAccentLine');
     line.style.transform = mode === 'ios18' ? 'translateX(0%)' : 'translateX(100%)';
     
+    // 4. Update Body Class
     if (mode === 'ios26') {
         document.body.classList.add('mode-ios26');
     } else {
         document.body.classList.remove('mode-ios26');
     }
     
+    // 5. Save to LocalStorage
     localStorage.setItem("calculator-mode", mode);
     
-    // Refresh theme application to apply new iOS 26 variables
+    // 6. Refresh theme to ensure variables apply
     const currentTheme = localStorage.getItem("calculator-theme") || "system";
     applyTheme(currentTheme); 
 }
+
 
 
         
@@ -2429,7 +2436,24 @@ function selectMode(mode) {
       } else {
         header.classList.remove('is-scrolled');
       }
-    });
+
+
+
+// --- Initialization Logic ---
+document.addEventListener('DOMContentLoaded', () => {
+    // 1. Get saved mode, default to 'ios18'
+    const savedMode = localStorage.getItem("calculator-mode") || "ios18";
+    
+    // 2. Apply it
+    selectMode(savedMode);
+    
+    // 3. (Optional) Re-apply Font if saved
+    const savedFont = localStorage.getItem("calculator-font");
+    if(savedFont) applyFont(savedFont);
+});
+
+        
+         
   }
 </script>
 </html>
