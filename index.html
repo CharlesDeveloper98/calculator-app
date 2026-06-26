@@ -63,28 +63,47 @@
 
 /* --- UPDATED iOS 26 MODE OVERRIDES --- */
 body.mode-ios26 {
-    background-color: var(--bg-color) !important;
+    background-color: #000000 !important; /* Full background black */
 }
 
-/* Rounded corners for buttons and elements */
-body.mode-ios26 .btn {
-    border-radius: 20px !important; /* iOS 26 style rounded corners */
-}
-
-body.mode-ios26 .history-item {
-    border-radius: 16px !important;
-}
-
-/* Match Header to Background */
+/* Header background match */
 body.mode-ios26 .ios-centered-header {
-    background-color: var(--bg-color) !important;
+    background-color: #000000 !important; 
 }
 
-/* History Tab/Sheet adjustments */
-body.mode-ios26 .bottom-sheet {
-    border-top-left-radius: 24px;
-    border-top-right-radius: 24px;
+/* Settings, Containers, and Modals background */
+body.mode-ios26 .settings-modal,
+body.mode-ios26 .currency-modal,
+body.mode-ios26 .selection-modal,
+body.mode-ios26 .bottom-sheet,
+body.mode-ios26 .mode-select-box,
+body.mode-ios26 .accordion-container,
+body.mode-ios26 .selection-group-box,
+body.mode-ios26 .history-item {
+    background-color: #1b1b1d !important;
 }
+
+/* Rounded corners for everything */
+body.mode-ios26 .btn,
+body.mode-ios26 .mode-select-box,
+body.mode-ios26 .accordion-container,
+body.mode-ios26 .history-item,
+body.mode-ios26 .selection-group-box,
+body.mode-ios26 .currency-box {
+    border-radius: 20px !important;
+}
+
+/* Calculator keypad default circular */
+body.mode-ios26 .grid .btn,
+body.mode-ios26 .currency-keypad-default .btn {
+    border-radius: 50% !important;
+}
+
+/* Change Back arrow to Right Chevron */
+body.mode-ios26 .back-btn svg path {
+    d: path("M9 6l12 12l-12 12"); /* Defines a right-pointing chevron shape */
+}
+
 
 
 
