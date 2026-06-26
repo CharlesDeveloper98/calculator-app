@@ -119,6 +119,62 @@
             margin: 0 4px;
         }
 
+        
+.mode-box-container {
+    padding: 0 16px 20px 16px;
+}
+
+.mode-select-box {
+    background-color: var(--settings-item-bg);
+    border-radius: 14px;
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+    position: relative;
+    overflow: hidden;
+}
+
+.mode-option {
+    cursor: pointer;
+    text-align: center;
+    z-index: 2;
+    flex: 1;
+}
+
+.mode-name {
+    font-size: 17px;
+    font-weight: 600;
+    display: block;
+    margin-bottom: 8px;
+}
+
+.mode-selector {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    border: 2px solid #8e8e93;
+    margin: 0 auto;
+    transition: all 0.3s ease;
+}
+
+/* This line uses the existing orange-btn variable which is controlled by your palette */
+.mode-accent-line {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    height: 4px;
+    width: 50%;
+    background-color: var(--orange-btn);
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.mode-option.active .mode-selector {
+    border-color: var(--orange-btn);
+    background-color: var(--orange-btn);
+}
+
+
+       
         .nav-btn {
             background: none;
             border: none;
@@ -1216,6 +1272,23 @@
         </div>
     </div>
 
+<div class="settings-subheader">Mode</div>
+<div class="mode-box-container">
+    <div class="mode-select-box" id="modeBox">
+        <div class="mode-option" data-mode="ios18" onclick="selectMode('ios18')">
+            <span class="mode-name">iOS 18</span>
+            <div class="mode-selector" id="sel-ios18"></div>
+        </div>
+        <div class="mode-option" data-mode="ios26" onclick="selectMode('ios26')">
+            <span class="mode-name">iOS 26</span>
+            <div class="mode-selector" id="sel-ios26"></div>
+        </div>
+        <div class="mode-accent-line" id="modeAccentLine"></div>
+    </div>
+</div>
+
+    
+
     <div class="ios-dialog-overlay" id="dialogOverlay">
         <div class="ios-dialog">
             <div class="ios-dialog-title" id="txt-confirm-msg">Are you sure you want to clear history?</div>
@@ -2227,63 +2300,78 @@
     <script>
 
 function applyFont(fontValue) {
-    // 3. Define Font Stacks (Moved outside so it can be reused)
-    const fontStacks = {
-        'dm-serif-display': "'DM Serif Display', serif",
+    // 1. UI Selection: Clean up all items
+    document.querySelectorAll('.font-opt').forEach(item => item.classList.remove("selected"));
+
+    // 2. Add 'selected' class to the active one
+    // Ensure the selector matches the exact case of your HTML data-value
+    const selectedEl = document.querySelector(`.font-opt[data-value="${fontValue}"]`);
+    if (selectedEl) {
+        selectedEl.classList.add("selected");
+    }
+
+    // 3. Define Font Stacks
+    const stacks = {
+        'dm-serif-display': "'DM Serif Display', serif", // Add your new font here
         'Inter': "'Inter', sans-serif",
-        'permanent-marker': "'Permanent Marker', cursive",
-        'playfair-display': "'Playfair Display', serif",
+        'permanent-marker': "'Permanent Marker', cursive", // Add your new font here
+        'playfair-display': "'Playfair Display', serif", // Add your new font here
         'lobster': "'Lobster', cursive",
         'system': "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif"
     };
 
-    function applyFont(fontValue) {
-        // 1. UI Selection: Clean up all items
-        document.querySelectorAll('.font-opt').forEach(item => item.classList.remove("selected"));
+    // 4. Apply to variable
+    document.documentElement.style.setProperty('--main-font', stacks[fontValue]);
 
-        // 2. Add 'selected' class to the active one
-        const selectedEl = document.querySelector(`.font-opt[data-value="${fontValue}"]`);
-        if (selectedEl) {
-            selectedEl.classList.add("selected");
-        }
-
-        // 3. Apply to CSS variable
-        // Use the map defined above
-        const fontStack = fontStacks[fontValue] || fontStacks['Inter'];
-        document.documentElement.style.setProperty('--main-font', fontStack);
-
-        // 4. Update Label
-        const label = document.getElementById('lbl-font-val');
-        if (label) {
-            // Find the display name text from the clicked element or default to the key
-            const displayName = selectedEl ? selectedEl.querySelector('span').innerText : fontValue;
-            label.innerText = displayName;
-        }
-
-        // 5. Save
-        localStorage.setItem("calculator-font", fontValue);
+    // 5. Update Label
+    const label = document.getElementById('lbl-font-val');
+    if (label) {
+        label.innerText = fontValue === 'system' ? 'System Default' : 
+                          fontValue === 'monospace' ? 'Monospace' : fontValue;
     }
 
-    // Event Listeners
-    document.querySelectorAll('.font-opt').forEach(option => {
-        option.addEventListener('click', function() {
-            applyFont(this.getAttribute('data-value'));
-        });
+    // 6. Save
+    localStorage.setItem("calculator-font", fontValue);
+}
+// PASTE THE EVENT LISTENERS HERE:
+document.querySelectorAll('.font-opt').forEach(option => {
+    option.addEventListener('click', function() {
+        applyFont(this.getAttribute('data-value'));
     });
+});
 
-    // --- INITIALIZATION ---
-    // This runs as soon as the page loads to restore the last used font
-    const savedFont = localStorage.getItem("calculator-font") || "Inter";
-    applyFont(savedFont);
+function selectMode(mode) {
+    // 1. Update UI classes
+    document.querySelectorAll('.mode-option').forEach(el => el.classList.remove('active'));
+    document.querySelector(`.mode-option[data-mode="${mode}"]`).classList.add('active');
+    
+    // 2. Move the line (iOS 18 = 0%, iOS 26 = 50%)
+    const line = document.getElementById('modeAccentLine');
+    line.style.transform = mode === 'ios18' ? 'translateX(0%)' : 'translateX(100%)';
+    
+    // 3. Save
+    localStorage.setItem("calculator-mode", mode);
+}
 
-    // Scroll header logic
-    const scrollArea = document.querySelector('.settings-scroll-area');
-    const header = document.querySelector('.ios-centered-header');
-    if (scrollArea && header) {
-        scrollArea.addEventListener('scroll', () => {
-            if (scrollArea.scrollTop > 50) header.classList.add('is-scrolled');
-            else header.classList.remove('is-scrolled');
-        });
-    }
+// Initialize on load
+document.addEventListener("DOMContentLoaded", () => {
+    const savedMode = localStorage.getItem("calculator-mode") || "ios18";
+    selectMode(savedMode);
+});
+
+        
+        
+  const scrollArea = document.querySelector('.settings-scroll-area');
+  const header = document.querySelector('.ios-centered-header');
+
+  if (scrollArea && header) {
+    scrollArea.addEventListener('scroll', () => {
+      if (scrollArea.scrollTop > 50) {
+        header.classList.add('is-scrolled');
+      } else {
+        header.classList.remove('is-scrolled');
+      }
+    });
+  }
 </script>
 </html>
