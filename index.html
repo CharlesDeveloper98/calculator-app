@@ -103,6 +103,30 @@ body {
 }
 
 
+/* --- iOS 26 Mode Specific Styles --- */
+
+/* When iOS 26 is active, override colors specifically */
+body.mode-ios26 {
+    --bg-color: #121212 !important; /* Example unique dark grey */
+    --item-bg: #2a2a2a !important;
+    --text-color: #00ffcc !important; /* Example unique accent text color */
+}
+
+/* You can also override buttons for this mode */
+body.mode-ios26 .btn-dark {
+    background-color: #404040 !important;
+}
+
+body.mode-ios26 .btn-orange {
+    background-color: #00ffcc !important;
+    color: #000000 !important;
+}
+
+
+
+
+        
+
         /* ... [Rest of your CSS remains unchanged] ... */
 
         body {
@@ -2168,23 +2192,20 @@ body {
         }
 
       function applyTheme(themeValue) {
-    // 1. Remove classes
     document.body.classList.remove('theme-dark', 'theme-light');
     
-    // 2. Determine and apply class
     let targetTheme = themeValue;
     if (themeValue === 'system') {
         targetTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
     }
+    
+    // If iOS 26 is active, you might want to force a specific color palette 
+    // or keep the mode-specific overrides active:
     document.body.classList.add('theme-' + targetTheme);
     
-    // 3. UI Update: Update checkmarks in settings
-    document.querySelectorAll('.theme-opt').forEach(opt => opt.classList.remove('selected'));
-    document.getElementById(`opt-${themeValue}`).classList.add('selected');
-    
-    // 4. Save
     localStorage.setItem("calculator-theme", themeValue);
 }
+
 
 
 document.querySelectorAll('.theme-opt').forEach(option => {
