@@ -29,7 +29,9 @@
 
 -        /* 1. Define Default Variables (Dark Mode defaults) */
 :root {
+    /* Base iOS Dark Mode Palette */
     --bg-color: #000000;
+    --item-bg: #1c1c1e;
     --text-color: #ffffff;
     --gray-btn: #a5a5a5;
     --gray-btn-text: #000000;
@@ -38,55 +40,36 @@
     --orange-btn: #ff9f0a;
     --orange-btn-text: #ffffff;
     --settings-bg: #1c1c1e;
-    --settings-item-bg: #2c2c2e;
     --settings-text: #ffffff;
-    --dialog-bg: #1c1c1e;
     --divider-color: #48484a;
-    --sheet-bg: #1c1c1e;
-    --item-bg: #1c1c1e;
 }
 
-/* 2. Override for Light Mode */
+/* Light Mode Overrides */
 body.theme-light {
     --bg-color: #f2f2f7;
+    --item-bg: #ffffff;
     --text-color: #000000;
     --gray-btn: #e5e5ea;
-    --gray-btn-text: #000000;
-    --dark-btn: #ffffff;
-    --dark-btn-text: #000000;
-    --orange-btn: #ff9500;
-    --orange-btn-text: #ffffff;
+    --dark-btn: #e5e5ea;
     --settings-bg: #f2f2f7;
-    --settings-item-bg: #ffffff;
     --settings-text: #000000;
-    --dialog-bg: #ffffff;
     --divider-color: #c6c6c8;
-    --sheet-bg: #f2f2f7;
-    --item-bg: #ffffff;
 }
 
-
-/* Define Variables */
-:root, body.theme-light {
-    --bg-color: #f2f2f7;
-    --item-bg: #ffffff;
-    --text-color: #000000;
+/* iOS 26 Mode Specific Overrides */
+body.mode-ios26 {
+    --bg-color: #121212 !important;
+    --item-bg: #2a2a2a !important;
+    --text-color: #00ffcc !important;
+    --orange-btn: #00ffcc !important;
+    --orange-btn-text: #000000 !important;
 }
 
-body.theme-dark {
-    --bg-color: #000000;
-    --item-bg: #1c1c1e;
-    --text-color: #ffffff;
-}
-
-/* Apply Variables */
+/* Apply base styles */
 body {
-    background-color: var(--bg-color) !important; /* Force use of variable */
-    color: var(--text-color) !important;
-}
-
-.settings-item, .mode-select-box, .accordion-container {
-    background-color: var(--item-bg) !important;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    transition: background-color 0.35s ease;
 }
 
 
@@ -105,23 +88,7 @@ body {
 
 /* --- iOS 26 Mode Specific Styles --- */
 
-/* When iOS 26 is active, override colors specifically */
-body.mode-ios26 {
-    --bg-color: #121212 !important; /* Example unique dark grey */
-    --item-bg: #2a2a2a !important;
-    --text-color: #00ffcc !important; /* Example unique accent text color */
-}
-
-/* You can also override buttons for this mode */
-body.mode-ios26 .btn-dark {
-    background-color: #404040 !important;
-}
-
-body.mode-ios26 .btn-orange {
-    background-color: #00ffcc !important;
-    color: #000000 !important;
-}
-
+l
 
 
 
@@ -329,22 +296,25 @@ body.mode-ios26 .btn-orange {
             color: var(--orange-btn);
         }
 
-        .settings-modal, .currency-modal, .selection-modal {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: var(--settings-bg);
-            color: var(--settings-text);
-            z-index: 100;
-            display: flex;
-            flex-direction: column;
-            padding: 0;
-            transform: translateX(100%);
-            transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
-            overflow: hidden;
-        }
+        /* Ensure the modal covers everything completely */
+.settings-modal, .currency-modal, .selection-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    /* Ensure background is solid, not transparent */
+    background-color: var(--bg-color) !important; 
+    color: var(--settings-text);
+    z-index: 1000; /* Higher z-index to stay on top */
+    display: flex;
+    flex-direction: column;
+    padding: 0;
+    transform: translateX(100%);
+    transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+    overflow: hidden;
+}
+
 
         .settings-scroll-area {
             flex-grow: 1;
