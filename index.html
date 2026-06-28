@@ -2148,20 +2148,10 @@ body.mode-ios26.theme-light {
         }
 
       function applyTheme(themeValue) {
-    // 1. Clear 'selected' class from all options
-    document.querySelectorAll('.theme-opt').forEach(item => item.classList.remove('selected'));
-
-    // 2. Mark the new selection
-    const targetNode = document.getElementById('opt-' + themeValue);
-    if (targetNode) targetNode.classList.add('selected');
-
-    // 3. Update the label
-    const label = document.getElementById('lbl-theme-val');
-    if (label) label.innerText = themeValue.charAt(0).toUpperCase() + themeValue.slice(1);
-
-    // 4. Forcefully update body classes
+    // 1. Remove old classes
     document.body.classList.remove('theme-dark', 'theme-light');
 
+    // 2. Add the new class
     if (themeValue === 'system') {
         const isDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
         document.body.classList.add(isDark ? 'theme-dark' : 'theme-light');
@@ -2169,7 +2159,7 @@ body.mode-ios26.theme-light {
         document.body.classList.add('theme-' + themeValue);
     }
 
-    // 5. Persist the choice
+    // 3. Save
     localStorage.setItem("calculator-theme", themeValue);
 }
 
@@ -2394,6 +2384,7 @@ function selectMode(mode) {
     const currentTheme = localStorage.getItem("calculator-theme") || "system";
     applyTheme(currentTheme); 
 }
+
 
      // Add this logic to run on initial load
 document.addEventListener('DOMContentLoaded', () => {
