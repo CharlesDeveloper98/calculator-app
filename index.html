@@ -28,7 +28,8 @@
         }
 
 -        /* 1. Define Default Variables (Dark Mode defaults) */
-  :root {
+
+ :root {
             --bg-color: #000000;
             --text-color: #ffffff;
             --gray-btn: #a5a5a5;
@@ -62,57 +63,6 @@
             --sheet-bg: #f2f2f7;
         }
 
-/* iOS 26 Theme Overrides */
-body.mode-ios26 {
-    background-color: #000000 !important;
-}
-
-/* Backgrounds for pages/sheets */
-body.mode-ios26 .settings-modal,
-body.mode-ios26 .bottom-sheet,
-body.mode-ios26 .currency-modal,
-body.mode-ios26 .selection-modal {
-    background-color: #000000 !important; /* Changed to #000000 */
-}
-
-/* Menu/Box backgrounds */
-body.mode-ios26 .settings-item-bg,
-body.mode-ios26 .history-item,
-body.mode-ios26 .mode-select-box,
-body.mode-ios26 .accordion-container,
-body.mode-ios26 .currency-box,
-body.mode-ios26 .selection-group-box {
-    background-color: #1b1b1d !important; /* Changed to #1b1b1d */
-}
-
-/* Match Header to Background */
-body.mode-ios26 .ios-centered-header {
-    background-color: #000000 !important;
-}
-
-body.mode-ios26 .history-item {
-    border-radius: 42px !important;
-}
-
-/* Rounded corners for buttons and elements */
-body.mode-ios26 .btn {
-    border-radius: 42px !important; /* iOS 26 style rounded corners */
-}
-
-/* Keypad Shape: Change from 50% circle to ~25% rounded corners */
-body.mode-ios26 .btn {
-    border-radius: 50% !important;
-}
-
-/* History Tab/Sheet adjustments */
-body.mode-ios26 .bottom-sheet {
-    border-top-left-radius: 24px;
-    border-top-right-radius: 24px;
-}
-
-
-
-    
         * {
     box-sizing: border-box;
     margin: 0;
@@ -124,14 +74,6 @@ body.mode-ios26 .bottom-sheet {
     letter-spacing: -0.022em;
 }
 
-
-/* --- iOS 26 Mode Specific Styles --- */
-
-l
-
-
-
-        
 
         /* ... [Rest of your CSS remains unchanged] ... */
 
@@ -179,62 +121,6 @@ l
             margin: 0 4px;
         }
 
-        
-.mode-box-container {
-    padding: 0 16px 20px 16px;
-}
-
-.mode-select-box {
-    background-color: var(--settings-item-bg);
-    border-radius: 14px;
-    padding: 20px;
-    display: flex;
-    justify-content: space-between;
-    position: relative;
-    overflow: hidden;
-}
-
-.mode-option {
-    cursor: pointer;
-    text-align: center;
-    z-index: 2;
-    flex: 1;
-}
-
-.mode-name {
-    font-size: 17px;
-    font-weight: 600;
-    display: block;
-    margin-bottom: 8px;
-}
-
-.mode-selector {
-    width: 20px;
-    height: 20px;
-    border-radius: 50%;
-    border: 2px solid #8e8e93;
-    margin: 0 auto;
-    transition: all 0.3s ease;
-}
-
-/* This line uses the existing orange-btn variable which is controlled by your palette */
-.mode-accent-line {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    height: 4px;
-    width: 50%;
-    background-color: var(--orange-btn);
-    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.mode-option.active .mode-selector {
-    border-color: var(--orange-btn);
-    background-color: var(--orange-btn);
-}
-
-
-       
         .nav-btn {
             background: none;
             border: none;
@@ -335,25 +221,22 @@ l
             color: var(--orange-btn);
         }
 
-        /* Ensure the modal covers everything completely */
-.settings-modal, .currency-modal, .selection-modal {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    /* Ensure background is solid, not transparent */
-    background-color: var(--bg-color) !important; 
-    color: var(--settings-text);
-    z-index: 1000; /* Higher z-index to stay on top */
-    display: flex;
-    flex-direction: column;
-    padding: 0;
-    transform: translateX(100%);
-    transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
-    overflow: hidden;
-}
-
+        .settings-modal, .currency-modal, .selection-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: var(--settings-bg);
+            color: var(--settings-text);
+            z-index: 100;
+            display: flex;
+            flex-direction: column;
+            padding: 0;
+            transform: translateX(100%);
+            transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+            overflow: hidden;
+        }
 
         .settings-scroll-area {
             flex-grow: 1;
@@ -362,6 +245,7 @@ l
             -webkit-overflow-scrolling: touch;
         }
 
+        
         .settings-modal {
             overflow-y: auto;
         }
