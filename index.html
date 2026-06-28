@@ -27,9 +27,7 @@
             font-style: normal;
         }
 
--        /* 1. Define Default Variables (Dark Mode defaults) */
-
- :root {
+        :root {
             --bg-color: #000000;
             --text-color: #ffffff;
             --gray-btn: #a5a5a5;
@@ -63,105 +61,6 @@
             --sheet-bg: #f2f2f7;
         }
 
-
-     /* iOS 26 Theme Overrides */
-body.mode-ios26 {
-    background-color: #000000 !important;
-}
-
-/* Backgrounds for pages/sheets */
-body.mode-ios26 .settings-modal,
-body.mode-ios26 .bottom-sheet,
-body.mode-ios26 .currency-modal,
-body.mode-ios26 .selection-modal {
-    background-color: #000000 !important; /* Changed to #000000 */
-}
-
-/* Menu/Box backgrounds */
-body.mode-ios26 .settings-item-bg,
-body.mode-ios26 .history-item,
-body.mode-ios26 .mode-select-box,
-body.mode-ios26 .accordion-container,
-body.mode-ios26 .currency-box,
-body.mode-ios26 .selection-group-box {
-    background-color: #1b1b1d !important; /* Changed to #1b1b1d */
-}
-
-/* Match Header to Background */
-body.mode-ios26 .ios-centered-header {
-    background-color: #000000 !important;
-}
-
-body.mode-ios26 .history-item {
-    border-radius: 42px !important;
-}
-
-/* Rounded corners for buttons and elements */
-body.mode-ios26 .btn {
-    border-radius: 42px !important; /* iOS 26 style rounded corners */
-}
-
-/* Keypad Shape: Change from 50% circle to ~25% rounded corners */
-body.mode-ios26 .btn {
-    border-radius: 50% !important;
-}
-
-/* History Tab/Sheet adjustments */
-body.mode-ios26 .bottom-sheet {
-    border-top-left-radius: 24px;
-    border-top-right-radius: 24px;
-}
-
-/* iOS 26 Theme Specifics */
-body.mode-ios26.theme-dark {
-    --settings-bg: #000000;
-    --settings-item-bg: #1b1b1d;
-    --settings-text: #ffffff;
-}
-
-body.mode-ios26.theme-light {
-    --settings-bg: #f2f2f7;
-    --settings-item-bg: #ffffff;
-    --settings-text: #000000;
-}
-   
-
-
-/* Add these styles */
-.perspective-container {
-    perspective: 1000px;
-    width: 100%;
-    height: 100%;
-    position: relative;
-}
-
-.flipper {
-    transition: transform 0.6s;
-    transform-style: preserve-3d;
-    position: relative;
-    width: 100%;
-    height: 100%;
-}
-
-.flipper.flipped {
-    transform: rotateY(180deg);
-}
-
-.calc-face {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    backface-visibility: hidden;
-}
-
-.calc-back {
-    transform: rotateY(180deg);
-    background-color: var(--bg-color);
-}
-
-
-
-        
         * {
     box-sizing: border-box;
     margin: 0;
@@ -344,7 +243,6 @@ body.mode-ios26.theme-light {
             -webkit-overflow-scrolling: touch;
         }
 
-        
         .settings-modal {
             overflow-y: auto;
         }
@@ -996,52 +894,45 @@ body.mode-ios26.theme-light {
     </style>
 </head>
 <body>
- <div class="top-nav">
-  <button class="nav-btn" id="openHistory">≡</button>
-  <div class="nav-right-group">
-    <button class="nav-btn" onclick="toggleFlip()">🗘</button>
-    <button class="nav-btn" id="openCurrency" style="font-size: 20px;">$</button>
-    <div class="nav-divider"></div>
-    <button class="nav-btn" id="openSettings">⚙</button>
-  </div>
-</div>
-
-<div class="display-container">
-  <div class="expr-trail" id="exprTrail"></div>
-  <div class="display" id="display">0</div>
-</div>
-
-<div class="grid" id="mainCalculatorGrid">
-  <button class="btn btn-gray" onclick="backspace()">⌫</button>
-  <button class="btn btn-gray" onclick="clearDisplay()" id="clear-btn">AC</button>
-  <button class="btn btn-gray" onclick="inputPercent()">%</button>
-  <button class="btn btn-orange op-btn" data-op="/">÷</button>
-
-  <button class="btn btn-dark" onclick="inputNum('7')">7</button>
-  <button class="btn btn-dark" onclick="inputNum('8')">8</button>
-  <button class="btn btn-dark" onclick="inputNum('9')">9</button>
-  <button class="btn btn-orange op-btn" data-op="*">×</button>
-
-  <button class="btn btn-dark" onclick="inputNum('4')">4</button>
-  <button class="btn btn-dark" onclick="inputNum('5')">5</button>
-  <button class="btn btn-dark" onclick="inputNum('6')">6</button>
-  <button class="btn btn-orange op-btn" data-op="-">-</button>
-
-  <button class="btn btn-dark" onclick="inputNum('1')">1</button>
-  <button class="btn btn-dark" onclick="inputNum('2')">2</button>
-  <button class="btn btn-dark" onclick="inputNum('3')">3</button>
-  <button class="btn btn-orange op-btn" data-op="+">+</button>
-
-  <button class="btn btn-dark" onclick="toggleSign()">+/-</button>
-  <button class="btn btn-dark" onclick="inputNum('0')">0</button>
-  <button class="btn btn-dark" onclick="inputDecimal()">.</button>
-  <button class="btn btn-orange" onclick="calculate()">=</button>
-</div>
-
-            
+    <div class="top-nav">
+        <button class="nav-btn" id="openHistory">⋮☰</button>
+        <div class="nav-right-group">
+            <button class="nav-btn" id="openCurrency" style="font-size: 20px;">💱</button>
+            <div class="nav-divider"></div>
+            <button class="nav-btn" id="openSettings">⚙️</button>
         </div>
     </div>
-    <div class="bottom-sheet" id="historySheet">
+
+    <div class="display-container">
+        <div class="expr-trail" id="exprTrail"></div>
+        <div class="display" id="display">0</div>
+    </div>
+
+    <div class="grid" id="mainCalculatorGrid">
+        <button class="btn btn-gray" onclick="backspace()">⌫</button>
+        <button class="btn btn-gray" onclick="clearDisplay()" id="clear-btn">AC</button>
+        <button class="btn btn-gray" onclick="inputPercent()">%</button>
+        <button class="btn btn-orange op-btn" data-op="/">÷</button>
+
+        <button class="btn btn-dark" onclick="inputNum('7')">7</button>
+        <button class="btn btn-dark" onclick="inputNum('8')">8</button>
+        <button class="btn btn-dark" onclick="inputNum('9')">9</button>
+        <button class="btn btn-orange op-btn" data-op="*">×</button>
+
+        <button class="btn btn-dark" onclick="inputNum('4')">4</button>
+        <button class="btn btn-dark" onclick="inputNum('5')">5</button>
+        <button class="btn btn-dark" onclick="inputNum('6')">6</button>
+        <button class="btn btn-orange op-btn" data-op="-">−</button>
+
+        <button class="btn btn-dark" onclick="inputNum('1')">1</button>
+        <button class="btn btn-dark" onclick="inputNum('2')">2</button>
+        <button class="btn btn-dark" onclick="inputNum('3')">3</button>
+        <button class="btn btn-orange op-btn" data-op="+">+</button>
+
+        <button class="btn btn-dark" onclick="toggleSign()">+/-</button>
+        <button class="btn btn-dark" onclick="inputNum('0')">0</button>
+        <button class="btn btn-dark" onclick="inputDecimal()">.</button>
+        <button class="btn btn-orange" onclick="calculate()">=</button>
     </div>
 
     <div class="bottom-sheet" id="historySheet">
@@ -1163,22 +1054,6 @@ body.mode-ios26.theme-light {
         </div>
 
         <div class="settings-scroll-area">
-
-<div class="settings-subheader">Mode</div>
-<div class="mode-box-container">
-    <div class="mode-select-box" id="modeBox">
-        <div class="mode-option" data-mode="ios18" onclick="selectMode('ios18')">
-            <span class="mode-name">iOS 18</span>
-            <div class="mode-selector" id="sel-ios18"></div>
-        </div>
-        <div class="mode-option" data-mode="ios26" onclick="selectMode('ios26')">
-            <span class="mode-name">iOS 26</span>
-            <div class="mode-selector" id="sel-ios26"></div>
-        </div>
-        <div class="mode-accent-line" id="modeAccentLine"></div>
-    </div>
-</div>
-
             <div class="settings-subheader" id="sub-theme">Theme</div>
             <div class="accordion-container" id="container-theme">
                 <div class="accordion-header" onclick="toggleAccordion('container-theme')">
@@ -1324,7 +1199,7 @@ body.mode-ios26.theme-light {
                     </div>
                 </div>
             </div>
-            
+
             <div class="settings-subheader" id="sub-hist-limit">History Limit</div>
             <div class="accordion-container" id="container-limit">
                 <div class="accordion-header" onclick="toggleAccordion('container-limit')">
@@ -1341,9 +1216,6 @@ body.mode-ios26.theme-light {
         </div>
     </div>
 
-
-    
-
     <div class="ios-dialog-overlay" id="dialogOverlay">
         <div class="ios-dialog">
             <div class="ios-dialog-title" id="txt-confirm-msg">Are you sure you want to clear history?</div>
@@ -1353,11 +1225,6 @@ body.mode-ios26.theme-light {
             </div>
         </div>
     </div>
-
-
-
-
-    
 
     <script>
         // [JavaScript remains exactly the same]
@@ -2190,26 +2057,24 @@ body.mode-ios26.theme-light {
             };
         }
 
-      function applyTheme(themeValue) {
-    document.querySelectorAll(".theme-opt").forEach(item => item.classList.remove("selected"));
-    const targetNode = document.getElementById(`opt-${themeValue}`);
-    if(targetNode) targetNode.classList.add("selected");
-    document.getElementById("lbl-theme-val").innerText = themeValue.charAt(0).toUpperCase() + themeValue.slice(1);
-    if (themeValue === "system") {
-        const isDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
-        document.documentElement.setAttribute("data-theme", isDark ? "dark" : "light");
-    } else {
-        document.documentElement.setAttribute("data-theme", themeValue);
-    }
-    localStorage.setItem("calculator-theme", themeValue);
-    closeAllAccordions();
-}
+        function applyTheme(themeValue) {
+            document.querySelectorAll(".theme-opt").forEach(item => item.classList.remove("selected"));
+            const targetNode = document.getElementById(`opt-${themeValue}`);
+            if(targetNode) targetNode.classList.add("selected");
+            document.getElementById("lbl-theme-val").innerText = themeValue.charAt(0).toUpperCase() + themeValue.slice(1);
+            if (themeValue === "system") {
+                const isDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+                document.documentElement.setAttribute("data-theme", isDark ? "dark" : "light");
+            } else {
+                document.documentElement.setAttribute("data-theme", themeValue);
+            }
+            localStorage.setItem("calculator-theme", themeValue);
+            closeAllAccordions();
+        }
 
-document.querySelectorAll(".theme-opt").forEach(option => {
-    option.addEventListener("click", function() { applyTheme(this.getAttribute("data-value")); });
-});
-
-
+        document.querySelectorAll(".theme-opt").forEach(option => {
+            option.addEventListener("click", function() { applyTheme(this.getAttribute("data-value")); });
+        });
 
         function applyLanguage(langValue) {
             document.querySelectorAll(".lang-option").forEach(item => item.classList.remove("selected"));
@@ -2356,7 +2221,7 @@ document.querySelectorAll(".theme-opt").forEach(option => {
         applyLanguage(localStorage.getItem("calculator-lang") || "system");
         applyDisplayMode(localStorage.getItem("calculator-fullscreen") || "false", true);
         applyColorPalette(localStorage.getItem("calculator-palette") || "#ff9f0a", true);
-        applyLimit(localStorage.getItem("calc-history-limit") || "10");    
+        applyLimit(localStorage.getItem("calc-history-limit") || "10");
     </script>
 </body>
     <script>
@@ -2401,53 +2266,6 @@ document.querySelectorAll('.font-opt').forEach(option => {
         applyFont(this.getAttribute('data-value'));
     });
 });
-
-
-function toggleFlip() {
-    const flipper = document.getElementById('flipper');
-    flipper.classList.toggle('flipped');
-}
-
-
-        
-
-function selectMode(mode) {
-    document.querySelectorAll('.mode-option').forEach(el => el.classList.remove('active'));
-    const selectedOpt = document.querySelector(`.mode-option[data-mode="${mode}"]`);
-    if(selectedOpt) selectedOpt.classList.add('active');
-
-    const line = document.getElementById('modeAccentLine');
-    line.style.transform = mode === 'ios18' ? 'translateX(0%)' : 'translateX(100%)';
-
-    if (mode === 'ios26') {
-        document.body.classList.add('mode-ios26');
-    } else {
-        document.body.classList.remove('mode-ios26');
-    }
-
-    localStorage.setItem("calculator-mode", mode);
-
-    // Force re-apply theme to ensure CSS variables match the current Light/Dark setting
-    const currentTheme = localStorage.getItem("calculator-theme") || "system";
-    applyTheme(currentTheme);
-}
-
-
-
-     // Add this logic to run on initial load
-document.addEventListener('DOMContentLoaded', () => {
-    // 1. Initialize Mode
-    const savedMode = localStorage.getItem('calculator-mode') || 'ios18';
-    selectMode(savedMode);
-
-    // 2. Initialize Theme
-    const savedTheme = localStorage.getItem('calculator-theme') || 'system';
-    applyTheme(savedTheme);
-});
-
-
-
-        
         
   const scrollArea = document.querySelector('.settings-scroll-area');
   const header = document.querySelector('.ios-centered-header');
@@ -2456,11 +2274,10 @@ document.addEventListener('DOMContentLoaded', () => {
     scrollArea.addEventListener('scroll', () => {
       if (scrollArea.scrollTop > 50) {
         header.classList.add('is-scrolled');
-      } else {
+      } else î
         header.classList.remove('is-scrolled');
-        }
-});
-        
+      }
+    });
   }
 </script>
 </html>
