@@ -996,26 +996,48 @@ body.mode-ios26.theme-light {
     </style>
 </head>
 <body>
-  <div class="perspective-container">
-        <div class="flipper" id="flipper">
-            
-            <div class="calc-face calc-front">
-                <div class="top-nav">
-                    </div>
-                
-                <div class="display-container">
-                    </div>
+ <div class="top-nav">
+  <button class="nav-btn" id="openHistory">≡</button>
+  <div class="nav-right-group">
+    <button class="nav-btn" onclick="toggleFlip()">🗘</button>
+    <button class="nav-btn" id="openCurrency" style="font-size: 20px;">$</button>
+    <div class="nav-divider"></div>
+    <button class="nav-btn" id="openSettings">⚙</button>
+  </div>
+</div>
 
-                <div class="grid" id="mainCalculatorGrid">
-                    </div>
-            </div>
+<div class="display-container">
+  <div class="expr-trail" id="exprTrail"></div>
+  <div class="display" id="display">0</div>
+</div>
 
-            <div class="calc-face calc-back">
-                <div style="padding: 20px; color: white;">
-                    <h2>Scientific Mode</h2>
-                    <button onclick="toggleFlip()" class="btn btn-orange">Back to Normal</button>
-                </div>
-            </div>
+<div class="grid" id="mainCalculatorGrid">
+  <button class="btn btn-gray" onclick="backspace()">⌫</button>
+  <button class="btn btn-gray" onclick="clearDisplay()" id="clear-btn">AC</button>
+  <button class="btn btn-gray" onclick="inputPercent()">%</button>
+  <button class="btn btn-orange op-btn" data-op="/">÷</button>
+
+  <button class="btn btn-dark" onclick="inputNum('7')">7</button>
+  <button class="btn btn-dark" onclick="inputNum('8')">8</button>
+  <button class="btn btn-dark" onclick="inputNum('9')">9</button>
+  <button class="btn btn-orange op-btn" data-op="*">×</button>
+
+  <button class="btn btn-dark" onclick="inputNum('4')">4</button>
+  <button class="btn btn-dark" onclick="inputNum('5')">5</button>
+  <button class="btn btn-dark" onclick="inputNum('6')">6</button>
+  <button class="btn btn-orange op-btn" data-op="-">-</button>
+
+  <button class="btn btn-dark" onclick="inputNum('1')">1</button>
+  <button class="btn btn-dark" onclick="inputNum('2')">2</button>
+  <button class="btn btn-dark" onclick="inputNum('3')">3</button>
+  <button class="btn btn-orange op-btn" data-op="+">+</button>
+
+  <button class="btn btn-dark" onclick="toggleSign()">+/-</button>
+  <button class="btn btn-dark" onclick="inputNum('0')">0</button>
+  <button class="btn btn-dark" onclick="inputDecimal()">.</button>
+  <button class="btn btn-orange" onclick="calculate()">=</button>
+</div>
+
             
         </div>
     </div>
