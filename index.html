@@ -63,6 +63,69 @@
             --sheet-bg: #f2f2f7;
         }
 
+
+     /* iOS 26 Theme Overrides */
+body.mode-ios26 {
+    background-color: #000000 !important;
+}
+
+/* Backgrounds for pages/sheets */
+body.mode-ios26 .settings-modal,
+body.mode-ios26 .bottom-sheet,
+body.mode-ios26 .currency-modal,
+body.mode-ios26 .selection-modal {
+    background-color: #000000 !important; /* Changed to #000000 */
+}
+
+/* Menu/Box backgrounds */
+body.mode-ios26 .settings-item-bg,
+body.mode-ios26 .history-item,
+body.mode-ios26 .mode-select-box,
+body.mode-ios26 .accordion-container,
+body.mode-ios26 .currency-box,
+body.mode-ios26 .selection-group-box {
+    background-color: #1b1b1d !important; /* Changed to #1b1b1d */
+}
+
+/* Match Header to Background */
+body.mode-ios26 .ios-centered-header {
+    background-color: #000000 !important;
+}
+
+body.mode-ios26 .history-item {
+    border-radius: 42px !important;
+}
+
+/* Rounded corners for buttons and elements */
+body.mode-ios26 .btn {
+    border-radius: 42px !important; /* iOS 26 style rounded corners */
+}
+
+/* Keypad Shape: Change from 50% circle to ~25% rounded corners */
+body.mode-ios26 .btn {
+    border-radius: 50% !important;
+}
+
+/* History Tab/Sheet adjustments */
+body.mode-ios26 .bottom-sheet {
+    border-top-left-radius: 24px;
+    border-top-right-radius: 24px;
+}
+
+/* iOS 26 Theme Specifics */
+body.mode-ios26.theme-dark {
+    --settings-bg: #000000;
+    --settings-item-bg: #1b1b1d;
+    --settings-text: #ffffff;
+}
+
+body.mode-ios26.theme-light {
+    --settings-bg: #f2f2f7;
+    --settings-item-bg: #ffffff;
+    --settings-text: #000000;
+}
+   
+
         * {
     box-sizing: border-box;
     margin: 0;
