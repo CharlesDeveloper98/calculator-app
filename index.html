@@ -67,7 +67,8 @@
     padding: 4px;
     display: flex;
     position: relative;
-    margin-bottom: 20px;
+    /* Reduced margin to match other list items */
+    margin-bottom: 12px; 
 }
 
 .mode-option {
@@ -83,10 +84,9 @@
 }
 
 .mode-option.active {
-    color: #000; /* Text color inside the active pill */
+    color: #000;
 }
 
-/* The sliding background pill */
 .mode-accent-line {
     position: absolute;
     top: 4px;
@@ -98,6 +98,7 @@
     transition: transform 0.3s cubic-bezier(0.2, 0, 0.2, 1);
     z-index: 1;
 }
+
 
 
 
