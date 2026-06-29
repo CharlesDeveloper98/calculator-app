@@ -1054,6 +1054,23 @@
         </div>
 
         <div class="settings-scroll-area">
+<div class="settings-subheader">Mode</div>
+<div class="mode-box-container">
+    <div class="mode-select-box" id="modeBox">
+        <div class="mode-option" data-mode="ios18" onclick="selectMode('ios18')">
+            <span class="mode-name">iOS 18</span>
+            <div class="mode-selector" id="sel-ios18"></div>
+        </div>
+        <div class="mode-option" data-mode="ios26" onclick="selectMode('ios26')">
+            <span class="mode-name">iOS 26</span>
+            <div class="mode-selector" id="sel-ios26"></div>
+        </div>
+        <div class="mode-accent-line" id="modeAccentLine"></div>
+    </div>
+</div>
+
+
+            
             <div class="settings-subheader" id="sub-theme">Theme</div>
             <div class="accordion-container" id="container-theme">
                 <div class="accordion-header" onclick="toggleAccordion('container-theme')">
@@ -2266,6 +2283,40 @@ document.querySelectorAll('.font-opt').forEach(option => {
         applyFont(this.getAttribute('data-value'));
     });
 });
+
+function selectMode(mode) {
+    document.querySelectorAll('.mode-option').forEach(el => el.classList.remove('active'));
+    const selectedOpt = document.querySelector(`.mode-option[data-mode="${mode}"]`);
+    if(selectedOpt) selectedOpt.classList.add('active');
+
+    const line = document.getElementById('modeAccentLine');
+    line.style.transform = mode === 'ios18' ? 'translateX(0%)' : 'translateX(100%)';
+
+    if (mode === 'ios26') {
+        document.body.classList.add('mode-ios26');
+    } else {
+        document.body.classList.remove('mode-ios26');
+    }
+
+    localStorage.setItem("calculator-mode", mode);
+
+    // Force re-apply theme to ensure CSS variables match the current Light/Dark setting
+    const currentTheme = localStorage.getItem("calculator-theme") || "system";
+    applyTheme(currentTheme);
+}
+
+// Add this logic to run on initial load
+document.addEventListener('DOMContentLoaded', () => {
+    // 1. Initialize Mode
+    const savedMode = localStorage.getItem('calculator-mode') || 'ios18';
+    selectMode(savedMode);
+
+    // 2. Initialize Theme
+    const savedTheme = localStorage.getItem('calculator-theme') || 'system';
+    applyTheme(savedTheme);
+});
+
+        
         
   const scrollArea = document.querySelector('.settings-scroll-area');
   const header = document.querySelector('.ios-centered-header');
