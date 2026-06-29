@@ -62,28 +62,34 @@
         }
 
 .mode-box-container {
+/* --- Corrected Mode Box Styles --- */
+.mode-box-container {
     background-color: var(--settings-item-bg);
     border-radius: 12px;
-    padding: 4px;
+    padding: 4px; /* Space between pill and background */
     display: flex;
     position: relative;
     margin-bottom: 20px;
+    height: 44px; /* Set a consistent height */
+    overflow: hidden; /* Ensures the pill stays contained */
 }
 
 .mode-option {
     flex: 1;
-    padding: 10px 0;
-    text-align: center;
+    display: flex; /* Centers text correctly */
+    align-items: center;
+    justify-content: center;
     font-size: 16px;
     font-weight: 500;
     cursor: pointer;
     z-index: 2;
     transition: color 0.3s;
     color: var(--settings-text);
+    border-radius: 9px; /* Matches the inner pill */
 }
 
 .mode-option.active {
-    color: #000; /* Text color inside the active pill */
+    color: #000; /* Active text color */
 }
 
 /* The sliding background pill */
@@ -92,12 +98,13 @@
     top: 4px;
     bottom: 4px;
     left: 4px;
-    width: calc(50% - 6px);
+    width: calc(50% - 6px); /* Keeps it within the container */
     background-color: var(--orange-btn);
     border-radius: 9px;
     transition: transform 0.3s cubic-bezier(0.2, 0, 0.2, 1);
     z-index: 1;
 }
+
 
 
         
@@ -2358,14 +2365,15 @@ document.addEventListener('DOMContentLoaded', () => {
   const scrollArea = document.querySelector('.settings-scroll-area');
   const header = document.querySelector('.ios-centered-header');
 
-  if (scrollArea && header) {
+    if (scrollArea && header) {
     scrollArea.addEventListener('scroll', () => {
       if (scrollArea.scrollTop > 50) {
         header.classList.add('is-scrolled');
-      } else î
+      } else {
         header.classList.remove('is-scrolled');
       }
     });
   }
+
 </script>
 </html>
